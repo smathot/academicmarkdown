@@ -1,0 +1,127 @@
+* {
+	font-family: "Gentium";
+	font-size: 12pt;
+	line-height: 150%;
+	text-align: justify;
+	color: #2e3436;
+}
+
+p {
+	margin: 0px;
+	text-indent: 25px;	
+}
+
+a {
+	color: #3465a4;
+	text-decoration: none;
+}
+
+a, em, strong {
+	font-size: 1em;	
+	font-family: inherit;
+}
+
+em, strong {
+	color: inherit;
+}
+
+code {
+	font-family: 'Courier New';
+}
+
+sup {
+	font-size: 0.7em;
+}
+
+header h1 {
+	color: #888a85;
+	font-family: "Gentium";
+	font-size: 0.8em;
+	border-bottom: solid 1px #888a85;
+	font-weight: normal;
+}
+
+h1 {
+	text-align: left;
+	font-family: 'Sawasdee';
+	font-size: 1.2em;
+	color: #2346a5;
+	font-weight: bold;
+}
+
+h1, h2, h2 {
+	page-break-after: avoid;
+}
+
+#titlepage {
+	margin-bottom: 50px;
+}
+
+.title {	
+	font-size: 2em;
+	text-align: left;
+	color: #3465a4;
+	margin-bottom: 50px;
+	font-family: 'Sawasdee';
+	font-weight: bold;
+}
+
+.author {
+	font-size: 1.2em;
+	text-align: right;
+}
+
+.affiliation,
+.correspondence {
+	font-size: 0.8em;
+	text-align: right;
+}
+
+#abstract {
+	border-bottom: solid 1px #729fcf;
+	padding-bottom: 25px;
+	margin: 25px;
+}
+
+#abstract strong {
+	font-family: "Sawasdee";
+}
+
+#abstract strong,
+figcaption strong {
+	color: #3465a4;
+}
+
+.abstract strong {
+	font-family: 'Sawasdee';
+}
+
+figure {
+	text-align: center;
+	float: right;
+	display: table;
+	margin-left: 25px;
+	page-break-inside: avoid;
+	caption-side: bottom;
+	clear: right;
+}
+
+figure img {
+}
+
+figure figcaption {
+	display: table-caption;
+	font-style: italic;
+	font-size: 0.9em;
+}
+
+.citation {
+	color: #2346a5;
+}
+
+.references p {
+	text-align: left;
+	text-indent: -25px;
+	margin-left: 25px;
+	color: #555753;
+}

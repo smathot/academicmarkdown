@@ -1,0 +1,2 @@
+So why share this wholly unremarkable footage with you? The bird sat there for something like 10 minutes (gulls are nothing if not patient and persistent) and after a while it struck me that it didn't appear to look at me (or my sub) much at all. It seemed to be continuously distracted by something to its right or left, even though there was nothing there, at least nothing as interesting as my sub (I imagine). Then it dawned on me that, in contrast to appearance, the gull must have been looking at me all the time, but with different parts of its eye!
+

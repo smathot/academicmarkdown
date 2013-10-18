@@ -1,0 +1,79 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="generator" content="pandoc" />
+$for(author-meta)$
+  <meta name="author" content="$author-meta$" />
+$endfor$
+$if(date-meta)$
+  <meta name="date" content="$date-meta$" />
+$endif$
+  <title>$if(title-prefix)$$title-prefix$ - $endif$$pagetitle$</title>
+  <style type="text/css">code{white-space: pre;}</style>
+$if(quotes)$
+  <style type="text/css">q { quotes: "“" "”" "‘" "’"; }</style>
+$endif$
+$if(highlighting-css)$
+  <style type="text/css">
+$highlighting-css$
+  </style>
+$endif$
+$for(css)$
+  <link rel="stylesheet" href="$css$" $if(html5)$$else$type="text/css" $endif$/>
+$endfor$
+$if(math)$
+  $math$
+$endif$
+$for(header-includes)$
+  $header-includes$
+$endfor$
+</head>
+
+<body>
+
+$if(header)$
+<header>
+<h1>$header$</h1>
+</header>
+$endif$
+
+$for(include-before)$
+$include-before$
+$endfor$
+$if(title)$
+<section id="titlepage">
+<div class="title">$title$</div>
+$if(subtitle)$
+<div class="subtitle">$subtitle$</div>
+$endif$
+$for(author)$
+<div class="author">$author$</div>
+$endfor$
+$for(affiliation)$
+<div class="affiliation">$affiliation$</div>
+$endfor$
+$if(date)$
+<div class="date">$date$</div>
+$endif$
+$if(correspondence)$
+<div class="correspondence">$correspondence$</div>
+$endif$
+</section>
+$endif$
+$if(toc)$
+<div id="$idprefix$TOC">
+$toc$
+</div>
+$endif$
+
+$if(abstract)$
+<section id='abstract'><strong>Abstract</strong> $abstract$</section>
+$endif$
+
+$body$
+$for(include-after)$
+$include-after$
+$endfor$
+</body>
+</html>
