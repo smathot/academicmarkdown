@@ -17,7 +17,11 @@ You should have received a copy of the GNU General Public License
 along with zoteromarkdown.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-from pyzotero import zotero
+try:
+	from pyzotero import zotero
+except:
+	zotero = None
+	
 from academicmarkdown import BaseParser
 import os
 import re
@@ -59,6 +63,8 @@ class ZoteroParser(BaseParser):
 							(default=False)
 		"""
 
+		if zotero == None:
+			raise Exception(u'pyzotero is not available!')
 		super(ZoteroParser, self).__init__(verbose=verbose)
 		self.zotero = None
 		self.libraryId = libraryId
