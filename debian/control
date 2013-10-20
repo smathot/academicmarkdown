@@ -1,0 +1,20 @@
+Source: python-academicmarkdown
+Section: science
+Priority: extra
+Maintainer: Sebastiaan Mathot <s.mathot@cogsci.nl>
+Build-Depends: debhelper (>= 7.0.50~), python-support, python-all,
+  python-setuptools
+XS-Python-Version: >= 2.6
+Standards-Version: 3.9.3
+Vcs-Git: git://github.com:smathot/academicmarkdown.git
+Homepage: https://github.com/smathot/academicmarkdown
+
+Package: python-academicmarkdown
+Architecture: all
+XB-Python-Version: ${python:Versions}
+Depends: ${misc:Depends}, ${python:Depends}, python-pyzotero, wkhtmltopdf,
+  pandoc, python-simplejson, python-yaml
+Recommends: zotero-standalone
+Description: A Python package for generating scientific documents using
+  Markdown.
+

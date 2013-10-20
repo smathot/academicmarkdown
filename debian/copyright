@@ -1,0 +1,10 @@
+Format: Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: python-academic markdown
+Maintainer-Contact: Sebastiaan Mathot <s.mathot@cogsci.nl>
+Source: https://github.com/smathot/academicmarkdown
+
+Files: *
+Copyright: 2013, Sebastiaan Mathôt
+Licenses: GPL-3
+ On Debian systems, the full text of the GNU General Public License version 3
+ can be found in the file `/usr/share/common-licenses/GPL-3'.
