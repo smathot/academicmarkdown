@@ -102,7 +102,8 @@ class ZoteroParser(BaseParser):
 		
 		items = []
 		oldQueries = []
-		for r in re.finditer(u'@(\w+)', md):
+		regexp =  ur'@([^ ?!,.\t\n\r\f\v\]\[;]+)'
+		for r in re.finditer(regexp, md):
 			queryString = r.groups()[0]
 			self.msg(u'Found citation "%s"' % queryString)
 			if queryString in oldQueries:
@@ -127,7 +128,7 @@ class ZoteroParser(BaseParser):
 		fd.close()
 		if self.headerText == None or self.headerLevel == None:
 			return md
-		return md + '\n\n%s %s\n\n' % (u'#' * self.headerLevel, self.headerText)
+		return md + u'\n\n%s %s\n\n' % (u'#' * self.headerLevel, self.headerText)
 
 	def bestMatch(self, queryString):
 		
@@ -142,7 +143,7 @@ class ZoteroParser(BaseParser):
 		A csljson-style dictionary for the matching item.
 		"""
 
-		query = [a for a in re.split(ur'([A-Z][a-z]*)', queryString) if a]
+		query = self.splitCitation(queryString)
 		if query[0] in self.cache:
 			self.msg(u'Retrieving "%s" from cache.' % query[0])
 			items = self.cache[query[0]]
@@ -150,7 +151,8 @@ class ZoteroParser(BaseParser):
 			self.msg(u'Retrieving "%s" from Zotero API.' % query[0])
 			if self.zotero == None:
 				self.connect()
-			items = self.zotero.top(q=query[0], limit=100, content=u'csljson')
+			items = self.zotero.top(q=query[0].encode(u'utf-8'), limit=100, \
+				content=u'csljson')
 			self.cache[query[0]] = items
 			fd = open(self.cachePath, u'w')
 			pickle.dump(self.cache, fd)
@@ -197,3 +199,27 @@ class ZoteroParser(BaseParser):
 			if match:
 				matches.append(item)
 		return matches
+	
+	def splitCitation(self, s):
+		
+		"""
+		Splits a citation string, like Land1999WhyAnimals, and returns each
+		element of the string in a list.
+		
+		Arguments:
+		s		--	The citation string, e.g. 'Land1999WhyAnimals'.
+		
+		Returns:
+		A list of citation elements, e.g. ['land', '1999', 'why', 'animals'].
+		"""
+		
+		# First, split underscore-style citations, like '@land_1999_why_animals'
+		if u'_' in s:
+			return s.split(u'_')
+		regexp = ur'([A-Z][^ 0-9A-Z?!,.\t\n\r\f\v\]\[;]*)'
+		# Otherwise, split camelcase-style citations, like @Land1999WhyAnimals.
+		l = []
+		for t in re.split(regexp, s):
+			if t != u'':
+				l.append(t.lower())
+		return l
