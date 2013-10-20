@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+
 """
 This file is part of academicmarkdown.
 
@@ -20,3 +21,4 @@ along with academicmarkdown.  If not, see <http://www.gnu.org/licenses/>.
 from academicmarkdown import build	
 build.extensions = [u'toc']
 build.PDF(u'readme.md', u'readme.pdf')
+build.HTML(u'readme.md', u'readme.html')

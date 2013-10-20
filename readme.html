@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+</head>
+<body>
+<h1 id="academic-markdown">Academic Markdown</h1>
+<p><em>Who knew writing could be so nerdy?</em></p>
+<p>Copyright 2013 Sebastiaan Mathôt</p>
+<h2 id="contents">Contents</h2>
+<ul>
+<li><a href="#about">About</a></li>
+<li><a href="#download">Download</a></li>
+<li><a href="#basic-usage">Basic usage</a></li>
+<li><a href="#dependencies">Dependencies</a></li>
+<li><a href="#zotero-references">Zotero references</a></li>
+<li><a href="#academic-markdown-extensions">Academic Markdown extensions</a>
+<ul>
+<li><a href="#-figure-figures"><code>figure</code>: figures</a></li>
+<li><a href="#-exec-external-commands"><code>exec</code>: external commands</a></li>
+<li><a href="#-include-include-other-markdown-files"><code>include</code>: include other Markdown files</a></li>
+<li><a href="#-toc-table-of-contents"><code>toc</code>: table of contents</a></li>
+</ul></li>
+<li><a href="#styling">Styling</a></li>
+<li><a href="#license">License</a></li>
+</ul>
+<h2 id="about">About</h2>
+<p>Academic Markdown is a Python module that allows you generate <code>.pdf</code>, <code>.docx</code>, and <code>.odt</code> files from Markdown source. <a href="http://johnmacfarlane.net/pandoc/">Pandoc</a> is used for most of the heavy lifting, so refer to the Pandoc website for detailed information about writing in Pandoc Markdown. However, Academic Markdown offers some additional functionality that is useful for writing scientific documents, such as integration with <a href="#zotero-references">Zotero references</a>, and a number of useful <a href="#academic-markdown-extensions">Academic Markdown extensions</a>.</p>
+<h2 id="download">Download</h2>
+<p>You can download the latest release of Academic Markdown here:</p>
+<ul>
+<li><a href="https://github.com/smathot/academicmarkdown/releases">https://github.com/smathot/academicmarkdown/releases</a></li>
+</ul>
+<p>Ubuntu users can install Academic Markdown from the Cogsci.nl PPA:</p>
+<pre><code>sudo add-apt-repository ppa:smathot/cogscinl
+sudo apt-get update
+sudo apt-get install python-academicmarkdown</code></pre>
+<h2 id="basic-usage">Basic usage</h2>
+<p>Academic Markdown assumes that input files are encoded with <code>utf-8</code> encoding.</p>
+<pre><code>from academicmarkdown import build
+build.HTML(u'input.md', u'output.html')
+build.PDF(u'input.md', u'output.pdf')
+build.DOCX(u'input.md', u'output.docx')
+build.ODT(u'input.md', u'output.odt')</code></pre>
+<h2 id="dependencies">Dependencies</h2>
+<p>Academic Markdown has been tested exclusively on Ubuntu Linux. The following dependencies are required:</p>
+<ul>
+<li><code>pandoc</code> is used for most of the heavy lifting.</li>
+<li><code>pyzotero</code> is necessary for extracting Zotero references.</li>
+<li><code>wkhtmltopdf</code> is necessary for converting to <code>.pdf</code>.</li>
+</ul>
+<h2 id="zotero-references">Zotero references</h2>
+<p>Since the basic Markdown conversion is performed by Pandoc, citations should be formatted as described on the Pandoc site:</p>
+<ul>
+<li><a href="http://johnmacfarlane.net/pandoc/README.html#citations">http://johnmacfarlane.net/pandoc/README.html#citations</a></li>
+</ul>
+<p>You can automatically extract references from your Zotero library by setting the <code>zoteroApiKey</code> and <code>zoteroLibraryId</code> properties. Your references are not extracted from your local Zotero database, but through the web API of <a href="http://www.zotero.org">http://www.zotero.org</a>. This means that you need to have a Zotero account and synchronize your local database with your account, in order to use this feature. You can find your your API key and library ID online on your Zotero profile page.</p>
+<pre><code>from academicmarkdown import build 
+build.zoteroApiKey = u'myapikey'
+build.zoteroLibraryId = u'mylibraryid'
+build.PDF(u'input.md', u'output.pdf')</code></pre>
+<p>Citations are split into separate terms using camelcase or undescore logic. An example of an underscore-style citation is <code>@bárány_halldén_1948</code>. And example of a camelcase-style citation is <code>@Land1999WhyAnimals</code>. Each citation is interpreted as a series of author names, followed by the year of publication, optionally followed by terms that match either the publication title, or the article title. So the following reference …</p>
+<p>Land, M., Mennie, N., &amp; Rusted, J. (1999). The roles of vision and eye movements in the control of activities of daily living. <em>Perception</em>, <em>28</em>(11), 1311–1328.</p>
+<p>… matches any of the following terms:</p>
+<ul>
+<li><code>@Land1999</code></li>
+<li><code>@Land1999Roles</code></li>
+<li><code>@LandMennie1999</code></li>
+<li><code>@LandRusted1999Percept</code></li>
+<li><code>@land_rusted_1999_percept</code></li>
+<li>etc.</li>
+</ul>
+<p>Note that you must consistently use the same citation to refer to a single reference in one document. If a citation matched multiple references from your Zotero database, one citation will be chosen at random.</p>
+<p>Previous references will be cached automatically. To refresh, remove the file <code>.zoteromarkdown.cache</code> or run your Python script with the command-line argument: <code>--clear-cache</code>.</p>
+<h2 id="academic-markdown-extensions">Academic Markdown extensions</h2>
+<p>Academic Markdown provides certain extensions to regular Markdown, in the form of YAML blocks embedded in <code>%-- --%</code> tags.</p>
+<h3 id="figure-figures"><code>figure</code>: figures</h3>
+<p>The <code>figure</code> block embeds a Figure in the text. Figures are numbered automatically. The ID can be used to refer to the Figure in the text, using a <code>%</code> character. So the following figure would be referred to as <code>%FigFA</code>.</p>
+<pre><code>%--
+figure:
+ id: FigFA
+ source: example/foveal_acuity.png
+ caption: &quot;Visual acuity drops of rapidly with distance from the fovea&quot;
+--%</code></pre>
+<h3 id="exec-external-commands"><code>exec</code>: external commands</h3>
+<p>The <code>exec</code> block inserts the return value of an external command in the text. For example, the following block embeds something like ‘Generated on 10/18/2013’:</p>
+<pre><code>%-- exec: &quot;date +'Generated on %x'&quot; --%</code></pre>
+<h3 id="include-include-other-markdown-files"><code>include</code>: include other Markdown files</h3>
+<p>The <code>include</code> block includes an other Markdown file. For example:</p>
+<pre><code>%-- include: example/intro.md --%</code></pre>
+<h3 id="toc-table-of-contents"><code>toc</code>: table of contents</h3>
+<p>The <code>toc</code> block will automatically generate a table of contents from the headings, assuming that headings are indicated using the <code>#</code> style and not the underlining style. You can indicate headings to be excluded from the table of contents as well.</p>
+<pre><code>%--
+toc:
+ mindepth: 1
+ maxdepth: 2
+ exclude: [Contents, Contact]
+--%</code></pre>
+<h2 id="styling">Styling</h2>
+<p>You can specify a style by setting the <code>style</code> attribute:</p>
+<pre><code>from academicmarkdown import build 
+build.style = u'my-style'
+build.PDF(u'input.md', u'output.pdf')</code></pre>
+<p>The <code>style</code> attribute must be a folder that contains a number of files (not all files need to exist):</p>
+<ul>
+<li><code>html5.html</code> is the Pandoc HTML5 template used for generating HTML and PDF documents. See <a href="http://johnmacfarlane.net/pandoc/README.html#templates">http://johnmacfarlane.net/pandoc/README.html#templates</a>.</li>
+<li><code>html5.css</code> is the Pandoc stylesheet used for generating HTML and PDF documents.</li>
+<li><code>reference.csl</code> is a CSL citation style.</li>
+<li><code>wkhtmltopdf.tmpl</code> is a shell command that is used to convert HTML to PDF. It can have something like the following contents: <code>wkhtmltopdf -L 20 -R 20 &quot;%(source)s&quot; &quot;%(target)s&quot;</code></li>
+</ul>
+<h2 id="license">License</h2>
+<p>Academic Markdown is available under the GNU General Public License 3. For more information, see the included file <code>COPYING</code>.</p>
+<div class="references">
+
+</div>
+</body>
+</html>
