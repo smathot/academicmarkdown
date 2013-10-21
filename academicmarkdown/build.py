@@ -156,7 +156,9 @@ def ODT(src, target):
 	if style != None:
 		csl = os.path.join(style, u'references.csl')
 		if not os.path.exists(csl):
-			csl = None		
+			csl = None
+	else:
+		csl = None
 	pd = Pandoc(csl=csl, verbose=True)		
 	pd.odt(md, target)
 	ODTFixer(verbose=True).fix(target)
@@ -176,8 +178,10 @@ def DOCX(src, target):
 	if style != None:
 		csl = os.path.join(style, u'references.csl')
 		if not os.path.exists(csl):
-			csl = None		
-	pd = Pandoc(csl=csl, verbose=True)		
+			csl = None
+	else:
+		csl = None
+	pd = Pandoc(csl=csl, verbose=True)
 	pd.docx(md, target)
 	
 	
