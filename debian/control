@@ -12,9 +12,8 @@ Homepage: https://github.com/smathot/academicmarkdown
 Package: python-academicmarkdown
 Architecture: all
 XB-Python-Version: ${python:Versions}
-Depends: ${misc:Depends}, ${python:Depends}, python-pyzotero, wkhtmltopdf,
-  pandoc
-Recommends: zotero-standalone
+Depends: ${misc:Depends}, ${python:Depends}
+Recommends: zotero-standalone, pandoc, wkhtmltopdf, python-pyzotero
 Description: A Python package for generating scientific documents using
   Markdown.
 
