@@ -97,7 +97,6 @@ class FigureParser(YAMLParser):
 		
 		if u'caption' not in d:
 			d[u'caption'] = u''		
-		_id = u'figure-%d' % self.nFig		
 		img = figureTemplate[self.template] % d
 		
 		if self.style == u'inline':
@@ -107,8 +106,8 @@ class FigureParser(YAMLParser):
 			md += img
 		# Replace both %MyFigure::a and %MyFigure, to allow for suffixes
 		md = md.replace(u'%%%s::' % d[u'id'], u'[Figure %d](#%s)' % (self.nFig, \
-			_id))
+			d[u'id']))
 		md = md.replace(u'%%%s' % d[u'id'], u'[Figure %d](#%s)' % (self.nFig, \
-			_id))		
+			d[u'id']))		
 		return md
 	
