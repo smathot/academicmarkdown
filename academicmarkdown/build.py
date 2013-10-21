@@ -29,7 +29,7 @@ zoteroLibraryId = None
 zoteroHeaderText = u'References'
 zoteroHeaderLevel = 1
 style = None
-htmlFilters = [u'DOI']
+htmlFilters = [u'DOI', u'pageBreak']
 extensions = [u'figure', u'exec', u'include', u'toc']
 srcFolder = os.getcwd().decode(sys.getfilesystemencoding())
 

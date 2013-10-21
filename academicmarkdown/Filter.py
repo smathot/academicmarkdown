@@ -37,3 +37,19 @@ def DOI(s):
 		s = s.replace(doi, u'<a href="http://dx.doi.org/%s">%s</a>' % \
 			(doi[4:], doi))
 	return s
+
+def pageBreak(s):
+	
+	"""
+	Converts '~' paragraphs to HTML5 page breaks.
+	
+	Arguments:
+	s		--	A unicode string.
+	
+	Returns:
+	A unicode string with converted page breaks.
+	"""
+	
+	return s.replace(u'<p>~</p>', \
+		u'\n<div style=\'page-break-before:always;\'></div>\n')
+	
