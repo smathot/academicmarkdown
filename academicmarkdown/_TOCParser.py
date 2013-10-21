@@ -97,7 +97,7 @@ class TOCParser(YAMLParser):
 		
 		_id = u''
 		for ch in label:
-			if ch.isalnum():
+			if ch.isalpha():
 				_id += ch.lower()
 			elif ch.isspace() and len(_id) > 0 and _id[-1] != u'-':
 				_id += u'-'
