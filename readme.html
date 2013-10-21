@@ -27,12 +27,14 @@
 <li><a href="#exec-external-commands"><code>exec</code>: external commands</a></li>
 <li><a href="#include-include-other-markdown-files"><code>include</code>: include other Markdown files</a></li>
 <li><a href="#toc-table-of-contents"><code>toc</code>: table of contents</a></li>
+<li><a href="#automatic-doi-parsing">Automatic DOI parsing</a></li>
+<li><a href="#page-breaks">Page breaks</a></li>
 </ul></li>
 <li><a href="#styling">Styling</a></li>
 <li><a href="#license">License</a></li>
 </ul>
 <h2 id="about">About</h2>
-<p>Academic Markdown is a Python module that allows you generate <code>.pdf</code>, <code>.docx</code>, and <code>.odt</code> files from Markdown source. <a href="http://johnmacfarlane.net/pandoc/">Pandoc</a> is used for most of the heavy lifting, so refer to the Pandoc website for detailed information about writing in Pandoc Markdown. However, Academic Markdown offers some additional functionality that is useful for writing scientific documents, such as integration with <a href="#zotero-references">Zotero references</a>, and a number of useful <a href="#academic-markdown-extensions">Academic Markdown extensions</a>.</p>
+<p>Academic Markdown is a Python module that allows you generate <code>.html</code>, <code>.pdf</code>, <code>.docx</code>, and <code>.odt</code> files from Markdown source. <a href="http://johnmacfarlane.net/pandoc/">Pandoc</a> is used for most of the heavy lifting, so refer to the Pandoc website for detailed information about writing in Pandoc Markdown. However, Academic Markdown offers some additional functionality that is useful for writing scientific documents, such as integration with <a href="#zotero-references">Zotero references</a>, and a number of useful <a href="#academic-markdown-extensions">Academic Markdown extensions</a>.</p>
 <h2 id="download">Download</h2>
 <p>You can download the latest release of Academic Markdown here:</p>
 <ul>
@@ -52,9 +54,9 @@ build.ODT(u'input.md', u'output.odt')</code></pre>
 <h2 id="dependencies">Dependencies</h2>
 <p>Academic Markdown has been tested exclusively on Ubuntu Linux. The following dependencies are required:</p>
 <ul>
-<li><code>pandoc</code> is used for most of the heavy lifting.</li>
-<li><code>pyzotero</code> is necessary for extracting Zotero references.</li>
-<li><code>wkhtmltopdf</code> is necessary for converting to <code>.pdf</code>.</li>
+<li><a href="http://johnmacfarlane.net/pandoc/">pandoc</a> is used for most of the heavy lifting. At the time of writing, the Ubuntu repositories do not contain a sufficiently recent version of Pandoc. Therefore, if you encounter trouble, try installing the latest version of Pandoc manually.</li>
+<li><a href="http://pyzotero.readthedocs.org/">pyzotero</a> is necessary for extracting Zotero references.</li>
+<li><a href="https://code.google.com/p/wkhtmltopdf/">wkhtmltopdf</a> is necessary for converting to <code>.pdf</code>. For best results, use the latest statically linked release, instead of the version from the Ubuntu repositories.</li>
 </ul>
 <h2 id="zotero-references">Zotero references</h2>
 <p>Since the basic Markdown conversion is performed by Pandoc, citations should be formatted as described on the Pandoc site:</p>
@@ -103,6 +105,12 @@ toc:
  maxdepth: 2
  exclude: [Contents, Contact]
 --%</code></pre>
+<h3 id="automatic-doi-parsing">Automatic DOI parsing</h3>
+<p><em>Applies only to <code>.html</code> and <code>.pdf</code>.</em></p>
+<p>DOIs are automatically converted to <a href="http://dx.doi.org/">http://dx.doi.org/</a> hyperlinks when they are prepended by <code>doi:</code>. For example, <a href="http://dx.doi.org/10.3758/s13428-011-0168-7.">doi:10.3758/s13428-011-0168-7.</a></p>
+<h3 id="page-breaks">Page breaks</h3>
+<p><em>Applies only to <code>.html</code> and <code>.pdf</code>.</em></p>
+<p>A single <code>~</code> preceded and followed by a blank line will automatically be converted to a page break.</p>
 <h2 id="styling">Styling</h2>
 <p>You can specify a style by setting the <code>style</code> attribute:</p>
 <pre><code>from academicmarkdown import build 

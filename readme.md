@@ -14,7 +14,7 @@ toc:
 
 ## About
 
-Academic Markdown is a Python module that allows you generate `.pdf`, `.docx`, and `.odt` files from Markdown source. [Pandoc](http://johnmacfarlane.net/pandoc/) is used for most of the heavy lifting, so refer to the Pandoc website for detailed information about writing in Pandoc Markdown. However, Academic Markdown offers some additional functionality that is useful for writing scientific documents, such as integration with [Zotero references], and a number of useful [Academic Markdown extensions].
+Academic Markdown is a Python module that allows you generate `.html`, `.pdf`, `.docx`, and `.odt` files from Markdown source. [Pandoc] is used for most of the heavy lifting, so refer to the Pandoc website for detailed information about writing in Pandoc Markdown. However, Academic Markdown offers some additional functionality that is useful for writing scientific documents, such as integration with [Zotero references], and a number of useful [Academic Markdown extensions].
 
 ## Download
 
@@ -42,9 +42,9 @@ Academic Markdown assumes that input files are encoded with `utf-8` encoding.
 
 Academic Markdown has been tested exclusively on Ubuntu Linux. The following dependencies are required:
 
-- `pandoc` is used for most of the heavy lifting.
-- `pyzotero` is necessary for extracting Zotero references.
-- `wkhtmltopdf` is necessary for converting to `.pdf`.
+- [pandoc] is used for most of the heavy lifting. At the time of writing, the Ubuntu repositories do not contain a sufficiently recent version of Pandoc. Therefore, if you encounter trouble, try installing the latest version of Pandoc manually.
+- [pyzotero] is necessary for extracting Zotero references.
+- [wkhtmltopdf] is necessary for converting to `.pdf`. For best results, use the latest statically linked release, instead of the version from the Ubuntu repositories.
 
 ## Zotero references
 
@@ -114,6 +114,18 @@ The `toc` block will automatically generate a table of contents from the heading
 	 exclude: [Contents, Contact]
 	--%
 	
+### Automatic DOI parsing
+
+*Applies only to `.html` and `.pdf`.*
+
+DOIs are automatically converted to <http://dx.doi.org/> hyperlinks when they are prepended by `doi:`. For example, doi:10.3758/s13428-011-0168-7.
+
+### Page breaks
+
+*Applies only to `.html` and `.pdf`.*
+
+A single `~` preceded and followed by a blank line will automatically be converted to a page break.
+
 ## Styling
 
 You can specify a style by setting the `style` attribute:
@@ -133,3 +145,8 @@ The `style` attribute must be a folder that contains a number of files (not all 
 ## License
 
 Academic Markdown is available under the GNU General Public License 3. For more information, see the included file `COPYING`.
+
+[pandoc]: http://johnmacfarlane.net/pandoc/
+[pyzotero]: http://pyzotero.readthedocs.org/
+[zotero]: http://www.zotero.org/
+[wkhtmltopdf]: https://code.google.com/p/wkhtmltopdf/
