@@ -1,3 +1,10 @@
+python-academicmarkdown (0.2.0-ubuntu1) saucy; urgency=low
+
+  * Add pageBreak filter
+  * Various bugfixes
+
+ -- Sebastiaan Mathot <s.mathot@cogsci.nl>  Mon, 21 Oct 2013 17:41:12 +0200
+
 python-academicmarkdown (0.1.1-ubuntu3) raring; urgency=low
 
   * Initial release
