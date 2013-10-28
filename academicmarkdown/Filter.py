@@ -53,3 +53,27 @@ def pageBreak(s):
 	return s.replace(u'<p>~</p>', \
 		u'\n<div style=\'page-break-before:always;\'></div>\n')
 	
+def headerIndent(s, depth=1, minLevel=1, maxLevel=6):
+	
+	"""
+	Makes all headers jump down one level. For example <H1> becomes <H2>, etc.
+	
+	Arguments:
+	s		--	A unicode string.
+	
+	Keyword arguments:
+	depth		--	The depth of the extra indentation. For example, a depth of
+					2 means that <h2> becomes <h4). (default=1)
+	minLevel	--	The minimum header level to process. (default=1)
+	maxLevel	--	The maximum header level to process. (default=6)
+	
+	Returns:
+	A unicode string with indented headers.
+	"""	
+	
+	for i in range(maxLevel, minLevel-1, -1):
+		s = s.replace(u'<h%d' % i, u'<h%d' % (i+depth)) \
+			.replace(u'<H%d' % i, u'<H%d' % (i+depth)) \
+			.replace(u'</h%d>' % i, u'</h%d>' % (i+depth)) \
+			.replace(u'</H%d>' % i, u'</H%d>' % (i+depth))
+	return s
