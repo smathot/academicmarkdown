@@ -23,7 +23,8 @@ from academicmarkdown import BaseParser
 
 class Pandoc(BaseParser):
 	
-	def __init__(self, css=None, csl=None, template=None, verbose=False):
+	def __init__(self, css=None, csl=None, template=None, standalone=True, \
+		verbose=False):
 		
 		"""
 		Constructor.
@@ -34,6 +35,8 @@ class Pandoc(BaseParser):
 		csl			--	A path to a `.csl` file to specify a citation format
 						or None for a default citation format. (default=None)
 		template	--	The HTML template to be used. (default=None)
+		standalone	--	Indicates whether the --standalone and --self-contained
+						arguments should be passed to pandoc. (default=True)
 		verbose		--	Indicates whether verbose output should be generated.
 							(default=False)
 		"""
@@ -41,13 +44,30 @@ class Pandoc(BaseParser):
 		self.css = css
 		self.csl = csl
 		self.template = template
+		self.standalone = standalone
 		super(Pandoc, self).__init__(verbose=verbose)
 		
 	def docx(self, md, output):
 		
+		"""
+		Generates a .docx document.
+		
+		Argument:
+		md		--	A Markdown string.
+		output	--	The name of the output file.
+		"""
+		
 		self.odt(md, output)
 		
 	def epub(self, md, output):
+		
+		"""
+		Generates an .epub document.
+		
+		Argument:
+		md		--	A Markdown string.
+		output	--	The name of the output file.
+		"""		
 		
 		self.msg(u'Invoking pandoc')		
 		cmd = u'pandoc --smart -t epub --toc -o %s' % output
@@ -61,9 +81,25 @@ class Pandoc(BaseParser):
 		
 	def html(self, md, output):
 		
+		"""
+		Generates an .html document.
+		
+		Argument:
+		md		--	A Markdown string.
+		output	--	The name of the output file.
+		"""		
+		
 		open(output, 'w').write(self.parse(md).encode(u'utf-8'))
 		
 	def odt(self, md, output):
+		
+		"""
+		Generates an .odt document.
+		
+		Argument:
+		md		--	A Markdown string.
+		output	--	The name of the output file.
+		"""		
 		
 		self.msg(u'Invoking pandoc')		
 		cmd = u'pandoc --standalone --smart'
@@ -81,7 +117,9 @@ class Pandoc(BaseParser):
 		"""See BaseParser.parse()."""
 		
 		self.msg(u'Invoking pandoc')		
-		cmd = u'pandoc --standalone -f markdown -t html5 --self-contained --smart'
+		cmd = u'pandoc -f markdown -t html5 --smart'
+		if self.standalone:
+			cmd += u' --standalone --self-contained'
 		if self.css != None:
 			cmd += u' --css %s' % self.css
 		if self.template != None:
@@ -90,5 +128,6 @@ class Pandoc(BaseParser):
 			cmd += u' --bibliography .bibliography.json'
 			if self.csl != None:
 				cmd += u' --csl %s' % self.csl
-		ps = subprocess.Popen(cmd.split(), stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+		ps = subprocess.Popen(cmd.split(), stdin=subprocess.PIPE, \
+			stdout=subprocess.PIPE)
 		return ps.communicate(md.encode(u'utf-8'))[0].decode(u'utf-8')		

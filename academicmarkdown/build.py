@@ -33,14 +33,19 @@ htmlFilters = [u'DOI', u'pageBreak']
 extensions = [u'figure', u'exec', u'include', u'toc']
 srcFolder = os.getcwd().decode(sys.getfilesystemencoding())
 
-def HTML(src, target):
+def HTML(src, target, standalone=True):
 	
 	"""
 	Builds an HTML file from a Markdown source.
 	
 	Arguments:
-	src		--	Markdown source file. Should be in utf-8 encoding.
-	target	--	HTML target file or None to skip saving.
+	src			--	Markdown source file. Should be in utf-8 encoding.
+	target		--	HTML target file or None to skip saving.
+	
+	Keyword arguments:
+	standalone	--	Indicates whether a full HTML5 document should be generated,
+					which embeds all content, or whether the document should
+					be rendered without <head> and <body> tags, etc.
 	
 	Returns:
 	The HTML file as a unicode string.
@@ -67,7 +72,8 @@ def HTML(src, target):
 	print u'Word count: %d' % len(md.split())
 	print u'Character count: %d' % len(md)
 	# And finally convert the Markdown to HTML
-	pd = Pandoc(css=css, csl=csl, template=template, verbose=True)
+	pd = Pandoc(css=css, csl=csl, template=template, standalone=standalone, \
+		verbose=True)
 	html = pd.parse(md)
 	for flt in htmlFilters:
 		fltFunc = getattr(Filter, flt)
@@ -136,7 +142,6 @@ def PDF(src, target):
 	else:
 		tmpl = u'wkhtmltopdf %(source)s %(target)s'
 	cmd = tmpl % {u'source' : u'.tmp.html', u'target' : target}	
-	print cmd
 	subprocess.call(shlex.split(cmd.encode(u'utf-8')))
 	os.remove(u'.tmp.html')
 	print u'Done!'
