@@ -23,7 +23,7 @@ import subprocess
 
 figureTemplate = {
 	u'html5':  u"""
-<figure id='%(id)s'>
+<figure id='%(id)s' style='width: %(width)s%%;'>
 	<img src='%(source)s' alt='%(caption)s'><br />
 	<figcaption><strong>Figure %(nFig)d.</strong> %(caption)s</figcaption>
 </figure>
@@ -96,7 +96,9 @@ class FigureParser(YAMLParser):
 			
 		
 		if u'caption' not in d:
-			d[u'caption'] = u''		
+			d[u'caption'] = u''
+		if u'width' not in d:
+			d[u'width'] = 100
 		img = figureTemplate[self.template] % d
 		
 		if self.style == u'inline':
