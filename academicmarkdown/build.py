@@ -22,7 +22,7 @@ import sys
 import shlex
 import subprocess
 from academicmarkdown import FigureParser, Pandoc, ZoteroParser, ODTFixer, \
-	ExecParser, IncludeParser, TOCParser, HTMLFilter, MDFilter
+	ExecParser, IncludeParser, TOCParser, HTMLFilter, MDFilter, WkHtmlToPdf
 
 zoteroApiKey = None
 zoteroLibraryId = None
@@ -33,7 +33,10 @@ htmlFilters = [u'DOI', u'pageBreak']
 mdFilters = [u'autoItalics']
 extensions = [u'figure', u'exec', u'include', u'toc']
 srcFolder = os.getcwd().decode(sys.getfilesystemencoding())
-fixPDF00 = True
+pdfMargins = 30, 20, 30, 20
+pdfSpacing = 10, 10
+pdfHeader = u'%section%'
+pdfFooter = u'%page% of %topage%'
 
 def HTML(src, target, standalone=True):
 	
@@ -145,29 +148,15 @@ def PDF(src, target):
 	"""
 	
 	print u'Building %s from %s ...' % (target, src)
+	# Use style
+	if style != None:
+		css = os.path.join(style, u'html5.css')
+		if not os.path.exists(css):
+			css = None
 	HTML(src, u'.tmp.html')
-	if style != None and os.path.exists(os.path.join(style, \
-		u'wkhtmltopdf.tmpl')):
-		tmpl = open(os.path.join(style, u'wkhtmltopdf.tmpl')).read().decode( \
-			u'utf-8')
-	else:
-		tmpl = u'wkhtmltopdf %(source)s %(target)s'
-	cmd = tmpl % {u'source' : u'.tmp.html', u'target' : target}	
-	subprocess.call(shlex.split(cmd.encode(u'utf-8')))
-	os.remove(u'.tmp.html')
-	if fixPDF00:
-		# Due to a bug in wkhtmltopdf, the PDF may contain #00 strings, which
-		# cause Acrobat Reader to choke (but not other PDF readers). This
-		# happens mostly when filenames are very long, in which case anchors are
-		# hashed, and the resulting hashes sometimes contain #00 values. Here
-		# we simply replace all #00 strings, which seems to work.
-		print u'Checking for #00'		
-		pdf = open(target).read()
-		if '#00' in pdf:
-			print u'Fixing!'
-			pdf = pdf.replace('#00', '#01')
-			open(target, u'w').write(pdf)
-	print u'Done!'
+	wk = WkHtmlToPdf(css=css, margins=pdfMargins, spacing=pdfSpacing, \
+		header=pdfHeader, footer=pdfFooter, verbose=True)
+	wk.parse(u'.tmp.html', target)
 
 def ODT(src, target):
 	
