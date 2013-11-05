@@ -22,7 +22,7 @@ import sys
 import shlex
 import subprocess
 from academicmarkdown import FigureParser, Pandoc, ZoteroParser, ODTFixer, \
-	ExecParser, IncludeParser, TOCParser, Filter
+	ExecParser, IncludeParser, TOCParser, HTMLFilter, MDFilter
 
 zoteroApiKey = None
 zoteroLibraryId = None
@@ -30,8 +30,10 @@ zoteroHeaderText = u'References'
 zoteroHeaderLevel = 1
 style = None
 htmlFilters = [u'DOI', u'pageBreak']
+mdFilters = [u'autoItalics']
 extensions = [u'figure', u'exec', u'include', u'toc']
 srcFolder = os.getcwd().decode(sys.getfilesystemencoding())
+fixPDF00 = True
 
 def HTML(src, target, standalone=True):
 	
@@ -76,7 +78,7 @@ def HTML(src, target, standalone=True):
 		verbose=True)
 	html = pd.parse(md)
 	for flt in htmlFilters:
-		fltFunc = getattr(Filter, flt)
+		fltFunc = getattr(HTMLFilter, flt)
 		html = fltFunc(html)		
 	open(target, u'w').write(html.encode(u'utf-8'))	
 	print u'Done!'
@@ -88,7 +90,8 @@ def MD(src, target=None, figureTemplate=u'html5'):
 	Builds a Markdown file from a Markdown source.
 	
 	Arguments:	
-	src		--	Markdown source file. Should be in utf-8 encoding.
+	src		--	Markdown source file. Should be in utf-8 encoding. If the file
+				does not exist, it is interpreted as a Markdown string.
 	
 	Keyword arguments:
 	target			--	Markdown target file or None to skip saving.
@@ -103,22 +106,30 @@ def MD(src, target=None, figureTemplate=u'html5'):
 	The compiled Markdown file as a unicode string.
 	"""
 	
-	md = open(src).read().decode(u'utf-8')
-	print u'Building %s from %s ...' % (target, src)	
+	if os.path.exists(src):		
+		md = open(src).read().decode(u'utf-8')
+		print u'Building %s from %s ...' % (target, src)	
+	else:
+		md = src
+		print u'Building from string ...'
 	if u'include' in extensions:
 		md = IncludeParser(verbose=True).parse(md)
+	if u'exec' in extensions:
+		md = ExecParser(verbose=True).parse(md)
 	if u'toc' in extensions:
 		md = TOCParser(verbose=True).parse(md)
 	if u'figure' in extensions:
 		md = FigureParser(verbose=True, template=figureTemplate).parse(md)
-	if u'exec' in extensions:
-		md = ExecParser(verbose=True).parse(md)
 	# Parse Zotero references
 	if zoteroApiKey != None and zoteroLibraryId != None:
 		clearCache = '--clear-cache' in sys.argv
 		md = ZoteroParser(verbose=True, apiKey=zoteroApiKey, libraryId= \
 			zoteroLibraryId, headerText=zoteroHeaderText, headerLevel= \
 			zoteroHeaderLevel, clearCache=clearCache).parse(md)
+	# Apply Markdown Filters
+	for flt in mdFilters:
+		fltFunc = getattr(MDFilter, flt)
+		md = fltFunc(md)
 	if target != None:
 		open(target, u'w').write(md.encode(u'utf-8'))
 	return md
@@ -144,6 +155,18 @@ def PDF(src, target):
 	cmd = tmpl % {u'source' : u'.tmp.html', u'target' : target}	
 	subprocess.call(shlex.split(cmd.encode(u'utf-8')))
 	os.remove(u'.tmp.html')
+	if fixPDF00:
+		# Due to a bug in wkhtmltopdf, the PDF may contain #00 strings, which
+		# cause Acrobat Reader to choke (but not other PDF readers). This
+		# happens mostly when filenames are very long, in which case anchors are
+		# hashed, and the resulting hashes sometimes contain #00 values. Here
+		# we simply replace all #00 strings, which seems to work.
+		print u'Checking for #00'		
+		pdf = open(target).read()
+		if '#00' in pdf:
+			print u'Fixing!'
+			pdf = pdf.replace('#00', '#01')
+			open(target, u'w').write(pdf)
 	print u'Done!'
 
 def ODT(src, target):
