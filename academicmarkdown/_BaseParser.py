@@ -74,9 +74,10 @@ class BaseParser(object):
 		
 		import os
 		from academicmarkdown import build
-		_path = os.path.join(build.srcFolder, path)
-		if os.path.exists(_path):
-			return _path
+		for buildPath in build.path:
+			_path = os.path.join(buildPath, path)
+			if os.path.exists(_path):
+				return _path
 		if not os.path.exists(path):
 			raise Exception(u'Cannot find file %s' % path)
 		return path

@@ -22,21 +22,9 @@ import sys
 import shlex
 import subprocess
 from academicmarkdown import FigureParser, Pandoc, ZoteroParser, ODTFixer, \
-	ExecParser, IncludeParser, TOCParser, HTMLFilter, MDFilter, WkHtmlToPdf
-
-zoteroApiKey = None
-zoteroLibraryId = None
-zoteroHeaderText = u'References'
-zoteroHeaderLevel = 1
-style = None
-htmlFilters = [u'DOI', u'pageBreak']
-mdFilters = [u'autoItalics']
-extensions = [u'figure', u'exec', u'include', u'toc']
-srcFolder = os.getcwd().decode(sys.getfilesystemencoding())
-pdfMargins = 30, 20, 30, 20
-pdfSpacing = 10, 10
-pdfHeader = u'%section%'
-pdfFooter = u'%page% of %topage%'
+	ExecParser, IncludeParser, TOCParser, HTMLFilter, MDFilter, WkHtmlToPdf, \
+	CodeParser
+from academicmarkdown.constants import *
 
 def HTML(src, target, standalone=True):
 	
@@ -87,7 +75,7 @@ def HTML(src, target, standalone=True):
 	print u'Done!'
 	return html
 	
-def MD(src, target=None, figureTemplate=u'html5'):
+def MD(src, target=None):
 	
 	"""
 	Builds a Markdown file from a Markdown source.
@@ -99,11 +87,6 @@ def MD(src, target=None, figureTemplate=u'html5'):
 	Keyword arguments:
 	target			--	Markdown target file or None to skip saving.
 						(default=None)
-	figureTemplate	--	The figureTemplate to be used for the FigureParser.
-						(default=u'html5')
-	chdir			--	Indicates whether the working directory should be
-						changed to the folder of the Markdown source.
-						(default=True)
 	
 	Returns:
 	The compiled Markdown file as a unicode string.
@@ -120,9 +103,13 @@ def MD(src, target=None, figureTemplate=u'html5'):
 	if u'exec' in extensions:
 		md = ExecParser(verbose=True).parse(md)
 	if u'toc' in extensions:
-		md = TOCParser(verbose=True).parse(md)
+		md = TOCParser(anchorHeaders=TOCAnchorHeaders, verbose=True).parse(md)
 	if u'figure' in extensions:
-		md = FigureParser(verbose=True, template=figureTemplate).parse(md)
+		md = FigureParser(verbose=True, style=figureStyle, template= \
+			figureTemplate).parse(md)
+	if u'code' in extensions:
+		md = CodeParser(verbose=True, style=codeStyle, template=codeTemplate) \
+			.parse(md)
 	# Parse Zotero references
 	if zoteroApiKey != None and zoteroLibraryId != None:
 		clearCache = '--clear-cache' in sys.argv

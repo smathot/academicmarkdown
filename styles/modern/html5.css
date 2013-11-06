@@ -125,3 +125,22 @@ figure figcaption {
 	margin-left: 25px;
 	color: #555753;
 }
+
+.footer {
+	text-align: center;
+	font-size: 0.8em;
+	color: #555753;
+	border-top: solid 1px #555753;
+}
+
+.footer span,
+.header span {
+	font-size: 1em;
+}
+
+.header {
+	text-align: center;
+	color: #555753;
+	font-size: 0.8em;
+	border-bottom: solid 1px #555753;
+}

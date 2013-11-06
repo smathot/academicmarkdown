@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 """
 This file is part of zoteromarkdown.
 
@@ -17,17 +16,27 @@ You should have received a copy of the GNU General Public License
 along with zoteromarkdown.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-version = u'0.4.0'
+import os, sys
 
-from _BaseParser import BaseParser
-from _YAMLParser import YAMLParser
-from _ZoteroParser import ZoteroParser
-from _FigureParser import FigureParser
-from _CodeParser import CodeParser
-from _ExecParser import ExecParser
-from _IncludeParser import IncludeParser
-from _TOCParser import TOCParser
-from _Pandoc import Pandoc
-from _ODTFixer import ODTFixer
-from _WkHtmlToPdf import WkHtmlToPdf
+zoteroApiKey = None
+zoteroLibraryId = None
+zoteroHeaderText = u'References'
+zoteroHeaderLevel = 1
+path = [os.getcwd().decode(sys.getfilesystemencoding())]
 
+figureTemplate = u'html5'
+figureStyle = u'inline'
+
+codeTemplate = u'jekyll'
+codeStyle = u'inline'
+
+TOCAnchorHeaders = False
+
+style = None
+htmlFilters = [u'DOI', u'pageBreak']
+mdFilters = [u'autoItalics']
+extensions = [u'figure', u'exec', u'include', u'toc', u'code']
+pdfMargins = 30, 20, 30, 20
+pdfSpacing = 10, 10
+pdfHeader = u'%section%'
+pdfFooter = u'%page% of %topage%' 

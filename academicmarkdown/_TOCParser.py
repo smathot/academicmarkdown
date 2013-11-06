@@ -24,18 +24,29 @@ class TOCParser(YAMLParser):
 	
 	"""
 	Interprets table of content command in YAML blocks of this type:
-	
+
 	%--
 	toc:
-	 maxdepth: 1
+	 mindepth: 1
+	 maxdepth: 2
 	 exclude: [Contents, Contact]
 	--%
 	"""
 	
-	def __init__(self, verbose=False):
+	def __init__(self, anchorHeaders=False, verbose=False):
 		
-		"""See YAMLParser.__init__()."""
+		"""
+		Constructor.
 		
+		Keyword arguments:
+		anchorHeaders	--	Indicates whether headers should be turned into
+							clickable anchors, mostly useful for HTML pages.
+							(default=False)
+		verbose			--	Indicates whether verbose output should be
+							generated. (default=False)
+		"""
+		
+		self.anchorHeaders = anchorHeaders
 		super(TOCParser, self).__init__(_object=u'toc', verbose=verbose)
 	
 	def parseObject(self, md, _yaml, d):
@@ -68,11 +79,14 @@ class TOCParser(YAMLParser):
 				headers.append( (level, h, label, _id) )
 				self.msg(u'%s {#%s} (%d)' % (h, _id, level))
 		_md = u'\n'
+		lRep = []
 		for level, h, label, _id in headers:
 			print h
-			#md = md.replace(h + u'\n', u'%s {#%s}\n' % (h, _id))
 			_md += u'\t' * (level-d[u'mindepth']) # Indent
 			_md += u'- [%s](#%s)\n' % (label, _id)
+			if self.anchorHeaders:
+				md = md.replace(h, u'%s [%s](#%s) {#%s}' % (u'#'*level, label, \
+					_id, _id))
 		_md += u'\n'
 		return md.replace(_yaml, _md)
 	

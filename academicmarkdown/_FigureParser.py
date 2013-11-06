@@ -28,12 +28,17 @@ figureTemplate = {
 	<figcaption><strong>Figure %(nFig)d.</strong> %(caption)s</figcaption>
 </figure>
 """,
+u'jekyll':  u"""
+![%(source)s](%(source)s)
+
+__Figure %(nFig)d.__ %(caption)s\n{: .fig-caption #%(id)s}
+""",
 	u'odt': u"""
 ![__Figure %(nFig)d.__ %(caption)s](%(source)s)
 
 __Figure %(nFig)d.__ %(caption)s<!--odt-style="Illustration"-->
 """,
-	u'md': u"""
+	u'markdown': u"""
 ![__Figure %(nFig)d.__ %(caption)s](%(source)s)
 """}
 	
@@ -93,7 +98,6 @@ class FigureParser(YAMLParser):
 			print _cmd
 			subprocess.call(_cmd)
 			d[u'source'] = dest
-			
 		
 		if u'caption' not in d:
 			d[u'caption'] = u''
