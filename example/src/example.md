@@ -9,8 +9,6 @@ correspondence:
  ^\*^Correspondence should be addressed to <s.mathot@cogsci.nl>
 abstract:
  This afternoon I was eating a sub in the Plymouth harbor, finally enjoying a bit of sun, which we haven't seen much of this summer. I was joined by a seagull chick. It was presumably hoping to score a piece of my sub... 
-header:
- Academic markdown example
 ---
 
 %-- include: intro.md --%

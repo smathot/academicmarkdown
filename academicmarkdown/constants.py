@@ -18,25 +18,49 @@ along with zoteromarkdown.  If not, see <http://www.gnu.org/licenses/>.
 
 import os, sys
 
+# A list of folders that are searched for figures, scripts, etc.
+path = [os.getcwd().decode(sys.getfilesystemencoding())]
+
+# Parameters for Zotero integration
 zoteroApiKey = None
 zoteroLibraryId = None
 zoteroHeaderText = u'References'
 zoteroHeaderLevel = 1
-path = [os.getcwd().decode(sys.getfilesystemencoding())]
 
+# Options for the appearance of figures and code blocks
 figureTemplate = u'html5'
 figureStyle = u'inline'
-
-codeTemplate = u'jekyll'
+codeTemplate = u'kramdown'
 codeStyle = u'inline'
 
+# Indicates whether headers should be turned into clickable anchors by TOCParser
 TOCAnchorHeaders = False
 
-style = None
+# Paths to files that determine the document's appearance. For more information,
+# see the Pandoc documentation.
+css = None # CSS stylesheet
+csl = None # CSL citation style
+html5Ref = None # HTML5 template
+odtRef = None # ODT reference document
+docxRef = None # DOCX reference document
+
+# A list of filters from academicmarkdown.HTMLFilter that should be performed
+# after an HTML document has been genertated.
 htmlFilters = [u'DOI', u'pageBreak']
+
+# A list of filters from academicmarkdown.MDFilter that should be performed
+# on the Markdown source, prior to any conversion.
 mdFilters = [u'autoItalics']
+
+# A list of extensions that are enabled.
 extensions = [u'figure', u'exec', u'include', u'toc', u'code']
+
+# The page margins
 pdfMargins = 30, 20, 30, 20
+
+# The spacing between the content and the header and footer
 pdfSpacing = 10, 10
+
+# Header and footer text
 pdfHeader = u'%section%'
 pdfFooter = u'%page% of %topage%' 

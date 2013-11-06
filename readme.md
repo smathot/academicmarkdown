@@ -2,6 +2,8 @@
 
 *Who knew writing could be so nerdy?*
 
+version %-- exec: python -c "from academicmarkdown import version; print version" --%
+
 Copyright 2013 Sebastiaan Mathôt
 
 ## Contents
@@ -14,7 +16,9 @@ toc:
 
 ## About
 
-Academic Markdown is a Python module that allows you generate `.html`, `.pdf`, `.docx`, and `.odt` files from Markdown source. [Pandoc] is used for most of the heavy lifting, so refer to the Pandoc website for detailed information about writing in Pandoc Markdown. However, Academic Markdown offers some additional functionality that is useful for writing scientific documents, such as integration with [Zotero references], and a number of useful [Academic Markdown extensions].
+Academic Markdown is a Python module that allows you generate `.md`, `.html`, `.pdf`, `.docx`, and `.odt` files from Markdown source. [Pandoc] is used for most of the heavy lifting, so refer to the Pandoc website for detailed information about writing in Pandoc Markdown. However, Academic Markdown offers some additional functionality that is useful for writing scientific documents, such as integration with [Zotero references], and a number of useful [Academic Markdown extensions].
+
+At present, the main target for Academic Markdown is the OpenSesame documentation site, <http://osdoc.cogsci.nl/>, although it may in time grow into a more comprehensive and user-friendly tool.
 
 ## Download
 
@@ -37,7 +41,13 @@ Academic Markdown assumes that input files are encoded with `utf-8` encoding.
 	build.PDF(u'input.md', u'output.pdf')
 	build.DOCX(u'input.md', u'output.docx')	
 	build.ODT(u'input.md', u'output.odt')
+
+A number of options can be specified by setting attributes of the `build` module, like so
+
+	build.spacing = 30, 0
 	
+The full list of options is available in `academicmarkdown/constants.py`.
+
 ## Dependencies
 
 Academic Markdown has been tested exclusively on Ubuntu Linux. The following dependencies are required:
@@ -90,6 +100,18 @@ The `figure` block embeds a Figure in the text. Figures are numbered automatical
 	 source: example/foveal_acuity.png
 	 caption: "Visual acuity drops of rapidly with distance from the fovea"
 	--%
+	
+### `code`: Code listings
+
+The `code` blocks embeds a code listing in the text, quite to similar to the `figure` block.
+
+	%--
+	code:
+	 id: CodeA
+	 source: my_script.py
+	 syntax: python
+	 caption: "A simple Python script"
+	--%
 
 ### `exec`: external commands
 
@@ -114,34 +136,6 @@ The `toc` block will automatically generate a table of contents from the heading
 	 exclude: [Contents, Contact]
 	--%
 	
-### Automatic DOI parsing
-
-*Applies only to `.html` and `.pdf`.*
-
-DOIs are automatically converted to <http://dx.doi.org/> hyperlinks when they are prepended by `doi:`. For example, doi:10.3758/s13428-011-0168-7.
-
-### Page breaks
-
-*Applies only to `.html` and `.pdf`.*
-
-A single `~` preceded and followed by a blank line will automatically be converted to a page break.
-
-## Styling
-
-You can specify a style by setting the `style` attribute:
-
-	from academicmarkdown import build 
-	build.style = u'my-style'
-	build.PDF(u'input.md', u'output.pdf')
-	
-The `style` attribute must be a folder that contains a number of files (not all files need to exist):
-	
-- `html5.html` is the Pandoc HTML5 template used for generating HTML and PDF documents. See <http://johnmacfarlane.net/pandoc/README.html#templates>.
-- `html5.css` is the Pandoc stylesheet used for generating HTML and PDF documents.
-- `reference.csl` is a CSL citation style.
-- `wkhtmltopdf.tmpl` is a shell command that is used to convert HTML to PDF. It can have something like the following contents: `wkhtmltopdf -L 20 -R 20 "%(source)s" "%(target)s"`
-
-
 ## License
 
 Academic Markdown is available under the GNU General Public License 3. For more information, see the included file `COPYING`.

@@ -45,27 +45,12 @@ def HTML(src, target, standalone=True):
 	"""
 	
 	md = MD(src)
-	# Use style
-	if style != None:
-		css = os.path.join(style, u'html5.css')
-		if not os.path.exists(css):
-			css = None
-		csl = os.path.join(style, u'references.csl')
-		if not os.path.exists(csl):
-			csl = None
-		template = os.path.join(style, u'html5.html')
-		if not os.path.exists(template):
-			template = None
-	else:
-		css = None
-		csl = None
-		template = None
 	# Count words
 	print u'Document statistics:'
 	print u'Word count: %d' % len(md.split())
 	print u'Character count: %d' % len(md)
 	# And finally convert the Markdown to HTML
-	pd = Pandoc(css=css, csl=csl, template=template, standalone=standalone, \
+	pd = Pandoc(css=css, csl=csl, template=html5Ref, standalone=standalone, \
 		verbose=True)
 	html = pd.parse(md)
 	for flt in htmlFilters:
@@ -135,11 +120,6 @@ def PDF(src, target):
 	"""
 	
 	print u'Building %s from %s ...' % (target, src)
-	# Use style
-	if style != None:
-		css = os.path.join(style, u'html5.css')
-		if not os.path.exists(css):
-			css = None
 	HTML(src, u'.tmp.html')
 	wk = WkHtmlToPdf(css=css, margins=pdfMargins, spacing=pdfSpacing, \
 		header=pdfHeader, footer=pdfFooter, verbose=True)
@@ -157,12 +137,6 @@ def ODT(src, target):
 	
 	md = MD(src, figureTemplate=u'odt')
 	# Use style
-	if style != None:
-		csl = os.path.join(style, u'references.csl')
-		if not os.path.exists(csl):
-			csl = None
-	else:
-		csl = None
 	pd = Pandoc(csl=csl, verbose=True)		
 	pd.odt(md, target)
 	ODTFixer(verbose=True).fix(target)
@@ -178,13 +152,6 @@ def DOCX(src, target):
 	"""		
 	
 	md = MD(src, figureTemplate=u'md')
-	# Use style
-	if style != None:
-		csl = os.path.join(style, u'references.csl')
-		if not os.path.exists(csl):
-			csl = None
-	else:
-		csl = None
 	pd = Pandoc(csl=csl, verbose=True)
 	pd.docx(md, target)
 	
