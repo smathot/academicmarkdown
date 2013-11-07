@@ -30,5 +30,5 @@ setup(
     author_email=u's.mathot@cogsci.nl',
     license=u'GNU GPL Version 3',
     url=u'https://github.com/smathot/academicmarkdown',
-    packages=find_packages(u'.')
+    packages=find_packages('.')
 )
