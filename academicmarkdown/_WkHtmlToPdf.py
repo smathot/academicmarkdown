@@ -89,9 +89,7 @@ class WkHtmlToPdf(BaseParser):
 		"""
 		
 		regEx = ur'%(?P<var>[a-z]+)%'
-		print s
 		for r in re.finditer(regEx, s):
-			print r.group('var')
 			s = s.replace(u'%%%s%%' % r.group('var'), \
 				u'<span class="%s"></span>' % r.group('var'))
 		feader = feaderTmpl.replace(u'%feader%', s)
@@ -119,11 +117,10 @@ class WkHtmlToPdf(BaseParser):
 			open('.footer.html', 'w').write(self.createFeader(self.footer, \
 				u'footer').encode(u'utf-8'))
 			cmd += u' --footer-html .footer.html --footer-spacing %s' % \
-				self.spacing[1]
-		print cmd
+				self.spacing[1]		
 		cmd += u' %s %s' % (html, target)
+		self.msg(cmd)
 		subprocess.call(shlex.split(cmd.encode(u'utf-8')))
-		quit()
 		if self.fix00:
 			# Due to a bug in wkhtmltopdf, the PDF may contain #00 strings,
 			# which cause Acrobat Reader to choke (but not other PDF readers).

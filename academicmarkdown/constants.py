@@ -46,7 +46,7 @@ docxRef = None # DOCX reference document
 
 # A list of filters from academicmarkdown.HTMLFilter that should be performed
 # after an HTML document has been genertated.
-htmlFilters = [u'DOI', u'pageBreak']
+htmlFilters = [u'DOI', u'pageBreak', u'citationGlue']
 
 # A list of filters from academicmarkdown.MDFilter that should be performed
 # on the Markdown source, prior to any conversion.
@@ -63,4 +63,4 @@ pdfSpacing = 10, 10
 
 # Header and footer text
 pdfHeader = u'%section%'
-pdfFooter = u'%page% of %topage%' 
+pdfFooter = u'%page% of %topage%'

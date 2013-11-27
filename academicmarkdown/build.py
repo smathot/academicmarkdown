@@ -26,16 +26,16 @@ from academicmarkdown import FigureParser, Pandoc, ZoteroParser, ODTFixer, \
 	CodeParser
 from academicmarkdown.constants import *
 
-def HTML(src, target, standalone=True):
+def HTML(src, target=None, standalone=True):
 	
 	"""
 	Builds an HTML file from a Markdown source.
 	
 	Arguments:
-	src			--	Markdown source file. Should be in utf-8 encoding.
-	target		--	HTML target file or None to skip saving.
+	src			--	Markdown source file. Should be in utf-8 encoding.	
 	
 	Keyword arguments:
+	target		--	HTML target file or None to skip saving. (default=None)
 	standalone	--	Indicates whether a full HTML5 document should be generated,
 					which embeds all content, or whether the document should
 					be rendered without <head> and <body> tags, etc.
@@ -55,8 +55,9 @@ def HTML(src, target, standalone=True):
 	html = pd.parse(md)
 	for flt in htmlFilters:
 		fltFunc = getattr(HTMLFilter, flt)
-		html = fltFunc(html)		
-	open(target, u'w').write(html.encode(u'utf-8'))	
+		html = fltFunc(html)
+	if target != None:
+		open(target, u'w').write(html.encode(u'utf-8'))	
 	print u'Done!'
 	return html
 	
@@ -91,7 +92,7 @@ def MD(src, target=None):
 		md = TOCParser(anchorHeaders=TOCAnchorHeaders, verbose=True).parse(md)
 	if u'figure' in extensions:
 		md = FigureParser(verbose=True, style=figureStyle, template= \
-			figureTemplate).parse(md)
+			figureTemplate, margins=pdfMargins).parse(md)
 	if u'code' in extensions:
 		md = CodeParser(verbose=True, style=codeStyle, template=codeTemplate) \
 			.parse(md)
