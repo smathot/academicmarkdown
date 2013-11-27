@@ -19,6 +19,25 @@ along with zoteromarkdown.  If not, see <http://www.gnu.org/licenses/>.
 
 import re
 
+def citationGlue(s):
+	
+	"""
+	Glues citations together to allow sorting, like so:
+	
+		[@B]+[@A]
+	
+	This will put '@B' before '@A'.
+	
+	Returns:
+	A unicode string with all citations glued.
+	"""
+	
+	regexp = ur'[\]\)]</span>\+<span class="citation" data-cites="[\w ]+">[\[\(]'
+	for i in re.finditer(regexp, s, re.M):
+		cite = i.group()
+		s = s.replace(i.group(), u'')
+	return s
+
 def DOI(s):
 	
 	"""
