@@ -36,7 +36,7 @@ class ZoteroParser(BaseParser):
 			
 	def __init__(self, libraryId, apiKey, libraryType=u'user', \
 		clearCache=False, headerText=u'References', headerLevel=1, \
-		odtStyle=None, fixDOI=True, verbose=False):
+		odtStyle=None, fixDOI=True, fixAuthorNames=True, verbose=False):
 		
 		"""
 		Constructor.
@@ -59,6 +59,9 @@ class ZoteroParser(BaseParser):
 							does not affect HTML output. (default=None)
 		fixDOI			--	Indicates that the DOI field should be remapped and
 							cleaned up for proper rendering. (default=True)
+		fixAuthorNames	--	Indicates that first names of authors should be
+							converted to clean initials, to avoid one author
+							appearing as multiple. (default=True)
 		verbose			--	Indicates whether verbose output should be printed.
 							(default=False)
 		"""
@@ -74,6 +77,7 @@ class ZoteroParser(BaseParser):
 		self.headerLevel = headerLevel
 		self.odtStyle = odtStyle
 		self.fixDOI = fixDOI
+		self.fixAuthorNames = fixAuthorNames
 		if not os.path.exists(self.cachePath) or clearCache:
 			self.cache = {}
 		else:
@@ -108,33 +112,39 @@ class ZoteroParser(BaseParser):
 		
 		items = []
 		oldQueries = []
-		regexp =  ur'@([^ ?!,.\t\n\r\f\v\]\[;]+)'
+		regexp =  ur'@([^ ?!,.\t\n\r\f\v\]\[;]+)'		
 		for r in re.finditer(regexp, md):
 			queryString = r.groups()[0]
 			self.msg(u'Found citation "%s"' % queryString)
 			if queryString in oldQueries:
-				continue
-			oldQueries.append(queryString)
+				continue			
 			matches = self.bestMatch(queryString)
 			if len(matches) == 0:
-				self.msg(u'No matches for "%s"' % queryString)
+				self.msg(u'No matches for "%s"!' % queryString)
 				continue
 			if len(matches) > 1:
-				self.msg(u'Multiple matches (%d) for "%s"' % \
-					(len(matches), queryString))				
+				raise Exception( \
+					u'Multiple Zotero matches (%d) for "@%s". Be more specific!' % \
+					(len(matches), queryString))
 			match = matches[0]
+			if match in items and queryString not in oldQueries:
+				raise Exception( \
+					u'"%s" refers to an existent reference with a different name. Please use consistent references!' \
+					% queryString)
 			match[u'id'] = queryString
 			if self.odtStyle != None:
 				match[u'title'] += u'<!--odt-style="%s"-->' % self.odtStyle
 			items.append(match)
+			oldQueries.append(queryString)
 		# TODO Placing the citation info in the YAML block doesn't appear to
 		# work. So for now save it as a JSON file.
 		fd = open(u'.bibliography.json', u'w')
-		json.dump(items, fd)
+		json.dump(items, fd, indent=1)
 		fd.close()
 		if self.headerText == None or self.headerLevel == None:
 			return md
-		return md + u'\n\n%s %s\n\n' % (u'#' * self.headerLevel, self.headerText)
+		return md + u'\n\n%s %s\n\n' % (u'#' * self.headerLevel, \
+			self.headerText)
 
 	def bestMatch(self, queryString):
 		
@@ -157,8 +167,12 @@ class ZoteroParser(BaseParser):
 			self.msg(u'Retrieving "%s" from Zotero API.' % query[0])
 			if self.zotero == None:
 				self.connect()
-			items = self.zotero.top(q=query[0].encode(u'utf-8'), limit=100, \
-				content=u'csljson')
+			try:
+				items = self.zotero.top(q=query[0].encode(u'utf-8'), limit= \
+					100, content=u'csljson')
+			except:
+				self.msg(u'Failed to query Zotero server!')
+				return []
 			self.cache[query[0]] = items
 			fd = open(self.cachePath, u'w')
 			pickle.dump(self.cache, fd)
@@ -198,10 +212,27 @@ class ZoteroParser(BaseParser):
 						item and term in item[u'container-title'].lower()):
 						match = False
 						break
+			# Fix capitalized dois
 			if self.fixDOI and u'DOI' in item:
 				item[u'doi'] = item[u'DOI']
 				if item[u'doi'].startswith(u'doi:'):
 					item[u'doi'] = item[u'doi'][4:]
+			# Convert initials to 'A.B.C.' style to avoid mixups.
+			if self.fixAuthorNames and u'author' in item:
+				_author = []
+				for author in item[u'author']:
+					if u'given' not in author or u'family' not in author:
+						continue
+					given = author[u'given']
+					family = author[u'family']
+					# First replace dots by spaces
+					given = given.replace(u'.', u' ')
+					# Concatenate a list of capitalized initials
+					given = u''.join([i[0].upper() for i in given.split()])
+					# Add dots after each initial
+					given = u'. '.join(given) + u'.'
+ 					_author.append({u'family' : family, u'given': given})
+				item[u'author'] = _author
 			if match:
 				matches.append(item)
 		return matches
