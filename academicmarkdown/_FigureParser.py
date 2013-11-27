@@ -17,14 +17,15 @@ You should have received a copy of the GNU General Public License
 along with zoteromarkdown.  If not, see <http://www.gnu.org/licenses/>.
 """
 
+import os
 import yaml
 from academicmarkdown import YAMLParser
 import subprocess
 
 figureTemplate = {
 	u'html5':  u"""
-<figure id='%(id)s' style='width: %(width)s%%;'>
-	<img src='%(source)s' alt='%(caption)s'><br />
+<figure id='%(id)s'>
+	<img src='%(source)s' alt='%(caption)s' style='width: %(width)s%%;'><br />
 	<figcaption><strong>Figure %(nFig)d.</strong> %(caption)s</figcaption>
 </figure>
 """,
@@ -46,7 +47,7 @@ __Figure %(nFig)d.__ %(caption)s<!--odt-style="Illustration"-->
 class FigureParser(YAMLParser):
 	
 	def __init__(self, style=u'inline', template=u'html5', convertSVG=True, \
-			  verbose=False):
+			  margins=(30, 20, 30, 20), verbose=False):
 		
 		"""
 		Constructor.
@@ -59,6 +60,7 @@ class FigureParser(YAMLParser):
 						'html5'. (default=u'html5')
 		convertSVG	--	Indicates whether .svg files should be converted to .png
 						for better embedding. (default=True)
+		margins		--	Page margins. (default=30,20,30,20)
 		verbose		--	Indicates whether verbose output should be generated.
 						(default=False)
 		"""
@@ -66,6 +68,7 @@ class FigureParser(YAMLParser):
 		self.style = style
 		self.template = template
 		self.convertSVG = convertSVG
+		self.margins = margins
 		super(FigureParser, self).__init__(_object=u'figure', required=['id', \
 			'source'], verbose=verbose)
 		
@@ -87,16 +90,23 @@ class FigureParser(YAMLParser):
 		d[u'source'] = self.getPath(d[u'source'])
 		
 		if d[u'source'].lower().endswith(u'.svg') and self.convertSVG:
-			self.msg(u'Converting to .png')
-			dest = d[u'source'] + u'.tiff'
-			_cmd = ['convert', '-compress', 'lzw', '-bordercolor', \
-				'white' , '-density', '100', '-trim', '-border', \
-				'2', '-depth', '8', '-alpha', 'Off', d['source'],  \
-				dest]
-			_cmd = ['rsvg-convert', '-f', 'tiff', \
-					'-o', dest, d['source']]	
-			print _cmd
-			subprocess.call(_cmd)
+			dest = d[u'source'] + u'.png'
+			self.msg(u'Converting from SVG')
+			A4WidthMm = 210
+			A4WidthPx = 744.09
+			pxPerMm = A4WidthPx / A4WidthMm
+			realWidthMm = 210 - self.margins[1] - self.margins[3]
+			realWidthPx = realWidthMm * pxPerMm
+			cmd = [u'inkscape', u'-f', d[u'source'], '-W']
+			figWidthPx = float(subprocess.check_output(cmd))
+			d[u'width'] = 100. * figWidthPx / realWidthPx
+			self.msg(u'Width: %.2f (%.2f%%)' % (figWidthPx, d[u'width']))
+			if not os.path.exists(dest):
+				cmd = [u'inkscape', u'-f', d[u'source'], u'-e', dest, u'-d', \
+					'300', u'-b', u'white', u'-y', u'1.0']
+				subprocess.call(cmd)
+			else:
+				self.msg('"%s" exists, not regenerating' % dest)
 			d[u'source'] = dest
 		
 		if u'caption' not in d:
