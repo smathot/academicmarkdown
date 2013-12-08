@@ -118,7 +118,7 @@ class WkHtmlToPdf(BaseParser):
 				u'footer').encode(u'utf-8'))
 			cmd += u' --footer-html .footer.html --footer-spacing %s' % \
 				self.spacing[1]		
-		cmd += u' %s %s' % (html, target)
+		cmd += u' %s "%s"' % (html, target)
 		self.msg(cmd)
 		subprocess.call(shlex.split(cmd.encode(u'utf-8')))
 		if self.fix00:

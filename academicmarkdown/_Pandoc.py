@@ -47,24 +47,24 @@ class Pandoc(BaseParser):
 		self.standalone = standalone
 		super(Pandoc, self).__init__(verbose=verbose)
 		
-	def docx(self, md, output):
+	def docx(self, md, output, docxRef=None):
 		
 		"""
 		Generates a .docx document.
 		
-		Argument:
+		Arguments:
 		md		--	A Markdown string.
 		output	--	The name of the output file.
 		"""
 		
-		self.odt(md, output)
+		self.odt(md, output, odtRef=docxRef)
 		
 	def epub(self, md, output):
 		
 		"""
 		Generates an .epub document.
 		
-		Argument:
+		Arguments:
 		md		--	A Markdown string.
 		output	--	The name of the output file.
 		"""		
@@ -91,14 +91,17 @@ class Pandoc(BaseParser):
 		
 		open(output, 'w').write(self.parse(md).encode(u'utf-8'))
 		
-	def odt(self, md, output):
+	def odt(self, md, output, odtRef=None):
 		
 		"""
 		Generates an .odt document.
 		
-		Argument:
+		Arguments:
 		md		--	A Markdown string.
 		output	--	The name of the output file.
+		
+		Keyword arguments:
+		odtRef	--	A reference ODT for styling. (default=None)
 		"""		
 		
 		self.msg(u'Invoking pandoc')		
@@ -107,7 +110,14 @@ class Pandoc(BaseParser):
 			cmd += u' --bibliography .bibliography.json'
 			if self.csl != None:
 				cmd += u' --csl %s' % self.csl
-		cmd += ' -o'
+		if odtRef != None:
+			# Since this function is also used to render docx, we should make
+			# sure that we pass the correct reference argument.
+			if odtRef.endswith(u'.docx'):
+				cmd += u' --reference-docx=%s' % odtRef
+			else:
+				cmd += u' --reference-odt=%s' % odtRef
+		cmd += u' -o'
 		ps = subprocess.Popen(cmd.split() + [output], stdin=subprocess.PIPE, \
 			stdout=subprocess.PIPE)
 		print ps.communicate(md.encode(u'utf-8'))[0].decode(u'utf-8')
@@ -117,7 +127,7 @@ class Pandoc(BaseParser):
 		"""See BaseParser.parse()."""
 		
 		self.msg(u'Invoking pandoc')		
-		cmd = u'pandoc -f markdown -t html5 --smart'
+		cmd = u'pandoc -f markdown+header_attributes -t html5 --smart'
 		if self.standalone:
 			cmd += u' --standalone --self-contained'
 		if self.css != None:

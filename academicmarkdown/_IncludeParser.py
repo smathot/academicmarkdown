@@ -17,7 +17,8 @@ You should have received a copy of the GNU General Public License
 along with zoteromarkdown.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-from academicmarkdown import YAMLParser
+from academicmarkdown import YAMLParser, MDFilter
+from academicmarkdown.constants import *
 import os
 
 class IncludeParser(YAMLParser):
@@ -43,6 +44,10 @@ class IncludeParser(YAMLParser):
 		d = self.getPath(d)
 		self.msg('Include: %s' % d)
 		_md = open(d).read().decode(u'utf-8')
+		# Apply pre-processing Markdown Filters
+		for flt in preMarkdownFilters:
+			fltFunc = getattr(MDFilter, flt)
+			_md = fltFunc(_md)				
 		ip = IncludeParser(verbose=self.verbose)
 		_md = ip.parse(_md)
 		return md.replace(_yaml, _md)

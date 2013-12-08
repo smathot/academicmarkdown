@@ -24,7 +24,19 @@ import os
 import shlex
 
 exportFolder = u'export'
-exportFormats = u'odt', u'pdf', u'docx'
+exportFormats = u'odt', u'pdf', u'doc'
+
+def commitHash():
+	
+	"""
+	Gets the latest commit hash.
+	
+	Returns:
+	A unicode string with the latest hash.
+	"""
+	
+	cmd = [u'git', u'log', u'--pretty=format:#%h', u'-1']
+	return check_output(cmd)
 
 def snapshot(src, msg=u'snapshot'):
 	
@@ -54,6 +66,8 @@ def snapshot(src, msg=u'snapshot'):
 	os.mkdir(folder)
 	if u'pdf' in exportFormats:
 		build.PDF(src, os.path.join(folder, u'export.pdf'))
+	if u'doc' in exportFormats:
+		build.DOC(src, os.path.join(folder, u'export.doc'))
 	if u'docx' in exportFormats:
 		build.DOCX(src, os.path.join(folder, u'export.docx'))
 	if u'odt' in exportFormats:

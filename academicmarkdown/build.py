@@ -23,7 +23,7 @@ import shlex
 import subprocess
 from academicmarkdown import FigureParser, Pandoc, ZoteroParser, ODTFixer, \
 	ExecParser, IncludeParser, TOCParser, HTMLFilter, MDFilter, WkHtmlToPdf, \
-	CodeParser
+	CodeParser, constants
 from academicmarkdown.constants import *
 
 def HTML(src, target=None, standalone=True):
@@ -84,6 +84,10 @@ def MD(src, target=None):
 	else:
 		md = src
 		print u'Building from string ...'
+	# Apply pre-processing Markdown Filters
+	for flt in preMarkdownFilters:
+		fltFunc = getattr(MDFilter, flt)
+		md = fltFunc(md)		
 	if u'include' in extensions:
 		md = IncludeParser(verbose=True).parse(md)
 	if u'exec' in extensions:
@@ -102,8 +106,8 @@ def MD(src, target=None):
 		md = ZoteroParser(verbose=True, apiKey=zoteroApiKey, libraryId= \
 			zoteroLibraryId, headerText=zoteroHeaderText, headerLevel= \
 			zoteroHeaderLevel, clearCache=clearCache).parse(md)
-	# Apply Markdown Filters
-	for flt in mdFilters:
+	# Apply post-processing Markdown Filters
+	for flt in postMarkdownFilters:
 		fltFunc = getattr(MDFilter, flt)
 		md = fltFunc(md)
 	if target != None:
@@ -136,24 +140,50 @@ def ODT(src, target):
 	target	--	ODT target file.
 	"""		
 	
-	md = MD(src, figureTemplate=u'odt')
-	# Use style
-	pd = Pandoc(csl=csl, verbose=True)		
-	pd.odt(md, target)
+	global figureTemplate
+	tmp = figureTemplate
+	figureTemplate = u'odt'
+	md = MD(src)
+	pd = Pandoc(csl=csl, verbose=True)
+	pd.odt(md, target, odtRef=odtRef)
 	ODTFixer(verbose=True).fix(target)
+	figureTemplate = tmp
 	
-def DOCX(src, target):
-	
+def DOC(src, target):
+
 	"""
-	Builds an ODT file from a Markdown source.
+	Builds a DOC file from a Markdown source.
 	
 	Arguments:
 	src		--	Markdown source file. Should be in utf-8 encoding.
 	target	--	DOCX target file.
-	"""		
+	"""
+
+	# Since pandoc doesn't support DOC output, we convert first to ODT and from
+	# there use unoconv to convert to DOC.
+	ODT(src, u'.tmp.odt')
+	print u'Converting from .odt to .doc ...'
+	cmd = [u'unoconv', u'-f', u'doc', u'.tmp.odt']
+	subprocess.call(cmd)
+	print u'Done!'
+	os.rename(u'.tmp.doc', target)
 	
-	md = MD(src, figureTemplate=u'md')
+def DOCX(src, target):
+	
+	"""
+	Builds a DOCX file from a Markdown source.
+	
+	Arguments:
+	src		--	Markdown source file. Should be in utf-8 encoding.
+	target	--	DOCX target file.
+	"""
+	
+	global figureTemplate
+	tmp = figureTemplate
+	figureTemplate = u'markdown'
+	md = MD(src)
 	pd = Pandoc(csl=csl, verbose=True)
-	pd.docx(md, target)
+	pd.docx(md, target, docxRef=docxRef)
+	figureTemplate = tmp
 	
 	

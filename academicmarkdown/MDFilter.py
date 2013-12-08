@@ -57,3 +57,34 @@ def autoItalics(md):
 		md = md.replace(old, new)
 		
 	return md
+
+def magicVars(md):
+	
+	"""
+	Replace magic variables, such as %wc%.
+	
+	Arguments:
+	md		--	A Markdown string.
+	
+	Returns:
+	A processed Markdown string.
+	"""
+
+	md = md.replace(u'%wc%', u'%s' % len(md.split()))
+	md = md.replace(u'%cc%', u'%s' % len(md))
+	return md
+	
+def pageBreak(md):
+	
+	"""
+	Converts '~' paragraphs to HTML5 page breaks.
+	
+	Arguments:
+	md		--	A Markdown string.
+	
+	Returns:
+	A processed Markdown string.
+	"""
+	
+	return md.replace(u'\n~\n', \
+		u'\n<div style=\'page-break-before:always;\'></div>\n')

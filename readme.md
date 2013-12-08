@@ -136,6 +136,13 @@ The `toc` block will automatically generate a table of contents from the heading
 	 exclude: [Contents, Contact]
 	--%
 	
+### Magic variables
+
+Magic variables are automatically replaced by certain values, and are indicated like this: `%varname%`. The following magic variables are available:
+	
+- `%wc%`: Word count
+- `%cc%`: Character count
+	
 ## License
 
 Academic Markdown is available under the GNU General Public License 3. For more information, see the included file `COPYING`.

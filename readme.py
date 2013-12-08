@@ -20,6 +20,7 @@ along with academicmarkdown.  If not, see <http://www.gnu.org/licenses/>.
 
 from academicmarkdown import build	
 build.extensions = [u'toc', u'code', u'exec']
+build.css = 'styles/modern/html5.css'
 build.PDF(u'readme.md', u'readme.pdf')
 build.HTML(u'readme.md', u'readme.html')
 build.ODT(u'readme.md', u'readme.odt')

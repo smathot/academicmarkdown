@@ -21,11 +21,12 @@ import os
 import yaml
 from academicmarkdown import YAMLParser
 import subprocess
+import sys
 
 figureTemplate = {
 	u'html5':  u"""
-<figure id='%(id)s'>
-	<img src='%(source)s' alt='%(caption)s' style='width: %(width)s%%;'><br />
+<figure id='%(id)s' style='width: %(width)s%%;'>
+	<img src='%(source)s' alt='%(caption)s'><br />
 	<figcaption><strong>Figure %(nFig)d.</strong> %(caption)s</figcaption>
 </figure>
 """,
@@ -95,15 +96,15 @@ class FigureParser(YAMLParser):
 			A4WidthMm = 210
 			A4WidthPx = 744.09
 			pxPerMm = A4WidthPx / A4WidthMm
-			realWidthMm = 210 - self.margins[1] - self.margins[3]
+			realWidthMm = A4WidthMm - self.margins[1] - self.margins[3]
 			realWidthPx = realWidthMm * pxPerMm
 			cmd = [u'inkscape', u'-f', d[u'source'], '-W']
 			figWidthPx = float(subprocess.check_output(cmd))
-			d[u'width'] = 100. * figWidthPx / realWidthPx
+			d[u'width'] = min(100, 100. * figWidthPx / realWidthPx)
 			self.msg(u'Width: %.2f (%.2f%%)' % (figWidthPx, d[u'width']))
-			if not os.path.exists(dest):
+			if not os.path.exists(dest) or '--clear-svg' in sys.argv:
 				cmd = [u'inkscape', u'-f', d[u'source'], u'-e', dest, u'-d', \
-					'300', u'-b', u'white', u'-y', u'1.0']
+					'200', u'-b', u'white', u'-y', u'1.0']
 				subprocess.call(cmd)
 			else:
 				self.msg('"%s" exists, not regenerating' % dest)

@@ -46,11 +46,14 @@ docxRef = None # DOCX reference document
 
 # A list of filters from academicmarkdown.HTMLFilter that should be performed
 # after an HTML document has been genertated.
-htmlFilters = [u'DOI', u'pageBreak', u'citationGlue']
+htmlFilters = [u'DOI', u'citationGlue']
 
 # A list of filters from academicmarkdown.MDFilter that should be performed
-# on the Markdown source, prior to any conversion.
-mdFilters = [u'autoItalics']
+# on the Markdown source, prior to any processing.
+preMarkdownFilters = [u'magicVars']
+# A list of filters from academicmarkdown.MDFilter that should be performed
+# on the Markdown source, after all other processing has been performed
+postMarkdownFilters = [u'autoItalics', u'pageBreak']
 
 # A list of extensions that are enabled.
 extensions = [u'figure', u'exec', u'include', u'toc', u'code']
