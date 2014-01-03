@@ -1,0 +1,37 @@
+python-academicmarkdown (0.5.1-ubuntu1) saucy; urgency=low
+
+  * Fix TOC header links
+  * Fix deep-level headers in TOC
+
+ -- Sebastiaan Mathot <s.mathot@cogsci.nl>  Fri, 03 Jan 2014 14:00:13 +0100
+
+python-academicmarkdown (0.5.0-ubuntu1) saucy; urgency=low
+
+  * Various improvements and bugfixes
+
+ -- Sebastiaan Mathot <s.mathot@cogsci.nl>  Sun, 08 Dec 2013 16:23:06 +0100
+
+python-academicmarkdown (0.4.0-ubuntu4) saucy; urgency=low
+
+  * Various improvements and bugfixes
+
+ -- Sebastiaan Mathot <s.mathot@cogsci.nl>  Wed, 06 Nov 2013 17:09:01 +0100
+
+python-academicmarkdown (0.3.0-ubuntu1) saucy; urgency=low
+
+  * Various improvements and bugfixes
+
+ -- Sebastiaan Mathot <s.mathot@cogsci.nl>  Mon, 28 Oct 2013 12:06:07 +0100
+
+python-academicmarkdown (0.2.0-ubuntu1) saucy; urgency=low
+
+  * Add pageBreak filter
+  * Various bugfixes
+
+ -- Sebastiaan Mathot <s.mathot@cogsci.nl>  Mon, 21 Oct 2013 17:41:12 +0200
+
+python-academicmarkdown (0.1.1-ubuntu3) raring; urgency=low
+
+  * Initial release
+
+ -- Sebastiaan Mathot <s.mathot@cogsci.nl>  Sun, 20 Oct 2013 14:02:10 +0200

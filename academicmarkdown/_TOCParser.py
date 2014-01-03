@@ -61,16 +61,12 @@ class TOCParser(YAMLParser):
 			d[u'mindepth'] = 1		
 		headers = []
 		for i in re.finditer(r'^#(.*)', md, re.M):
-			h = i.group()		
-			if h.startswith(u'####'):
-				level = 4
-			elif h.startswith(u'###'):
-				level = 3
-			elif h.startswith(u'##'):
-				level = 2
-			elif h.startswith(u'#'):
-				level = 1
+			h = i.group()
+			for level in range(100, -1, -1):
+				if h.startswith(u'#' * level):
+					break
 			if level not in range(d[u'mindepth'], d[u'maxdepth']+1):
+				self.msg(u'Header level not in range: %s' % h)
 				continue
 			label = h[level:].strip()
 			_id = self.labelId(label)
@@ -111,8 +107,8 @@ class TOCParser(YAMLParser):
 		
 		_id = u''
 		for ch in label:
-			if ch.isalnum() or ch in (u'-', u'.'):
+			if ch.isalnum() or ch in (u'-', u'.', u'_'):
 				_id += ch.lower()
 			elif ch.isspace() and len(_id) > 0 and _id[-1] != u'-':
 				_id += u'-'
-		return _id.strip(u'-')
+		return _id.strip(u'-.')

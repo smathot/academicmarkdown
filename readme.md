@@ -4,7 +4,7 @@
 
 version %-- exec: python -c "from academicmarkdown import version; print version" --%
 
-Copyright 2013 Sebastiaan Mathôt
+Copyright 2013-2014 Sebastiaan Mathôt
 
 ## Contents
 
@@ -19,6 +19,10 @@ toc:
 Academic Markdown is a Python module that allows you generate `.md`, `.html`, `.pdf`, `.docx`, and `.odt` files from Markdown source. [Pandoc] is used for most of the heavy lifting, so refer to the Pandoc website for detailed information about writing in Pandoc Markdown. However, Academic Markdown offers some additional functionality that is useful for writing scientific documents, such as integration with [Zotero references], and a number of useful [Academic Markdown extensions].
 
 At present, the main target for Academic Markdown is the OpenSesame documentation site, <http://osdoc.cogsci.nl/>, although it may in time grow into a more comprehensive and user-friendly tool.
+
+## Example
+
+This `readme` is itself an example of a document written in Academic Markdown. For exports in various formats, see the `/readme/` sub folder included with the source code.
 
 ## Download
 
@@ -38,6 +42,7 @@ Academic Markdown assumes that input files are encoded with `utf-8` encoding.
 
 	from academicmarkdown import build
 	build.HTML(u'input.md', u'output.html')
+	build.HTML(u'input.md', u'output.html', standalone=False)
 	build.PDF(u'input.md', u'output.pdf')
 	build.DOCX(u'input.md', u'output.docx')	
 	build.ODT(u'input.md', u'output.odt')
