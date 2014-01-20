@@ -23,7 +23,7 @@ import shlex
 import subprocess
 from academicmarkdown import FigureParser, Pandoc, ZoteroParser, ODTFixer, \
 	ExecParser, IncludeParser, TOCParser, HTMLFilter, MDFilter, WkHtmlToPdf, \
-	CodeParser, constants
+	CodeParser, WcParser, constants
 from academicmarkdown.constants import *
 
 def HTML(src, target=None, standalone=True):
@@ -100,6 +100,8 @@ def MD(src, target=None):
 	if u'code' in extensions:
 		md = CodeParser(verbose=True, style=codeStyle, template=codeTemplate) \
 			.parse(md)
+	if u'wc' in extensions:
+		md = WcParser(verbose=True).parse(md)
 	# Parse Zotero references
 	if zoteroApiKey != None and zoteroLibraryId != None:
 		clearCache = '--clear-cache' in sys.argv

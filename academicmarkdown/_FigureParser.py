@@ -26,7 +26,7 @@ import sys
 figureTemplate = {
 	u'html5':  u"""
 <figure id='%(id)s' style='width: %(width)s%%;'>
-	<img src='%(source)s' alt='%(caption)s'><br />
+	<img src='%(source)s' alt='%(caption)s' width=100%%><br />
 	<figcaption><strong>Figure %(nFig)d.</strong> %(caption)s</figcaption>
 </figure>
 """,

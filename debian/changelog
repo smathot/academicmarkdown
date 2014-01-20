@@ -1,3 +1,16 @@
+python-academicmarkdown (0.6.0-ubuntu1) saucy; urgency=low
+
+  * Add word-count parser (WcParser)
+
+ -- Sebastiaan Mathot <s.mathot@cogsci.nl>  Mon, 20 Jan 2014 13:18:15 +0100
+
+python-academicmarkdown (0.5.1-ubuntu1) saucy; urgency=low
+
+  * Fix TOC header links
+  * Fix deep-level headers in TOC
+
+ -- Sebastiaan Mathot <s.mathot@cogsci.nl>  Fri, 03 Jan 2014 14:00:13 +0100
+
 python-academicmarkdown (0.5.0-ubuntu1) saucy; urgency=low
 
   * Various improvements and bugfixes

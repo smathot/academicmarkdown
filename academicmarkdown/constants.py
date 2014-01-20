@@ -56,7 +56,7 @@ preMarkdownFilters = [u'magicVars']
 postMarkdownFilters = [u'autoItalics', u'pageBreak']
 
 # A list of extensions that are enabled.
-extensions = [u'figure', u'exec', u'include', u'toc', u'code']
+extensions = [u'figure', u'exec', u'include', u'toc', u'code', u'wc']
 
 # The page margins
 pdfMargins = 30, 20, 30, 20
