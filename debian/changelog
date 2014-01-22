@@ -1,6 +1,8 @@
 python-academicmarkdown (0.6.0-ubuntu1) saucy; urgency=low
 
   * Add word-count parser (WcParser)
+  * Print out used references when duplicates are encountered
+  * Move magicVars to postMarkDownFilers
 
  -- Sebastiaan Mathot <s.mathot@cogsci.nl>  Mon, 20 Jan 2014 13:18:15 +0100
 
