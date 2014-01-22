@@ -36,7 +36,8 @@ class ZoteroParser(BaseParser):
 			
 	def __init__(self, libraryId, apiKey, libraryType=u'user', \
 		clearCache=False, headerText=u'References', headerLevel=1, \
-		odtStyle=None, fixDOI=True, fixAuthorNames=True, verbose=False):
+		odtStyle=None, fixDOI=True, fixAuthorNames=True, verbose=False, \
+		removeURL=True):
 		
 		"""
 		Constructor.
@@ -62,6 +63,8 @@ class ZoteroParser(BaseParser):
 		fixAuthorNames	--	Indicates that first names of authors should be
 							converted to clean initials, to avoid one author
 							appearing as multiple. (default=True)
+		removeURL		--	Removes the URL from the references, because some
+							styles insist on adding it. (default=True)
 		verbose			--	Indicates whether verbose output should be printed.
 							(default=False)
 		"""
@@ -78,6 +81,7 @@ class ZoteroParser(BaseParser):
 		self.odtStyle = odtStyle
 		self.fixDOI = fixDOI
 		self.fixAuthorNames = fixAuthorNames
+		self.removeURL = removeURL
 		if not os.path.exists(self.cachePath) or clearCache:
 			self.cache = {}
 		else:
@@ -128,8 +132,10 @@ class ZoteroParser(BaseParser):
 					(len(matches), queryString))
 			match = matches[0]
 			if match in items and queryString not in oldQueries:
+				for _queryString in sorted(oldQueries):
+					print u'Ref: %s' % _queryString
 				raise Exception( \
-					u'"%s" refers to an existent reference with a different name. Please use consistent references!' \
+					u'"%s" refers to an existent reference with a different name. Please use consistent references (see list above)!' \
 					% queryString)
 			match[u'id'] = queryString
 			if self.odtStyle != None:
@@ -217,6 +223,10 @@ class ZoteroParser(BaseParser):
 				item[u'doi'] = item[u'DOI']
 				if item[u'doi'].startswith(u'doi:'):
 					item[u'doi'] = item[u'doi'][4:]
+			# Remove URL field
+			if self.removeURL:
+				if u'URL' in item.keys():
+					del item[u'URL']
 			# Convert initials to 'A.B.C.' style to avoid mixups.
 			if self.fixAuthorNames and u'author' in item:
 				_author = []
