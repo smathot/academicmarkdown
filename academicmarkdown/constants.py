@@ -50,10 +50,10 @@ htmlFilters = [u'DOI', u'citationGlue']
 
 # A list of filters from academicmarkdown.MDFilter that should be performed
 # on the Markdown source, prior to any processing.
-preMarkdownFilters = [u'magicVars']
+preMarkdownFilters = []
 # A list of filters from academicmarkdown.MDFilter that should be performed
 # on the Markdown source, after all other processing has been performed
-postMarkdownFilters = [u'autoItalics', u'pageBreak']
+postMarkdownFilters = [u'autoItalics', u'pageBreak', u'magicVars']
 
 # A list of extensions that are enabled.
 extensions = [u'figure', u'exec', u'include', u'toc', u'code', u'wc']
