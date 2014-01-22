@@ -141,6 +141,12 @@ The `toc` block will automatically generate a table of contents from the heading
 	 exclude: [Contents, Contact]
 	--%
 	
+### `wc`: word count
+
+The `wc` block will insert the word counter for a particular document. This is convenient if you have split the text across multiple documents, and want to have a separate word count for each document.
+	
+	%-- wc: method-section.md --%
+	
 ### Magic variables
 
 Magic variables are automatically replaced by certain values, and are indicated like this: `%varname%`. The following magic variables are available:

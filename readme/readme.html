@@ -14,7 +14,7 @@
 <body>
 <h1 id="academic-markdown">Academic Markdown</h1>
 <p><em>Who knew writing could be so nerdy?</em></p>
-<p>version 0.5.1</p>
+<p>version 0.6.0</p>
 <p>Copyright 2013-2014 Sebastiaan Mathôt</p>
 <h2 id="contents">Contents</h2>
 <ul>
@@ -31,6 +31,7 @@
 <li><a href="#exec-external-commands"><code>exec</code>: external commands</a></li>
 <li><a href="#include-include-other-markdown-files"><code>include</code>: include other Markdown files</a></li>
 <li><a href="#toc-table-of-contents"><code>toc</code>: table of contents</a></li>
+<li><a href="#wc-word-count"><code>wc</code>: word count</a></li>
 <li><a href="#magic-variables">Magic variables</a></li>
 </ul></li>
 <li><a href="#license">License</a></li>
@@ -123,6 +124,9 @@ toc:
  maxdepth: 2
  exclude: [Contents, Contact]
 --%</code></pre>
+<h3 id="wc-word-count"><code>wc</code>: word count</h3>
+<p>The <code>wc</code> block will insert the word counter for a particular document. This is convenient if you have split the text across multiple documents, and want to have a separate word count for each document.</p>
+<pre><code>%-- wc: method-section.md --%</code></pre>
 <h3 id="magic-variables">Magic variables</h3>
 <p>Magic variables are automatically replaced by certain values, and are indicated like this: <code>%varname%</code>. The following magic variables are available:</p>
 <ul>
