@@ -21,7 +21,7 @@ try:
 	from pyzotero import zotero
 except:
 	zotero = None
-	
+
 from academicmarkdown import BaseParser
 import os
 import re
@@ -31,21 +31,21 @@ import pickle
 import warnings
 
 class ZoteroParser(BaseParser):
-	
+
 	cachePath = u'.zoteromarkdown.cache'
-			
+
 	def __init__(self, libraryId, apiKey, libraryType=u'user', \
 		clearCache=False, headerText=u'References', headerLevel=1, \
 		odtStyle=None, fixDOI=True, fixAuthorNames=True, verbose=False, \
 		removeURL=True):
-		
+
 		"""
 		Constructor.
-		
+
 		Arguments:
 		libraryId		--	The libraryId, available from your Zotero profile.
 		apiKey			--	The API key, available from your Zotero profile.
-		
+
 		Keyword arguments:
 		libraryType		--	The library type. Can be 'user' or 'group'.
 							(default=u'user')
@@ -64,7 +64,9 @@ class ZoteroParser(BaseParser):
 							converted to clean initials, to avoid one author
 							appearing as multiple. (default=True)
 		removeURL		--	Removes the URL from the references, because some
-							styles insist on adding it. (default=True)
+							styles insist on adding it. The URL is only removed
+							when a journal (i.e. `container-title` field) is
+							available. (default=True)
 		verbose			--	Indicates whether verbose output should be printed.
 							(default=False)
 		"""
@@ -92,36 +94,36 @@ class ZoteroParser(BaseParser):
 				self.msg(u'Failed to open cache.')
 				self.cache = {}
 			fd.close()
-			
+
 	def connect(self):
-		
+
 		"""Connects to the Zotero API."""
-		
+
 		self.msg(u'Connecting to Zotero server.')
 		self.zotero = zotero.Zotero(self.libraryId, self.libraryType, \
 			self.apiKey)
-				
+
 	def parse(self, md):
-		
+
 		"""
 		Parses pandoc-style citations from the documents and adds a
 		corresponding bibliography as YAML to the documents.
-		
+
 		Arguments:
 		md		--	A string containing MarkDown text.
-		
+
 		Returns:
 		The Markdown text with bibliography added.
 		"""
-		
+
 		items = []
 		oldQueries = []
-		regexp =  ur'@([^ ?!,.\t\n\r\f\v\]\[;]+)'		
+		regexp =  ur'@([^ ?!,.\t\n\r\f\v\]\[;]+)'
 		for r in re.finditer(regexp, md):
 			queryString = r.groups()[0]
 			self.msg(u'Found citation "%s"' % queryString)
 			if queryString in oldQueries:
-				continue			
+				continue
 			matches = self.bestMatch(queryString)
 			if len(matches) == 0:
 				self.msg(u'No matches for "%s"!' % queryString)
@@ -153,14 +155,14 @@ class ZoteroParser(BaseParser):
 			self.headerText)
 
 	def bestMatch(self, queryString):
-		
+
 		"""
-		Retrieves a matching item for a given query. Queries 
-		
+		Retrieves a matching item for a given query. Queries
+
 		Arguments:
 		queryString		--	A query string.
-		
-		
+
+
 		Returns:
 		A csljson-style dictionary for the matching item.
 		"""
@@ -184,7 +186,7 @@ class ZoteroParser(BaseParser):
 			pickle.dump(self.cache, fd)
 			fd.close()
 		matches = []
-		for item in items:	
+		for item in items:
 			match = True
 			matchPhase = 0
 			for i in range(len(query)):
@@ -194,7 +196,7 @@ class ZoteroParser(BaseParser):
 					int(term)
 					matchPhase += 1
 				except:
-					pass		
+					pass
 				# Check authors
 				if matchPhase == 0:
 					if i >= len(item[u'author']):
@@ -204,7 +206,7 @@ class ZoteroParser(BaseParser):
 						term):
 						match = False
 						break
-				# Check year	
+				# Check year
 				elif matchPhase == 1:
 					if u'issued' not in item or term not in item[u'issued'] \
 						[u'raw']:
@@ -225,7 +227,7 @@ class ZoteroParser(BaseParser):
 					item[u'doi'] = item[u'doi'][4:]
 			# Remove URL field
 			if self.removeURL:
-				if u'URL' in item.keys():
+				if u'URL' in item.keys() and u'container-title' in item.keys():
 					del item[u'URL']
 			# Convert initials to 'A.B.C.' style to avoid mixups.
 			if self.fixAuthorNames and u'author' in item:
@@ -246,20 +248,20 @@ class ZoteroParser(BaseParser):
 			if match:
 				matches.append(item)
 		return matches
-	
+
 	def splitCitation(self, s):
-		
+
 		"""
 		Splits a citation string, like Land1999WhyAnimals, and returns each
 		element of the string in a list.
-		
+
 		Arguments:
 		s		--	The citation string, e.g. 'Land1999WhyAnimals'.
-		
+
 		Returns:
 		A list of citation elements, e.g. ['land', '1999', 'why', 'animals'].
 		"""
-		
+
 		# First, split underscore-style citations, like '@land_1999_why_animals'
 		if u'_' in s:
 			return s.split(u'_')
