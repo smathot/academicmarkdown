@@ -27,11 +27,13 @@ zoteroLibraryId = None
 zoteroHeaderText = u'References'
 zoteroHeaderLevel = 1
 
-# Options for the appearance of figures and code blocks
+# Options for the appearance of figures, blocks, and tables
 figureTemplate = u'html5'
 figureStyle = u'inline'
 codeTemplate = u'kramdown'
 codeStyle = u'inline'
+tableTemplate = u'html5'
+tableStyle = u'inline'
 
 # Indicates whether headers should be turned into clickable anchors by TOCParser
 TOCAnchorHeaders = False
@@ -56,7 +58,8 @@ preMarkdownFilters = []
 postMarkdownFilters = [u'autoItalics', u'pageBreak', u'magicVars']
 
 # A list of extensions that are enabled.
-extensions = [u'figure', u'exec', u'include', u'toc', u'code', u'wc']
+extensions = [u'figure', u'exec', u'include', u'toc', u'code', u'wc', \
+	u'video', u'table']
 
 # The page margins
 pdfMargins = 30, 20, 30, 20

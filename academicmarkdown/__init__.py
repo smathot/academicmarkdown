@@ -17,7 +17,7 @@ You should have received a copy of the GNU General Public License
 along with zoteromarkdown.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-version = u'0.6.0'
+version = u'0.7.0'
 
 from _BaseParser import BaseParser
 from _YAMLParser import YAMLParser
@@ -27,6 +27,8 @@ from _CodeParser import CodeParser
 from _ExecParser import ExecParser
 from _IncludeParser import IncludeParser
 from _TOCParser import TOCParser
+from _VideoParser import VideoParser
+from _TableParser import TableParser
 from _Pandoc import Pandoc
 from _ODTFixer import ODTFixer
 from _WkHtmlToPdf import WkHtmlToPdf

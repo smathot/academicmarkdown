@@ -23,27 +23,27 @@ import shlex
 import subprocess
 from academicmarkdown import FigureParser, Pandoc, ZoteroParser, ODTFixer, \
 	ExecParser, IncludeParser, TOCParser, HTMLFilter, MDFilter, WkHtmlToPdf, \
-	CodeParser, WcParser, constants
+	CodeParser, WcParser, VideoParser, TableParser, constants
 from academicmarkdown.constants import *
 
 def HTML(src, target=None, standalone=True):
-	
+
 	"""
 	Builds an HTML file from a Markdown source.
-	
+
 	Arguments:
-	src			--	Markdown source file. Should be in utf-8 encoding.	
-	
+	src			--	Markdown source file. Should be in utf-8 encoding.
+
 	Keyword arguments:
 	target		--	HTML target file or None to skip saving. (default=None)
 	standalone	--	Indicates whether a full HTML5 document should be generated,
 					which embeds all content, or whether the document should
 					be rendered without <head> and <body> tags, etc.
-	
+
 	Returns:
 	The HTML file as a unicode string.
 	"""
-	
+
 	md = MD(src)
 	# Count words
 	print u'Document statistics:'
@@ -57,37 +57,37 @@ def HTML(src, target=None, standalone=True):
 		fltFunc = getattr(HTMLFilter, flt)
 		html = fltFunc(html)
 	if target != None:
-		open(target, u'w').write(html.encode(u'utf-8'))	
+		open(target, u'w').write(html.encode(u'utf-8'))
 	print u'Done!'
 	return html
-	
+
 def MD(src, target=None):
-	
+
 	"""
 	Builds a Markdown file from a Markdown source.
-	
-	Arguments:	
+
+	Arguments:
 	src		--	Markdown source file. Should be in utf-8 encoding. If the file
 				does not exist, it is interpreted as a Markdown string.
-	
+
 	Keyword arguments:
 	target			--	Markdown target file or None to skip saving.
 						(default=None)
-	
+
 	Returns:
 	The compiled Markdown file as a unicode string.
 	"""
-	
-	if os.path.exists(src):		
+
+	if os.path.exists(src):
 		md = open(src).read().decode(u'utf-8')
-		print u'Building %s from %s ...' % (target, src)	
+		print u'Building %s from %s ...' % (target, src)
 	else:
 		md = src
 		print u'Building from string ...'
 	# Apply pre-processing Markdown Filters
 	for flt in preMarkdownFilters:
 		fltFunc = getattr(MDFilter, flt)
-		md = fltFunc(md)		
+		md = fltFunc(md)
 	if u'include' in extensions:
 		md = IncludeParser(verbose=True).parse(md)
 	if u'exec' in extensions:
@@ -97,6 +97,11 @@ def MD(src, target=None):
 	if u'figure' in extensions:
 		md = FigureParser(verbose=True, style=figureStyle, template= \
 			figureTemplate, margins=pdfMargins).parse(md)
+	if u'video' in extensions:
+		md = VideoParser(verbose=True).parse(md)
+	if u'table' in extensions:
+		md = TableParser(style=tableStyle, template=tableTemplate, verbose= \
+			True).parse(md)
 	if u'code' in extensions:
 		md = CodeParser(verbose=True, style=codeStyle, template=codeTemplate) \
 			.parse(md)
@@ -120,12 +125,12 @@ def PDF(src, target):
 
 	"""
 	Builds a PDF file from a Markdown source.
-	
+
 	Arguments:
 	src					--	Markdown source file. Should be in utf-8 encoding.
 	target				--	HTML target file.
 	"""
-	
+
 	print u'Building %s from %s ...' % (target, src)
 	HTML(src, u'.tmp.html')
 	wk = WkHtmlToPdf(css=css, margins=pdfMargins, spacing=pdfSpacing, \
@@ -133,15 +138,15 @@ def PDF(src, target):
 	wk.parse(u'.tmp.html', target)
 
 def ODT(src, target):
-	
+
 	"""
 	Builds an ODT file from a Markdown source.
-	
+
 	Arguments:
 	src		--	Markdown source file. Should be in utf-8 encoding.
 	target	--	ODT target file.
-	"""		
-	
+	"""
+
 	global figureTemplate
 	tmp = figureTemplate
 	figureTemplate = u'odt'
@@ -150,12 +155,12 @@ def ODT(src, target):
 	pd.odt(md, target, odtRef=odtRef)
 	ODTFixer(verbose=True).fix(target)
 	figureTemplate = tmp
-	
+
 def DOC(src, target):
 
 	"""
 	Builds a DOC file from a Markdown source.
-	
+
 	Arguments:
 	src		--	Markdown source file. Should be in utf-8 encoding.
 	target	--	DOCX target file.
@@ -169,17 +174,17 @@ def DOC(src, target):
 	subprocess.call(cmd)
 	print u'Done!'
 	os.rename(u'.tmp.doc', target)
-	
+
 def DOCX(src, target):
-	
+
 	"""
 	Builds a DOCX file from a Markdown source.
-	
+
 	Arguments:
 	src		--	Markdown source file. Should be in utf-8 encoding.
 	target	--	DOCX target file.
 	"""
-	
+
 	global figureTemplate
 	tmp = figureTemplate
 	figureTemplate = u'markdown'
@@ -187,5 +192,5 @@ def DOCX(src, target):
 	pd = Pandoc(csl=csl, verbose=True)
 	pd.docx(md, target, docxRef=docxRef)
 	figureTemplate = tmp
-	
-	
+
+
