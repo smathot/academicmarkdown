@@ -33,20 +33,28 @@ class TOCParser(YAMLParser):
 	--%
 	"""
 
-	def __init__(self, anchorHeaders=False, verbose=False):
+	def __init__(self, anchorHeaders=False, appendHeaderRefs=False, verbose= \
+		False):
 
 		"""
 		Constructor.
 
 		Keyword arguments:
-		anchorHeaders	--	Indicates whether headers should be turned into
-							clickable anchors, mostly useful for HTML pages.
-							(default=False)
+		anchorHeaders		--	Indicates whether headers should be turned into
+								clickable anchors, mostly useful for HTML pages.
+								(default=False)
+		appendHeaderRefs 	--	Indicates whether headers references should be
+								appended to the document, so that you can
+								directly refer to header links in the text. This
+								is only necessary when using a Markdown parser
+								that doesn't do this automatically.
+								(default=False)
 		verbose			--	Indicates whether verbose output should be
 							generated. (default=False)
 		"""
 
 		self.anchorHeaders = anchorHeaders
+		self.appendHeaderRefs = appendHeaderRefs
 		super(TOCParser, self).__init__(_object=u'toc', verbose=verbose)
 
 	def parseObject(self, md, _yaml, d):
@@ -60,6 +68,7 @@ class TOCParser(YAMLParser):
 		if u'mindepth' not in d:
 			d[u'mindepth'] = 1
 		headers = []
+		appends = []
 		for i in re.finditer(r'^#(.*)', md, re.M):
 			h = i.group()
 			for level in range(100, -1, -1):
@@ -70,10 +79,11 @@ class TOCParser(YAMLParser):
 				continue
 			label = h[level:].strip()
 			_id = self.labelId(label)
-
 			if label not in d[u'exclude']:
 				headers.append( (level, h, label, _id) )
 				self.msg(u'%s {#%s} (%d)' % (h, _id, level))
+			if self.appendHeaderRefs:
+				appends.append(u'[%s]: #%s' % (label, _id))
 		_md = u'\n'
 		lRep = []
 		for level, h, label, _id in headers:
@@ -84,6 +94,7 @@ class TOCParser(YAMLParser):
 				md = md.replace(h, u'%s [%s](#%s) {#%s}' % (u'#'*level, label, \
 					_id, _id))
 		_md += u'\n'
+		_md += u'\n'.join(appends)
 		return md.replace(_yaml, _md)
 
 	def labelId(self, label):

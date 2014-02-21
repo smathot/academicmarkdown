@@ -37,6 +37,9 @@ tableStyle = u'inline'
 
 # Indicates whether headers should be turned into clickable anchors by TOCParser
 TOCAnchorHeaders = False
+# Indicates whether references to header ids should be automatically appended
+# to the main text.
+TOCAppendHeaderRefs = False
 
 # Paths to files that determine the document's appearance. For more information,
 # see the Pandoc documentation.

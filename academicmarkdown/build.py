@@ -93,7 +93,8 @@ def MD(src, target=None):
 	if u'exec' in extensions:
 		md = ExecParser(verbose=True).parse(md)
 	if u'toc' in extensions:
-		md = TOCParser(anchorHeaders=TOCAnchorHeaders, verbose=True).parse(md)
+		md = TOCParser(anchorHeaders=TOCAnchorHeaders, appendHeaderRefs= \
+			TOCAppendHeaderRefs, verbose=True).parse(md)
 	if u'figure' in extensions:
 		md = FigureParser(verbose=True, style=figureStyle, template= \
 			figureTemplate, margins=pdfMargins).parse(md)
