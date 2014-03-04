@@ -43,21 +43,37 @@ __Figure %(nFig)d.__ %(caption)s<!--odt-style="Illustration"-->
 	u'markdown': u"""
 ![__Figure %(nFig)d.__ %(caption)s](%(source)s)
 """}
-	
+
 
 class FigureParser(YAMLParser):
-	
+
+	"""
+	The `figure` block embeds a Figure in the text. Figures are numbered
+	automatically. The ID can be used to refer to the Figure in the text, using
+	a `%` character. So the following figure would be referred to as `%FigFA`.
+
+		%--
+		figure:
+		 id: FigFA
+		 source: foveal_acuity.svg
+		 caption: "Visual acuity drops of rapidly with distance from the fovea."
+		 width: 100
+		--%
+
+	The `caption` and `width` attributes are optional.
+	"""
+
 	def __init__(self, style=u'inline', template=u'html5', convertSVG=True, \
 			  margins=(30, 20, 30, 20), verbose=False):
-		
+
 		"""
 		Constructor.
-		
+
 		Keyword arguments:
 		style		--	Can be u'inline' or u'below' to indicate whether figures
 						should be placed in or below the text.
 						(default=u'inline')
-		template	--	Indicates the output format, which can be 'odt' or 
+		template	--	Indicates the output format, which can be 'odt' or
 						'html5'. (default=u'html5')
 		convertSVG	--	Indicates whether .svg files should be converted to .png
 						for better embedding. (default=True)
@@ -65,31 +81,31 @@ class FigureParser(YAMLParser):
 		verbose		--	Indicates whether verbose output should be generated.
 						(default=False)
 		"""
-		
+
 		self.style = style
 		self.template = template
 		self.convertSVG = convertSVG
 		self.margins = margins
 		super(FigureParser, self).__init__(_object=u'figure', required=['id', \
 			'source'], verbose=verbose)
-		
+
 	def parse(self, md):
-		
+
 		"""See BaseParser.parse()."""
-		
+
 		self.nFig = 0
 		return super(FigureParser, self).parse(md)
 
 	def parseObject(self, md, _yaml, d):
-		
+
 		"""See YAMLParser.parseObject()."""
-		
+
 		self.nFig += 1
 		d['nFig'] = self.nFig
 		self.msg(u'Found figure: %s (%d)' % (d['id'], self.nFig))
-		
+
 		d[u'source'] = self.getPath(d[u'source'])
-		
+
 		if d[u'source'].lower().endswith(u'.svg') and self.convertSVG:
 			dest = d[u'source'] + u'.png'
 			self.msg(u'Converting from SVG')
@@ -109,13 +125,13 @@ class FigureParser(YAMLParser):
 			else:
 				self.msg('"%s" exists, not regenerating' % dest)
 			d[u'source'] = dest
-		
+
 		if u'caption' not in d:
 			d[u'caption'] = u''
 		if u'width' not in d:
 			d[u'width'] = 100
 		img = figureTemplate[self.template] % d
-		
+
 		if self.style == u'inline':
 			md = md.replace(_yaml, img)
 		else:
@@ -125,6 +141,6 @@ class FigureParser(YAMLParser):
 		md = md.replace(u'%%%s::' % d[u'id'], u'[Figure %d](#%s)' % (self.nFig, \
 			d[u'id']))
 		md = md.replace(u'%%%s' % d[u'id'], u'[Figure %d](#%s)' % (self.nFig, \
-			d[u'id']))		
+			d[u'id']))
 		return md
-	
+

@@ -23,7 +23,7 @@ import shlex
 import subprocess
 from academicmarkdown import FigureParser, Pandoc, ZoteroParser, ODTFixer, \
 	ExecParser, IncludeParser, TOCParser, HTMLFilter, MDFilter, WkHtmlToPdf, \
-	CodeParser, WcParser, VideoParser, TableParser, constants
+	CodeParser, WcParser, VideoParser, TableParser, PythonParser, constants
 from academicmarkdown.constants import *
 
 def HTML(src, target=None, standalone=True):
@@ -88,26 +88,32 @@ def MD(src, target=None):
 	for flt in preMarkdownFilters:
 		fltFunc = getattr(MDFilter, flt)
 		md = fltFunc(md)
-	if u'include' in extensions:
-		md = IncludeParser(verbose=True).parse(md)
-	if u'exec' in extensions:
-		md = ExecParser(verbose=True).parse(md)
-	if u'toc' in extensions:
-		md = TOCParser(anchorHeaders=TOCAnchorHeaders, appendHeaderRefs= \
-			TOCAppendHeaderRefs, verbose=True).parse(md)
-	if u'figure' in extensions:
-		md = FigureParser(verbose=True, style=figureStyle, template= \
-			figureTemplate, margins=pdfMargins).parse(md)
-	if u'video' in extensions:
-		md = VideoParser(verbose=True).parse(md)
-	if u'table' in extensions:
-		md = TableParser(style=tableStyle, template=tableTemplate, verbose= \
-			True).parse(md)
-	if u'code' in extensions:
-		md = CodeParser(verbose=True, style=codeStyle, template=codeTemplate) \
-			.parse(md)
-	if u'wc' in extensions:
-		md = WcParser(verbose=True).parse(md)
+	# Apply all extensions
+	for ext in extensions:
+		if u'include' == ext:
+			md = IncludeParser(verbose=True).parse(md)
+		elif u'toc' == ext:
+			md = TOCParser(anchorHeaders=TOCAnchorHeaders, appendHeaderRefs= \
+				TOCAppendHeaderRefs, verbose=True).parse(md)
+		elif u'figure' == ext:
+			md = FigureParser(verbose=True, style=figureStyle, template= \
+				figureTemplate, margins=pdfMargins).parse(md)
+		elif u'video' == ext:
+			md = VideoParser(verbose=True).parse(md)
+		elif u'table' == ext:
+			md = TableParser(style=tableStyle, template=tableTemplate, verbose= \
+				True).parse(md)
+		elif u'code' == ext:
+			md = CodeParser(verbose=True, style=codeStyle, template=codeTemplate) \
+				.parse(md)
+		elif u'wc' == ext:
+			md = WcParser(verbose=True).parse(md)
+		elif u'exec' == ext:
+			md = ExecParser(verbose=True).parse(md)
+		elif u'python' == ext:
+			md = PythonParser(verbose=True).parse(md)
+		else:
+			raise Exception(u'Unknown Academic Markdown extension: %s' % ext)
 	# Parse Zotero references
 	if zoteroApiKey != None and zoteroLibraryId != None:
 		clearCache = '--clear-cache' in sys.argv

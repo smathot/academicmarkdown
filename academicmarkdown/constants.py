@@ -30,7 +30,7 @@ zoteroHeaderLevel = 1
 # Options for the appearance of figures, blocks, and tables
 figureTemplate = u'html5'
 figureStyle = u'inline'
-codeTemplate = u'kramdown'
+codeTemplate = u'pandoc'
 codeStyle = u'inline'
 tableTemplate = u'html5'
 tableStyle = u'inline'
@@ -62,7 +62,7 @@ postMarkdownFilters = [u'autoItalics', u'pageBreak', u'magicVars']
 
 # A list of extensions that are enabled.
 extensions = [u'figure', u'exec', u'include', u'toc', u'code', u'wc', \
-	u'video', u'table']
+	u'video', u'table', u'python']
 
 # The page margins
 pdfMargins = 30, 20, 30, 20

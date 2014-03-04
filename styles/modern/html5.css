@@ -16,7 +16,7 @@ a {
 }
 
 a, em, strong {
-	font-size: 1em;	
+	font-size: 1em;
 	font-family: inherit;
 }
 
@@ -48,6 +48,11 @@ h1 {
 	font-weight: bold;
 }
 
+h2 {
+	color: #2346a5;
+	font-family: 'Sawasdee';
+}
+
 h1, h2, h2 {
 	page-break-after: avoid;
 }
@@ -56,7 +61,7 @@ h1, h2, h2 {
 	margin-bottom: 50px;
 }
 
-.title {	
+.title {
 	font-size: 2em;
 	text-align: left;
 	color: #3465a4;

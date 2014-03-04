@@ -22,27 +22,29 @@ import subprocess
 import shlex
 
 class ExecParser(YAMLParser):
-	
+
 	"""
-	Interprets bash commands in YAML blocks of this type:
-	
-	%--	exec: "date +'Updated: %x'" --%
+	The `exec` block inserts the return value of an external command in the
+	text. For example, the following block embeds something like
+	'Generated on 10/18/2013':
+
+		%-- exec: "date +'Generated on %x'" --%
 	"""
-	
+
 	def __init__(self, verbose=False):
-		
+
 		"""See YAMLParser.__init__()."""
-		
+
 		super(ExecParser, self).__init__(_object=u'exec', verbose=verbose)
-	
+
 	def parseObject(self, md, _yaml, d):
-		
+
 		"""See YAMLParser.parseObject()."""
-		
+
 		if not isinstance(d, basestring):
 			return u'Expecting a string, not "%s"' % d
 		self.msg(u'Command: %s' % d)
 		output = subprocess.check_output(shlex.split(d.encode(u'utf-8'))) \
 			.decode(u'utf-8')
-		self.msg(u'Returns: %s' % output)		
+		self.msg(u'Returns: %s' % output)
 		return md.replace(_yaml, output)

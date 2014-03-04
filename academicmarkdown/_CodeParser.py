@@ -21,8 +21,14 @@ import yaml
 from academicmarkdown import YAMLParser
 import subprocess
 
-codeTemplate = {u'kramdown' : u"""
-~~~ %(syntax)s
+codeTemplate = {
+u'pandoc' : u"""
+~~~ {.%(syntax)s}
+%(code)s
+~~~
+""",
+u'kramdown' : u"""
+~~~ .%(syntax)s
 %(code)s
 ~~~
 """,
@@ -35,38 +41,53 @@ __Listing %(nCode)d.__ %(caption)s\n{: .lst-caption #%(id)s}
 """}
 
 class CodeParser(YAMLParser):
-	
+
+	"""
+	The `code` blocks embeds a code listing in the text, quite to similar to the
+	`figure` block.
+
+		%--
+		code:
+		 id: CodeA
+		 source: my_script.py
+		 syntax: python
+		 caption: "A simple Python script"
+		--%
+
+	The `caption` and `syntax` attributes are optional.
+	"""
+
 	def __init__(self, style=u'inline', template=u'kramdown', verbose=False):
-		
+
 		"""
 		Constructor.
-		
+
 		Keyword arguments:
 		style		--	Can be u'inline' or u'below' to indicate whether code
 						should be placed in or below the text.
 						(default=u'inline')
-		template	--	Indicates the output format, which can be 'kramdown' or 
+		template	--	Indicates the output format, which can be 'kramdown' or
 						'liquid'. (default=u'kramdown')
 		verbose		--	Indicates whether verbose output should be generated.
 						(default=False)
 		"""
-		
+
 		self.style = style
 		self.template = template
 		super(CodeParser, self).__init__(_object=u'code', required=['id', \
 			'source'], verbose=verbose)
-		
+
 	def parse(self, md):
-		
+
 		"""See BaseParser.parse()."""
-		
+
 		self.nCode = 0
 		return super(CodeParser, self).parse(md)
 
 	def parseObject(self, md, _yaml, d):
-		
+
 		"""See YAMLParser.parseObject()."""
-		
+
 		self.nCode += 1
 		d['nCode'] = self.nCode
 		self.msg(u'Found code: %s (%d)' % (d['id'], self.nCode))
@@ -76,7 +97,7 @@ class CodeParser(YAMLParser):
 		if u'syntax' not in d:
 			d[u'syntax'] = u''
 		elif self.template == u'kramdown':
-			d[u'syntax'] = u'.' + d[u'syntax']		
+			d[u'syntax'] = u'.' + d[u'syntax']
 		d[u'code'] = open(self.getPath(d[u'source'])).read().strip()
 		code = codeTemplate[self.template] % d
 		if self.style == u'inline':
@@ -85,6 +106,6 @@ class CodeParser(YAMLParser):
 			md = md.replace(_yaml, u'')
 			md += code
 		md = md.replace(u'%%%s' % d[u'id'], u'[Listing %d](#%s)' % (self.nCode, \
-			d[u'id']))		
+			d[u'id']))
 		return md
-	
+

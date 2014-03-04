@@ -18,11 +18,14 @@ You should have received a copy of the GNU General Public License
 along with academicmarkdown.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-from academicmarkdown import build	
-build.extensions = [u'toc', u'code', u'exec']
-build.css = 'styles/modern/html5.css'
+from academicmarkdown import build
+build.extensions = [u'toc', u'exec', u'code', u'python']
+build.path.append('..')
+build.css = '../styles/modern/html5.css'
 build.postMarkdownFilters = []
-build.PDF(u'readme.md', u'readme/readme.pdf')
-build.HTML(u'readme.md', u'readme/readme.html')
-build.ODT(u'readme.md', u'readme/readme.odt')
-build.DOCX(u'readme.md', u'readme/readme.docx')
+build.TOCAppendHeaderRefs = True
+build.PDF(u'readme.md', u'readme.pdf')
+build.HTML(u'readme.md', u'readme.html')
+build.MD(u'readme.md', u'../readme.md')
+#build.ODT(u'readme.md', u'readme/readme.odt')
+#build.DOCX(u'readme.md', u'readme/readme.docx')

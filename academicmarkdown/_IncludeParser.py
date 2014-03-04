@@ -22,23 +22,23 @@ from academicmarkdown.constants import *
 import os
 
 class IncludeParser(YAMLParser):
-	
+
 	"""
-	Interprets bash commands in YAML blocks of this type:
-	
-	%--	exec: "date +'Updated: %x'" --%
+	The `include` block includes an other Markdown file. For example:
+
+		%-- include: example/intro.md --%
 	"""
-	
+
 	def __init__(self, verbose=False):
-		
+
 		"""See YAMLParser.__init__()."""
-		
+
 		super(IncludeParser, self).__init__(_object=u'include', verbose=verbose)
-	
+
 	def parseObject(self, md, _yaml, d):
-		
+
 		"""See YAMLParser.parseObject()."""
-		
+
 		if not isinstance(d, basestring):
 			return u'Expecting a string, not "%s"' % d
 		d = self.getPath(d)
@@ -47,8 +47,8 @@ class IncludeParser(YAMLParser):
 		# Apply pre-processing Markdown Filters
 		for flt in preMarkdownFilters:
 			fltFunc = getattr(MDFilter, flt)
-			_md = fltFunc(_md)				
+			_md = fltFunc(_md)
 		ip = IncludeParser(verbose=self.verbose)
 		_md = ip.parse(_md)
 		return md.replace(_yaml, _md)
-	
+

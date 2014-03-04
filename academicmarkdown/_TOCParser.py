@@ -23,14 +23,19 @@ import re
 class TOCParser(YAMLParser):
 
 	"""
-	Interprets table of content command in YAML blocks of this type:
+	The `toc` block automatically generates a table of contents from the
+	headings, assuming that headings are indicated using the `#` style and not
+	the underlining style. You can indicate headings to be excluded from the
+	table of contents as well.
 
-	%--
-	toc:
-	 mindepth: 1
-	 maxdepth: 2
-	 exclude: [Contents, Contact]
-	--%
+		%--
+		toc:
+		 mindepth: 1
+		 maxdepth: 2
+		 exclude: [Contents, Contact]
+		--%
+
+	All attributes are optional.
 	"""
 
 	def __init__(self, anchorHeaders=False, appendHeaderRefs=False, verbose= \
@@ -94,8 +99,10 @@ class TOCParser(YAMLParser):
 				md = md.replace(h, u'%s [%s](#%s) {#%s}' % (u'#'*level, label, \
 					_id, _id))
 		_md += u'\n'
-		_md += u'\n'.join(appends)
-		return md.replace(_yaml, _md)
+		#print appends
+		#quit()
+		#_md += u'\n'.join(appends)
+		return md.replace(_yaml, _md) + u'\n'.join(appends)
 
 	def labelId(self, label):
 

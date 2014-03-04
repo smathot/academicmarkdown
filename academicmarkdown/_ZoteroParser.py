@@ -270,5 +270,5 @@ class ZoteroParser(BaseParser):
 		l = []
 		for t in re.split(regexp, s):
 			if t != u'':
-				l.append(t.lower())
+				l.append(t.lower().replace(u'+', u' '))
 		return l

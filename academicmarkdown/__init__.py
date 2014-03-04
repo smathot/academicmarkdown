@@ -25,6 +25,7 @@ from _ZoteroParser import ZoteroParser
 from _FigureParser import FigureParser
 from _CodeParser import CodeParser
 from _ExecParser import ExecParser
+from _PythonParser import PythonParser
 from _IncludeParser import IncludeParser
 from _TOCParser import TOCParser
 from _VideoParser import VideoParser

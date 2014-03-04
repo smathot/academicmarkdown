@@ -21,21 +21,30 @@ from academicmarkdown import YAMLParser
 import subprocess
 import shlex
 
-class WcParser(YAMLParser):
+class PythonParser(YAMLParser):
 
 	"""
-	The `wc` block insert the word count for a particular document. This is
-	convenient if you have split the text across multiple documents, and want to
-	have a separate word count for each document.
+	The `python` block embeds the output (i.e. whatever is printed to stdout)
+	of a Python script into your document. For example, the following block
+	embeds the docstring of the `PythonParser` class (i.e. what you're reading
+	now):
 
-		%-- wc: method-section.md --%
+		%--
+		python: |
+		 import inspect
+		 from academicmarkdown import PythonParser
+		 print inspect.getdoc(PythonParser)
+		--%
+
+	Note that the `|` symbol is YAML syntax, and allows you to have a multiline
+	string.
 	"""
 
 	def __init__(self, verbose=False):
 
 		"""See YAMLParser.__init__()."""
 
-		super(WcParser, self).__init__(_object=u'wc', verbose=verbose)
+		super(PythonParser, self).__init__(_object=u'python', verbose=verbose)
 
 	def parseObject(self, md, _yaml, d):
 
@@ -43,7 +52,14 @@ class WcParser(YAMLParser):
 
 		if not isinstance(d, basestring):
 			return u'Expecting a string, not "%s"' % d
-		s = open(self.getPath(d)).read().decode(u'utf-8')
-		wc = unicode(len(s.split()))
-		self.msg(u'Word count: %s words in %s' % (wc, d))
-		return md.replace(_yaml, wc)
+
+		import sys
+		from StringIO import StringIO
+		self.msg(u'Python: %s' % d)
+		buffer = StringIO()
+		sys.stdout = buffer
+		exec('#-*- coding:utf-8 -*-\n%s' % d.encode(u'utf-8'))
+		sys.stdout = sys.__stdout__
+		output = buffer.getvalue()
+		self.msg(u'Returns: %s' % output)
+		return md.replace(_yaml, output)
