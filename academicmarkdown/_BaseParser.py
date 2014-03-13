@@ -21,59 +21,62 @@ import re
 import yaml
 
 class BaseParser(object):
-	
+
 	def __init__(self, verbose=False):
-		
+
 		"""
 		Constructor.
-		
+
 		Keyword arguments:
 		verbose		--	Indicates whether verbose output should be generated.
 						(default=False)
 		"""
-		
+
 		self.verbose = verbose
-		
+
 	def parse(self, md):
-		
+
 		"""
 		Parses a MarkDown text.
-		
+
 		Arguments:
 		md		--	The Markdown text.
-		
+
 		Returns:
 		The parsed Markdown text.
 		"""
-		
+
 		raise Exception(u'BaseParser.parse() should be overridden.')
-	
+
 	def msg(self, msg):
-		
+
 		"""
 		Print output in verbose mode.
-		
+
 		Arguments:
 		msg		--	The message to print.
 		"""
-		
+
 		if self.verbose:
 			print u'[%s] %s' % (self.__class__.__name__, msg)
-			
+
 	def getPath(self, path):
-		
+
 		"""
 		Checks whether a path is present in the `srcFolder` and if so fixes it.
-		
+		URLs are accepted as valid paths.
+
 		Arguments:
 		path		--	A path.
-		
+
 		Returns:
 		A path.
 		"""
-		
+
 		import os
 		from academicmarkdown import build
+		if path.startswith(u'http://'):
+			return path
 		for buildPath in build.path:
 			_path = os.path.join(buildPath, path)
 			if os.path.exists(_path):
