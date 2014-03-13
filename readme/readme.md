@@ -122,7 +122,13 @@ Previous references will be cached automatically. To refresh, remove the file `.
 
 ## Academic Markdown extensions
 
-Academic Markdown provides certain extensions to regular Markdown, in the form of YAML blocks embedded in `%-- --%` tags.
+Academic Markdown provides certain extensions to regular Markdown, in the form of YAML blocks embedded in `%-- --%` tags. You can which, and the order in which, extensions are called by settings the `extensions` list:
+
+~~~ {.python}
+from academicmarkdown import build
+# First call the include extension, second call the figure extension
+build.extensions = [u'include', u'figure']
+~~~
 
 ### `code`: Code listings
 
