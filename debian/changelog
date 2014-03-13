@@ -1,3 +1,10 @@
+python-academicmarkdown (0.7.0-ubuntu1) saucy; urgency=low
+
+  * Add Python parser
+  * Accept URL paths
+
+ -- Sebastiaan Mathot <s.mathot@cogsci.nl>  Thu, 13 Mar 2014 18:09:50 +0100
+
 python-academicmarkdown (0.6.0-ubuntu1) saucy; urgency=low
 
   * Add word-count parser (WcParser)
