@@ -90,6 +90,7 @@ def MD(src, target=None):
 		md = fltFunc(md)
 	# Apply all extensions
 	for ext in extensions:
+		print u'Parsing with %s extension ...' % ext
 		if u'include' == ext:
 			md = IncludeParser(verbose=True).parse(md)
 		elif u'toc' == ext:
