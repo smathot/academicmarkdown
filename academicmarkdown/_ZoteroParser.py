@@ -227,7 +227,8 @@ class ZoteroParser(BaseParser):
 					item[u'doi'] = item[u'doi'][4:]
 			# Remove URL field
 			if self.removeURL:
-				if u'URL' in item.keys() and u'container-title' in item.keys():
+				if u'URL' in item.keys() and (u'container-title' in \
+					item.keys() or u'publisher' in item.keys()):
 					del item[u'URL']
 			# Convert initials to 'A.B.C.' style to avoid mixups.
 			if self.fixAuthorNames and u'author' in item:

@@ -20,34 +20,42 @@ along with zoteromarkdown.  If not, see <http://www.gnu.org/licenses/>.
 import re
 
 def autoItalics(md):
-	
+
 	"""
 	Automatically italicizes certain expressions. For example, 'p = .05',
 	becomes '*p* = .05'.
-	
+
 	Arguments:
 	md		--	A Markdown string.
-	
+
 	Returns:
 	A processed Markdown string.
 	"""
-	
-	# M, SE, SD, p, r
-	regexp = ur'(?P<key>(M|p|r|SE|SD)) *(?P<opr>[=><]) *(?P<val>-?\d*\.?\d*)'
+
+	# M, SE, SD, p, r, t
+	regexp = ur'(?P<key>(M|p|r|SE|SD|t)) *(?P<opr>[=><]) *(?P<val>-?\d*\.?\d*)'
 	for i in re.finditer(regexp, md, re.M):
 		old = i.group(0)
 		new = u'*%s* %s %s' % (i.group('key'), i.group('opr'), \
 			i.group('val'))
 		md = md.replace(old, new)
-		
-	# T tests
+
+	# T tests with degrees of freedom
 	regexp = ur't\((?P<df>\d*\.?\d*)\) *(?P<opr>[=><]) *(?P<val>-?\d*\.?\d*)'
 	for i in re.finditer(regexp, md, re.M):
 		old = i.group(0)
 		new = u'*t*(%s) %s %s' % (i.group('df'), i.group('opr'), \
 			i.group('val'))
 		md = md.replace(old, new)
-		
+
+	# Chisquare tests with degrees of freedom
+	regexp = ur'X2\((?P<df>\d*\.?\d*)\) *(?P<opr>[=><]) *(?P<val>-?\d*\.?\d*)'
+	for i in re.finditer(regexp, md, re.M):
+		old = i.group(0)
+		new = u'*Χ^2^*(%s) %s %s' % (i.group('df'), i.group('opr'), \
+			i.group('val'))
+		md = md.replace(old, new)
+
 	# F tests
 	regexp = ur'F\((?P<df1>\d*\.?\d*),(?P<df2>\d*\.?\d*)\) *(?P<opr>[=><]) *(?P<val>-?\d*\.?\d*)'
 	for i in re.finditer(regexp, md, re.M):
@@ -55,17 +63,17 @@ def autoItalics(md):
 		new = u'*F*(%s,%s) %s %s' % (i.group('df1'), i.group('df2'), \
 			i.group('opr'), i.group('val'))
 		md = md.replace(old, new)
-		
+
 	return md
 
 def magicVars(md):
-	
+
 	"""
 	Replace magic variables, such as %wc%.
-	
+
 	Arguments:
 	md		--	A Markdown string.
-	
+
 	Returns:
 	A processed Markdown string.
 	"""
@@ -73,18 +81,18 @@ def magicVars(md):
 	md = md.replace(u'%wc%', u'%s' % len(md.split()))
 	md = md.replace(u'%cc%', u'%s' % len(md))
 	return md
-	
+
 def pageBreak(md):
-	
+
 	"""
 	Converts '~' paragraphs to HTML5 page breaks.
-	
+
 	Arguments:
 	md		--	A Markdown string.
-	
+
 	Returns:
 	A processed Markdown string.
 	"""
-	
+
 	return md.replace(u'\n~\n', \
 		u'\n<div style=\'page-break-before:always;\'></div>\n')

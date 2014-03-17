@@ -1,3 +1,10 @@
+python-academicmarkdown (0.7.1-ubuntu1) saucy; urgency=low
+
+  * Also format X2(X) = X  and t = X style statistics
+  * Remove URL from book references
+
+ -- Sebastiaan Mathot <s.mathot@cogsci.nl>  Mon, 17 Mar 2014 16:26:22 +0100
+
 python-academicmarkdown (0.7.0-ubuntu1) saucy; urgency=low
 
   * Add Python parser
