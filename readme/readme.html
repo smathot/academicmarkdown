@@ -33,7 +33,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <body>
 <h1 id="academic-markdown">Academic Markdown</h1>
 <p><em>Who knew writing could be so nerdy?</em></p>
-<p>version 0.7.0</p>
+<p>version 0.7.2</p>
 <p>Copyright 2013-2014 Sebastiaan Mathôt</p>
 <h2 id="contents">Contents</h2>
 <ul>
@@ -57,6 +57,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li><a href="#figure-figures"><code>figure</code>: figures</a></li>
 <li><a href="#include-include-other-markdown-files"><code>include</code>: include other Markdown files</a></li>
 <li><a href="#python-python-code"><code>python</code>: python code</a></li>
+<li><a href="#table-table"><code>table</code>: table</a></li>
 <li><a href="#toc-table-of-contents"><code>toc</code>: table of contents</a></li>
 <li><a href="#wc-word-count"><code>wc</code>: word count</a></li>
 <li><a href="#magic-variables">Magic variables</a></li>
@@ -134,7 +135,10 @@ build.PDF(<span class="st">u'input.md'</span>, <span class="st">u'output.pdf'</s
 <h3 id="clearing-cache">Clearing cache</h3>
 <p>Previous references will be cached automatically. To refresh, remove the file <code>.zoteromarkdown.cache</code> or run your Python script with the command-line argument: <code>--clear-cache</code>.</p>
 <h2 id="academic-markdown-extensions">Academic Markdown extensions</h2>
-<p>Academic Markdown provides certain extensions to regular Markdown, in the form of YAML blocks embedded in <code>%-- --%</code> tags.</p>
+<p>Academic Markdown provides certain extensions to regular Markdown, in the form of YAML blocks embedded in <code>%-- --%</code> tags. You can which, and the order in which, extensions are called by settings the <code>extensions</code> list:</p>
+<pre class="sourceCode python"><code class="sourceCode python"><span class="ch">from</span> academicmarkdown <span class="ch">import</span> build
+<span class="co"># First call the include extension, second call the figure extension</span>
+build.extensions = [<span class="st">u'include'</span>, <span class="st">u'figure'</span>]</code></pre>
 <h3 id="code-code-listings"><code>code</code>: Code listings</h3>
 <p>The <code>code</code> blocks embeds a code listing in the text, quite to similar to the <code>figure</code> block.</p>
 <pre><code>    %--
@@ -170,6 +174,9 @@ build.PDF(<span class="st">u'input.md'</span>, <span class="st">u'output.pdf'</s
      print inspect.getdoc(PythonParser)
     --%</code></pre>
 <p>Note that the <code>|</code> symbol is YAML syntax, and allows you to have a multiline string.</p>
+<h3 id="table-table"><code>table</code>: table</h3>
+<p>The <code>table</code> block reads a table from a <code>.csv</code> file and embed it into the document. The source file needs to be a utf-8 encoded file that is comma separated and double quoted.</p>
+<p>%– table: id: MyTable source: my_table.csv caption: “My table caption.” ndigits: 4 –%</p>
 <h3 id="toc-table-of-contents"><code>toc</code>: table of contents</h3>
 <p>The <code>toc</code> block automatically generates a table of contents from the headings, assuming that headings are indicated using the <code>#</code> style and not the underlining style. You can indicate headings to be excluded from the table of contents as well.</p>
 <pre><code>    %--
@@ -254,8 +261,8 @@ preMarkdownFilters = []
 postMarkdownFilters = [<span class="st">u'autoItalics'</span>, <span class="st">u'pageBreak'</span>, <span class="st">u'magicVars'</span>]
 
 <span class="co"># A list of extensions that are enabled.</span>
-extensions = [<span class="st">u'figure'</span>, <span class="st">u'exec'</span>, <span class="st">u'include'</span>, <span class="st">u'toc'</span>, <span class="st">u'code'</span>, <span class="st">u'wc'</span>, \
-    <span class="co">u'video'</span>, <span class="st">u'table'</span>, <span class="st">u'python'</span>]
+extensions = [<span class="st">u'include'</span>, <span class="st">u'exec'</span>, <span class="st">u'python'</span>, <span class="st">u'toc'</span>, <span class="st">u'code'</span>, <span class="st">u'video'</span>, \
+    <span class="co">u'table'</span>, <span class="st">u'figure'</span>, <span class="st">u'wc'</span>]
 
 <span class="co"># The page margins</span>
 pdfMargins = <span class="dv">30</span>, <span class="dv">20</span>, <span class="dv">30</span>, <span class="dv">20</span>
@@ -266,5 +273,8 @@ pdfSpacing = <span class="dv">10</span>, <span class="dv">10</span>
 <span class="co"># Header and footer text</span>
 pdfHeader = <span class="st">u'</span><span class="ot">%s</span><span class="st">ection%'</span>
 pdfFooter = <span class="st">u'%page</span><span class="ot">% o</span><span class="st">f %topage%'</span></code></pre>
+<div class="references">
+
+</div>
 </body>
 </html>

@@ -1,3 +1,10 @@
+python-academicmarkdown (0.7.2-ubuntu1) saucy; urgency=low
+
+  * Fix and guess year in ZoteroParser
+  * Implement pandoc-style table
+
+ -- Sebastiaan Mathot <s.mathot@cogsci.nl>  Wed, 19 Mar 2014 15:22:28 +0100
+
 python-academicmarkdown (0.7.1-ubuntu1) saucy; urgency=low
 
   * Also format X2(X) = X  and t = X style statistics

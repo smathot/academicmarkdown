@@ -30,6 +30,18 @@ u'kramdown':  u"""
 %(table)s
 
 __Table %(nTbl)d.__ %(caption)s\n{: .tbl-caption #%(id)s}
+""",
+u'pandoc':  u"""
+
+<div class='table'>
+
+<span class='header'>Table %(nTbl)d</span>
+
+<span class='caption'>%(caption)s</span>
+
+%(table)s
+
+</div>
 """}
 
 
@@ -45,10 +57,12 @@ class TableParser(YAMLParser):
 	 id: MyTable
 	 source: my_table.csv
 	 caption: "My table caption."
+	 ndigits: 4
 	--%
 	"""
 
-	def __init__(self, style=u'inline', template=u'html5', verbose=False):
+	def __init__(self, style=u'inline', template=u'html5', verbose= \
+		False):
 
 		"""
 		Constructor.
@@ -85,13 +99,48 @@ class TableParser(YAMLParser):
 		d[u'source'] = self.getPath(d[u'source'])
 		if u'caption' not in d:
 			d[u'caption'] = u''
+		if u'ndigits' not in d:
+			d[u'ndigits'] = 4
 		# Read table and turn it into a kramdown-style table
 		s = u''
 		import csv
+		i = 0
 		with open(d[u'source'], u'rb') as csvFile:
 			csvReader = csv.reader(csvFile, delimiter=',', quotechar='"')
 			for row in csvReader:
-				s += (u'|' + u'|'.join(row) + u'|\n').decode(u'utf-8')
+				# Pandoc requires a row of alignment indicators below the
+				# header. See also:
+				# - <http://johnmacfarlane.net/pandoc/README.html#tables>
+				if self.template == u'pandoc':
+					if i == 1:
+						alignList = []
+						for col in row:
+							try:
+								float(col)
+								alignList.append(u'--:')
+							except:
+								alignList.append(u':--')
+						s += (u'|' + u'|'.join(alignList) + u'|\n')
+				_row = []
+				for col in row:
+					try:
+						# If a value is numeric, we need to round it. If the
+						# rounde value is 0, we indicated this with a smaller
+						# than sign.
+						float(col)
+						col = round(float(col), d[u'ndigits'])
+						if col == 0:
+							col = u'< 0.' + u'0'*(d[u'ndigits']-1) + u'1'
+						else:
+							# Use a somethat convoluted string formatting
+							# operation to make sure that we don't lose trailing
+							# zeros.
+							col = (u'%%.%df' % d[u'ndigits']) % col
+						_row.append(col)
+					except:
+						_row.append(col)
+				s += (u'|' + u'|'.join(_row) + u'|\n').decode(u'utf-8')
+				i += 1
 		d[u'table'] = s
 		tbl = tableTemplate[self.template] % d
 		# Insert/ append table into document

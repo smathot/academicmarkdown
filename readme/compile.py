@@ -21,11 +21,11 @@ along with academicmarkdown.  If not, see <http://www.gnu.org/licenses/>.
 from academicmarkdown import build
 build.extensions = [u'toc', u'exec', u'code', u'python']
 build.path.append('..')
-build.css = '../styles/modern/html5.css'
+build.css = 'styles/modern/html5.css'
 build.postMarkdownFilters = []
 build.TOCAppendHeaderRefs = True
-build.PDF(u'readme.md', u'readme.pdf')
-build.HTML(u'readme.md', u'readme.html')
-build.MD(u'readme.md', u'../readme.md')
+build.PDF(u'readme/readme.md', u'readme/readme.pdf')
+build.HTML(u'readme/readme.md', u'readme/readme.html')
+build.MD(u'readme/readme.md', u'readme.md')
 #build.ODT(u'readme.md', u'readme/readme.odt')
 #build.DOCX(u'readme.md', u'readme/readme.docx')

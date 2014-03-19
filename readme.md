@@ -2,7 +2,7 @@
 
 *Who knew writing could be so nerdy?*
 
-version 0.7.0
+version 0.7.2
 
 
 Copyright 2013-2014 Sebastiaan Mathôt
@@ -27,6 +27,7 @@ Copyright 2013-2014 Sebastiaan Mathôt
 	- [`figure`: figures](#figure-figures)
 	- [`include`: include other Markdown files](#include-include-other-markdown-files)
 	- [`python`: python code](#python-python-code)
+	- [`table`: table](#table-table)
 	- [`toc`: table of contents](#toc-table-of-contents)
 	- [`wc`: word count](#wc-word-count)
 	- [Magic variables](#magic-variables)
@@ -143,7 +144,13 @@ Previous references will be cached automatically. To refresh, remove the file `.
 
 ## Academic Markdown extensions
 
-Academic Markdown provides certain extensions to regular Markdown, in the form of YAML blocks embedded in `%-- --%` tags.
+Academic Markdown provides certain extensions to regular Markdown, in the form of YAML blocks embedded in `%-- --%` tags. You can which, and the order in which, extensions are called by settings the `extensions` list:
+
+~~~ {.python}
+from academicmarkdown import build
+# First call the include extension, second call the figure extension
+build.extensions = [u'include', u'figure']
+~~~
 
 ### `code`: Code listings
 
@@ -210,6 +217,21 @@ now):
 
 Note that the `|` symbol is YAML syntax, and allows you to have a multiline
 string.
+
+
+### `table`: table
+
+The `table` block reads a table from a `.csv` file and embed it into the
+document. The source file needs to be a utf-8 encoded file that is
+comma separated and double quoted.
+
+%--
+table:
+ id: MyTable
+ source: my_table.csv
+ caption: "My table caption."
+ ndigits: 4
+--%
 
 
 ### `toc`: table of contents
@@ -316,8 +338,8 @@ preMarkdownFilters = []
 postMarkdownFilters = [u'autoItalics', u'pageBreak', u'magicVars']
 
 # A list of extensions that are enabled.
-extensions = [u'figure', u'exec', u'include', u'toc', u'code', u'wc', \
-	u'video', u'table', u'python']
+extensions = [u'include', u'exec', u'python', u'toc', u'code', u'video', \
+	u'table', u'figure', u'wc']
 
 # The page margins
 pdfMargins = 30, 20, 30, 20
@@ -353,6 +375,7 @@ pdfFooter = u'%page% of %topage%'
 [`figure`: figures]: #figure-figures
 [`include`: include other Markdown files]: #include-include-other-markdown-files
 [`python`: python code]: #python-python-code
+[`table`: table]: #table-table
 [`toc`: table of contents]: #toc-table-of-contents
 [`wc`: word count]: #wc-word-count
 [Magic variables]: #magic-variables

@@ -175,6 +175,15 @@ python: |
  print inspect.getdoc(PythonParser)
 --%
 
+### `table`: table
+
+%--
+python: |
+ import inspect
+ from academicmarkdown import TableParser
+ print inspect.getdoc(TableParser)
+--%
+
 ### `toc`: table of contents
 
 %--

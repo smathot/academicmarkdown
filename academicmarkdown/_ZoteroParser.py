@@ -103,6 +103,29 @@ class ZoteroParser(BaseParser):
 		self.zotero = zotero.Zotero(self.libraryId, self.libraryType, \
 			self.apiKey)
 
+	def getYear(self, s):
+
+		"""
+		Extracts the year from a string in a clever way.
+
+		Arguments:
+		s	--	A string.
+
+		Returns:
+		A best guess of the year.
+		"""
+
+		try:
+			from dateutil import parser
+		except:
+			self.msg(u'dateutil is not available to guess the year.')
+			return s
+		try:
+			return parser.parse(s).year
+		except:
+			self.msg(u'failed to parse date %s' % s)
+			return s
+
 	def parse(self, md):
 
 		"""
@@ -220,11 +243,23 @@ class ZoteroParser(BaseParser):
 						item and term in item[u'container-title'].lower()):
 						match = False
 						break
-			# Fix capitalized dois
-			if self.fixDOI and u'DOI' in item:
-				item[u'doi'] = item[u'DOI']
-				if item[u'doi'].startswith(u'doi:'):
-					item[u'doi'] = item[u'doi'][4:]
+			# Sometimes, the year of publication is stored as issued.raw,
+			# instead of issued.year. Fix this, if this is the case. We need to
+			# explictly remove the 'raw' entry as well.
+			if u'issued' in item and u'year' not in item[u'issued']:
+				if u'raw' in item[u'issued']:
+					item[u'issued'][u'year'] = self.getYear(item[u'issued'][ \
+						u'raw'])
+				else:
+					item[u'issued'][u'year'] = u'date unknown'
+			# Fix capitalized DOIs and warn about missing DOIs.
+			if self.fixDOI:
+				if u'DOI' in item:
+					item[u'doi'] = item[u'DOI']
+					if item[u'doi'].startswith(u'doi:'):
+						item[u'doi'] = item[u'doi'][4:]
+				if u'doi' not in item:
+					self.msg('Missing DOI: %s' % item[u'title'])
 			# Remove URL field
 			if self.removeURL:
 				if u'URL' in item.keys() and (u'container-title' in \

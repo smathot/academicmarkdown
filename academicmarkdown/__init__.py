@@ -17,7 +17,7 @@ You should have received a copy of the GNU General Public License
 along with zoteromarkdown.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-version = u'0.7.1'
+version = u'0.7.2'
 
 from _BaseParser import BaseParser
 from _YAMLParser import YAMLParser

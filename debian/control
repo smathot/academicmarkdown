@@ -13,7 +13,8 @@ Package: python-academicmarkdown
 Architecture: all
 XB-Python-Version: ${python:Versions}
 Depends: ${misc:Depends}, ${python:Depends}
-Recommends: zotero-standalone, pandoc, wkhtmltopdf, python-pyzotero, unoconv
+Recommends: zotero-standalone, pandoc, wkhtmltopdf, python-pyzotero, unoconv,
+  python-dateutil
 Description: A Python package for generating scientific documents using
   Markdown.
 
