@@ -201,4 +201,36 @@ def DOCX(src, target):
 	pd.docx(md, target, docxRef=docxRef)
 	figureTemplate = tmp
 
+def setStyle(style):
 
+	"""
+	Automatically sets a style.
+
+	Arguments:
+	style		--	The style name.
+	"""
+
+	global css, csl, html5Ref, odtRef, docxRef
+	moduleFolder = os.path.dirname(__file__).decode(sys.getfilesystemencoding())
+	if os.path.exists(style):
+		stylePath = style
+	elif os.path.exists(os.path.join(moduleFolder, u'styles', style)):
+		stylePath = os.path.join(moduleFolder, u'styles', style)
+	else:
+		raise Exception(u'There is no style folder named "%s"' % style)
+	print u'Using style folder: %s' % stylePath
+	css = os.path.join(stylePath, u'stylesheet.css')
+	if not os.path.exists(css):
+		css = None
+	csl = os.path.join(stylePath, u'citation-style.csl')
+	if not os.path.exists(csl):
+		csl = None
+	html5Ref = os.path.join(stylePath, u'template.html')
+	if not os.path.exists(html5Ref):
+		html5Ref = None
+	odtRef = os.path.join(stylePath, u'reference.odt')
+	if not os.path.exists(odtRef):
+		odtRef = None
+	docxRef = os.path.join(stylePath, u'reference.docx')
+	if not os.path.exists(docxRef):
+		docxRef = None
