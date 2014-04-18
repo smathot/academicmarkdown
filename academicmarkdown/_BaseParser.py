@@ -58,7 +58,8 @@ class BaseParser(object):
 		"""
 
 		if self.verbose:
-			print u'[%s] %s' % (self.__class__.__name__, msg)
+			print((u'[%s] %s' % (self.__class__.__name__, msg)).encode( \
+				u'ascii', u'ignore'))
 
 	def getPath(self, path):
 
