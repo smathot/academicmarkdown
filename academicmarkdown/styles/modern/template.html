@@ -1,0 +1,61 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="generator" content="pandoc" />
+$for(author-meta)$
+  <meta name="author" content="$author-meta$" />
+$endfor$
+$if(date-meta)$
+  <meta name="date" content="$date-meta$" />
+$endif$
+  <title>$if(title-prefix)$$title-prefix$ - $endif$$pagetitle$</title>
+  <style type="text/css">code{white-space: pre;}</style>
+$if(quotes)$
+  <style type="text/css">q { quotes: "“" "”" "‘" "’"; }</style>
+$endif$
+$if(highlighting-css)$
+  <style type="text/css">
+$highlighting-css$
+  </style>
+$endif$
+$for(css)$
+  <link rel="stylesheet" href="$css$" $if(html5)$$else$type="text/css" $endif$/>
+$endfor$
+$if(math)$
+  $math$
+$endif$
+$for(header-includes)$
+  $header-includes$
+$endfor$
+</head>
+
+<body>
+
+$if(title)$
+<section id="titlepage">
+
+	$if(correspondence)$
+	<p class="correspondence">$correspondence$</p>
+	$endif$
+
+	<h1 class="title">$title$</h1>
+
+	$for(author)$
+	<p class="author">$author$</p>
+	$endfor$
+
+	$for(affiliation)$
+	<p class="affiliation">$affiliation$</p>
+	$endfor$
+
+</section>
+$endif$
+
+
+$body$
+$for(include-after)$
+$include-after$
+$endfor$
+</body>
+</html>

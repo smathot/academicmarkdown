@@ -1,0 +1,140 @@
+* {
+	font-family: "Arial";
+	font-size: 10.5pt;
+	line-height: 200%;
+	text-align: justify;
+}
+
+p {
+}
+
+a {
+	color: #204a87;
+	text-decoration: none;
+}
+
+a, em, strong {
+	font-size: 1em;
+	font-family: inherit;
+}
+
+em, strong {
+	color: inherit;
+}
+
+code {
+	font-family: 'Courier New';
+}
+
+sup {
+	font-size: 0.7em;
+}
+
+h1 {
+	text-align: left;
+	font-size: 1.2em;
+	font-weight: bold;
+	color: #204a87;
+}
+
+h2 {
+	font-weight: bold;
+	font-style: normal;
+}
+
+h3 {
+	font-weight: normal;
+	font-style: italic;
+}
+
+h1, h2, h2 {
+	page-break-after: avoid;
+}
+
+
+#titlepage {
+	margin-bottom: 50px;
+}
+
+.correspondence {
+	margin-bottom: 50px;
+}
+
+figcaption strong {
+	color: #204a87;
+}
+
+figure {
+	display: table;
+	margin-bottom: 25px;
+	margin-left: 0px;
+	page-break-inside: avoid;
+	caption-side: bottom;
+	width: 100%;
+}
+
+figure img {
+}
+
+figure figcaption {
+	display: table-caption;
+	font-style: italic;
+	font-size: 0.9em;
+	width: 100%;
+}
+
+.citation {
+	color: #204a87;
+}
+
+.references p {
+	text-align: left;
+	text-indent: -25px;
+	margin-left: 25px;
+}
+
+.footer, .header {
+	text-align: right;
+	font-size: 0.8em;
+}
+
+.footer span, .header span {
+	font-size: 1em;
+}
+
+.table {
+	margin: 25px 0px 25px 0px;
+	page-break-inside: avoid;
+}
+
+.table table th {
+	border-top: solid 1px;
+	border-bottom: solid 1px;
+	font-style: normal;
+	font-weight: bold;
+	font-size: 1em;
+}
+
+.table table {
+	width: 100%;
+	border-collapse: collapse;
+	padding: 0px;
+}
+
+.table p {
+	text-indent: 0px;
+}
+
+.table .table-id {
+	color: #204a87;
+	font-size: 0.9em;
+}
+
+.table table td {
+	font-size: 0.9em;
+}
+
+.table .caption {
+	font-style: italic;
+	font-size: 0.9em;
+}
