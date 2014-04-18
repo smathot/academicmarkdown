@@ -33,7 +33,7 @@ figureTemplate = {
 u'jekyll':  u"""
 ![%(source)s](%(source)s)
 
-__Figure %(nFig)d.__ %(caption)s\n{: .fig-caption #%(id)s}
+__Figure %(nFig)d.__ %(caption)s\n{: .fig-caption #%(id)s}\n
 """,
 	u'odt': u"""
 ![__Figure %(nFig)d.__ %(caption)s](%(source)s)
@@ -128,6 +128,8 @@ class FigureParser(YAMLParser):
 
 		if u'caption' not in d:
 			d[u'caption'] = u''
+		d[u'caption'] = d[u'caption'].replace(u'"', u'&quot;').replace(u'\'', \
+			u'&#39;').strip()
 		if u'width' not in d:
 			d[u'width'] = 100
 		img = figureTemplate[self.template] % d
