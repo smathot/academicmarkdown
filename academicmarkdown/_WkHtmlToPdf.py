@@ -45,14 +45,14 @@ function subst() {
 </body></html>"""
 
 class WkHtmlToPdf(BaseParser):
-	
+
 	def __init__(self, css=None, fix00=True, margins=(20, 20, 30, 20), \
 		spacing=(10, 10), header=None, footer=u'%page% / %topage%', \
 		verbose=False):
-		
+
 		"""
 		Constructor.
-		
+
 		Keyword arguments:
 		css			--	A path to a css stylesheet or None. (default=None)
 		fix00		--	Indicates whether #00 corruptions should be fixed.
@@ -73,21 +73,21 @@ class WkHtmlToPdf(BaseParser):
 		self.header = header
 		self.footer = footer
 		super(WkHtmlToPdf, self).__init__(verbose=verbose)
-		
+
 	def createFeader(self, s, cssClass):
-		
+
 		"""
 		Builds a header or footer html file.
-		
+
 		Arguments:
 		s			--	The contents for the header/ footer.
 		cssClass	--	The css class to be used for the div containing the
 						contents.
-						
+
 		Returns:
 		An HTML string containing the header/ footer.
 		"""
-		
+
 		regEx = ur'%(?P<var>[a-z]+)%'
 		for r in re.finditer(regEx, s):
 			s = s.replace(u'%%%s%%' % r.group('var'), \
@@ -101,11 +101,11 @@ class WkHtmlToPdf(BaseParser):
 			feader = feader.replace(u'%css%', u'')
 		feader = feader.replace(u'%class%', cssClass)
 		return feader
-		
+
 	def parse(self, html, target):
-		
+
 		"""See BaseParser.parse()."""
-		
+
 		self.msg(u'Invoking wkhtmltopdf')
 		cmd = u'wkhtmltopdf -T %s -R %s -B %s -L %s' % self.margins
 		if self.header != None:
@@ -117,7 +117,7 @@ class WkHtmlToPdf(BaseParser):
 			open('.footer.html', 'w').write(self.createFeader(self.footer, \
 				u'footer').encode(u'utf-8'))
 			cmd += u' --footer-html .footer.html --footer-spacing %s' % \
-				self.spacing[1]		
+				self.spacing[1]
 		cmd += u' %s "%s"' % (html, target)
 		self.msg(cmd)
 		subprocess.call(shlex.split(cmd.encode(u'utf-8')))
@@ -134,4 +134,3 @@ class WkHtmlToPdf(BaseParser):
 				self.msg(u'Fixing #00!')
 				pdf = pdf.replace('#00', '#01')
 				open(target, u'w').write(pdf)
-	

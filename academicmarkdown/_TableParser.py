@@ -35,7 +35,7 @@ u'pandoc':  u"""
 
 <div class='table'>
 
-<span class='header'>Table %(nTbl)d</span>
+<span class='table-id'>Table %(nTbl)d</span>
 
 <span class='caption'>%(caption)s</span>
 
