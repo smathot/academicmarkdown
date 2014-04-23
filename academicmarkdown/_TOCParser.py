@@ -60,6 +60,7 @@ class TOCParser(YAMLParser):
 
 		self.anchorHeaders = anchorHeaders
 		self.appendHeaderRefs = appendHeaderRefs
+		self._uniqueId = u''
 		super(TOCParser, self).__init__(_object=u'toc', verbose=verbose)
 
 	def parseObject(self, md, _yaml, d):
@@ -129,4 +130,18 @@ class TOCParser(YAMLParser):
 				_id += ch.lower()
 			elif ch.isspace() and len(_id) > 0 and _id[-1] != u'-':
 				_id += u'-'
-		return _id.strip(u'-.')
+		_id = _id.strip(u'-.')
+		# Make sure that the ID is not empty and starts with a letter
+		if len(_id) == 0 or not _id[0].isalpha():
+			_id = self.uniqueId() + _id
+		return _id
+
+	def uniqueId(self):
+
+		"""
+		Returns:
+		A unique letter id.
+		"""
+
+		self._uniqueId += u'a'
+		return self._uniqueId
