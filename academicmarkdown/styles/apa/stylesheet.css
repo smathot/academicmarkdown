@@ -1,0 +1,168 @@
+* {
+	font-family: "Times New Roman";
+	font-size: 12pt;
+	line-height: 200%;
+	text-align: left;
+	margin: 0px;
+}
+
+p {
+	text-indent: 32px;
+}
+
+a {
+	text-decoration: none;
+}
+
+a, em, strong {
+	font-size: 1em;
+	font-family: inherit;
+}
+
+em, strong {
+	color: inherit;
+}
+
+code {
+	font-family: 'Courier New';
+	white-space: pre-wrap;
+}
+
+sup {
+	font-size: 0.7em;
+}
+
+h1 {
+	text-align: center;
+	font-size: 1.0em;
+	font-weight: normal;
+}
+
+h1, h2, h3 {
+	page-break-after: avoid;
+	margin: 15px 0px 5px 0px;
+}
+
+h2 {
+	font-weight: normal;
+	font-size: 1.0em;
+	font-style: italic;
+}
+
+h3 {
+	font-weight: normal;
+	font-size: 1.0em;
+	font-style: italic;
+	text-indent: 32px;
+}
+
+#titlepage .title,
+#titlepage .correspondence,
+#titlepage .authornote,
+#titlepage .author,
+#titlepage .affiliation p {
+	text-align: center!important;
+	text-indent: 0px!important;
+}
+
+#titlepage .authornote {
+	margin-top: 32px;
+}
+
+#titlepage .authornote p,
+#titlepage .correspondence p {
+	text-indent: 0px!important;
+}
+
+#titlepage .runninghead {
+	text-indent: 0px!important;
+	margin-bottom: 32px;
+}
+
+#titlepage .affiliation,
+#titlepage .title {
+	margin-bottom: 100px;
+}
+
+#titlepage .author {
+	margin-bottom: 25px;
+}
+
+figcaption strong {
+	color: #204a87;
+}
+
+figure {
+	display: table;
+	margin: 25px 0px 25px 0px;
+	page-break-inside: avoid;
+	caption-side: bottom;
+	width: 100%;
+}
+
+figure img {
+}
+
+figure figcaption {
+	display: table-caption;
+	font-style: italic;
+	font-size: 0.9em;
+	width: 100%;
+}
+
+a,
+.citation {
+	color: #204a87;
+}
+
+.references p {
+	text-align: left;
+	text-indent: -25px;
+	margin-left: 25px;
+}
+
+.footer, .header {
+	text-align: right;
+	font-size: 0.8em;
+}
+
+.footer span, .header span {
+	font-size: 1em;
+}
+
+.table {
+	margin: 25px 0px 25px 0px;
+	page-break-inside: avoid;
+}
+
+.table table th {
+	border-top: solid 1px;
+	border-bottom: solid 1px;
+	font-style: normal;
+	font-weight: bold;
+	font-size: 1em;
+}
+
+.table table {
+	width: 100%;
+	border-collapse: collapse;
+	padding: 0px;
+}
+
+.table p {
+	text-indent: 0px;
+}
+
+.table .table-id {
+	color: #204a87;
+	font-size: 0.9em;
+}
+
+.table table td {
+	font-size: 0.9em;
+}
+
+.table .caption {
+	font-style: italic;
+	font-size: 0.9em;
+}

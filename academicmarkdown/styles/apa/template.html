@@ -32,38 +32,47 @@ $endfor$
 
 <body>
 
-$for(include-before)$
-$include-before$
-$endfor$
 $if(title)$
 <section id="titlepage">
-<div class="title">$title$</div>
-$if(subtitle)$
-<div class="subtitle">$subtitle$</div>
-$endif$
-$for(author)$
-<div class="author">$author$</div>
-$endfor$
-$for(affiliation)$
-<div class="affiliation">$affiliation$</div>
-$endfor$
-$if(date)$
-<div class="date">$date$</div>
-$endif$
-$if(correspondence)$
-<div class="correspondence">$correspondence$</div>
-$endif$
+
+	$if(runninghead)$
+	<p class="runninghead">Running head: $runninghead$</p>
+	$endif$
+
+	<h1 class="title">$title$</h1>
+
+	$for(author)$
+	<p class="author">$author$</p>
+	$endfor$
+
+	$if(affiliation)$
+	<div class="affiliation">
+	$for(affiliation)$
+	<p>$affiliation$</p>
+	$endfor$
+	</div>
+	$endif$
+
+	$if(correspondence)$
+	<div class="correspondence">
+	<p>Address for correspondence:</p>
+	$for(correspondence)$
+	<p>$correspondence$</p>
+	$endfor$
+	</div>
+	$endif$
+
+	$if(authornote)$
+	<div class="authornote">
+	<p>Author note:</p>
+	<p>$authornote$</p>
+	</div>
+	$endif$
+
 </section>
 $endif$
-$if(toc)$
-<div id="$idprefix$TOC">
-$toc$
-</div>
-$endif$
 
-$if(abstract)$
-<section id='abstract'><strong>Abstract</strong> $abstract$</section>
-$endif$
+<div style='page-break-before:always;'></div>
 
 $body$
 $for(include-after)$
