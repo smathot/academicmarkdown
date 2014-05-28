@@ -208,6 +208,7 @@ Magic variables are automatically replaced by certain values, and are indicated 
 
 - `%wc%`: Word count
 - `%cc%`: Character count
+- `%rc%`: Reference count
 
 ## License
 

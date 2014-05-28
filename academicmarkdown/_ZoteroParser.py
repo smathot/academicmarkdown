@@ -84,6 +84,7 @@ class ZoteroParser(BaseParser):
 		self.fixDOI = fixDOI
 		self.fixAuthorNames = fixAuthorNames
 		self.removeURL = removeURL
+		self.refCount = 0
 		if not os.path.exists(self.cachePath) or clearCache:
 			self.cache = {}
 		else:
@@ -143,10 +144,12 @@ class ZoteroParser(BaseParser):
 		oldQueries = []
 		regexp =  ur'@([^ ?!,.\t\n\r\f\v\]\[;]+)'
 		for r in re.finditer(regexp, md):
-			queryString = r.groups()[0]
-			self.msg(u'Found citation "%s"' % queryString)
+			queryString = r.groups()[0]			
+			self.msg(u'Found citation (#%d) "%s"' % (self.refCount,
+				queryString))
 			if queryString in oldQueries:
 				continue
+			self.refCount += 1
 			matches = self.bestMatch(queryString)
 			if len(matches) == 0:
 				self.msg(u'No matches for "%s"!' % queryString)
@@ -174,6 +177,7 @@ class ZoteroParser(BaseParser):
 		fd.close()
 		if self.headerText == None or self.headerLevel == None:
 			return md
+		md = md.replace(u'%rc%', unicode(self.refCount))
 		return md + u'\n\n%s %s\n\n' % (u'#' * self.headerLevel, \
 			self.headerText)
 
