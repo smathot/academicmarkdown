@@ -15,6 +15,11 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with zoteromarkdown.  If not, see <http://www.gnu.org/licenses/>.
+
+---
+desc:
+	Contains functions to build documents from Markdown source.
+---
 """
 
 import os
@@ -23,25 +28,42 @@ import shlex
 import subprocess
 from academicmarkdown import FigureParser, Pandoc, ZoteroParser, ODTFixer, \
 	ExecParser, IncludeParser, TOCParser, HTMLFilter, MDFilter, WkHtmlToPdf, \
-	CodeParser, WcParser, VideoParser, TableParser, PythonParser, constants
+	CodeParser, WcParser, VideoParser, TableParser, PythonParser, \
+	tools, ConstantParser
 from academicmarkdown.constants import *
 
 def HTML(src, target=None, standalone=True):
 
 	"""
-	Builds an HTML file from a Markdown source.
+	desc: |
+		Builds an HTML file from a Markdown source.
 
-	Arguments:
-	src			--	Markdown source file. Should be in utf-8 encoding.
+		%--
+		constant:
+			arg_src:
+				The Markdown source. If it is a path to an existing file, the
+				contents of this file are read. Otherwise, the string itself
+				it used. Should be in utf-8 encoding.
+		--%
 
-	Keyword arguments:
-	target		--	HTML target file or None to skip saving. (default=None)
-	standalone	--	Indicates whether a full HTML5 document should be generated,
+	arguments:
+		src:
+			desc:	"%arg_src"
+			type:	[str, unicode]
+
+	keywords:
+		target:
+			desc:	The name of an HTML target file or None to skip saving.
+			type:	[str, unicode, NoneType]
+		standalone:
+			desc:	Indicates whether a full HTML5 document should be generated,
 					which embeds all content, or whether the document should
-					be rendered without <head> and <body> tags, etc.
+					be rendered without `<head>` and `<body>` tags, etc.
+			type:	bool
 
-	Returns:
-	The HTML file as a unicode string.
+	returns:
+		desc:		The HTML file as a unicode string.
+		type:		unicode
 	"""
 
 	md = MD(src)
@@ -64,18 +86,22 @@ def HTML(src, target=None, standalone=True):
 def MD(src, target=None):
 
 	"""
-	Builds a Markdown file from a Markdown source.
+	desc:
+		Builds a Markdown file from a Markdown source.
 
-	Arguments:
-	src		--	Markdown source file. Should be in utf-8 encoding. If the file
-				does not exist, it is interpreted as a Markdown string.
+	arguments:
+		src:
+			desc:	"%arg_src"
+			type:	[str, unicode]
 
-	Keyword arguments:
-	target			--	Markdown target file or None to skip saving.
-						(default=None)
+	keywords:
+		target:
+			desc: 	The name of a Markdown target file or None to skip saving.
+			type:	[str, unicode, NoneType]
 
-	Returns:
-	The compiled Markdown file as a unicode string.
+	returns:
+		desc:		The compiled Markdown file as a unicode string.
+		type:		unicode
 	"""
 
 	if os.path.exists(src):
@@ -113,6 +139,8 @@ def MD(src, target=None):
 			md = ExecParser(verbose=True).parse(md)
 		elif u'python' == ext:
 			md = PythonParser(verbose=True).parse(md)
+		elif u'constant' == ext:
+			md = ConstantParser(verbose=True).parse(md)
 		else:
 			raise Exception(u'Unknown Academic Markdown extension: %s' % ext)
 	# Parse Zotero references
@@ -129,30 +157,53 @@ def MD(src, target=None):
 		open(target, u'w').write(md.encode(u'utf-8'))
 	return md
 
-def PDF(src, target):
+def PDF(src, target, lineNumbers=False):
 
 	"""
-	Builds a PDF file from a Markdown source.
+	desc:
+		Builds a PDF file from a Markdown source.
 
-	Arguments:
-	src					--	Markdown source file. Should be in utf-8 encoding.
-	target				--	HTML target file.
+	arguments:
+		src:
+			desc:	"%arg_src"
+			type:	[str, unicode]
+		target:
+			desc:	The name of a PDF target file.
+			type:	[str, unicode]
+
+	keywords:
+		lineNumbers:
+			desc:	Determines whether line numbers should be added. This is
+					currently quite a complicated process, which may break.
+			type:	bool
 	"""
 
 	print u'Building %s from %s ...' % (target, src)
 	HTML(src, u'.tmp.html')
 	wk = WkHtmlToPdf(css=css, margins=pdfMargins, spacing=pdfSpacing, \
 		header=pdfHeader, footer=pdfFooter, verbose=True)
-	wk.parse(u'.tmp.html', target)
+	if lineNumbers:
+		_target = u'.tmp.pdf'
+	else:
+		_target = target
+	wk.parse(u'.tmp.html', _target)
+	if lineNumbers:
+		tools.addLineNumbersToPDF(_target, target)
+		os.remove(_target)
 
 def ODT(src, target):
 
 	"""
-	Builds an ODT file from a Markdown source.
+	desc:
+		Builds an ODT file from a Markdown source.
 
-	Arguments:
-	src		--	Markdown source file. Should be in utf-8 encoding.
-	target	--	ODT target file.
+	arguments:
+		src:
+			desc:	"%arg_src"
+			type:	[str, unicode]
+		target:
+			desc:	The name of an ODT target file.
+			type:	[str, unicode]
 	"""
 
 	global figureTemplate
@@ -167,11 +218,16 @@ def ODT(src, target):
 def DOC(src, target):
 
 	"""
-	Builds a DOC file from a Markdown source.
+	desc:
+		Builds a DOC file from a Markdown source.
 
-	Arguments:
-	src		--	Markdown source file. Should be in utf-8 encoding.
-	target	--	DOCX target file.
+	arguments:
+		src:
+			desc:	"%arg_src"
+			type:	[str, unicode]
+		target:
+			desc:	The name of a DOC target file.
+			type:	[str, unicode]
 	"""
 
 	# Since pandoc doesn't support DOC output, we convert first to ODT and from
@@ -186,11 +242,16 @@ def DOC(src, target):
 def DOCX(src, target):
 
 	"""
-	Builds a DOCX file from a Markdown source.
+	desc:
+		Builds a DOCX file from a Markdown source.
 
-	Arguments:
-	src		--	Markdown source file. Should be in utf-8 encoding.
-	target	--	DOCX target file.
+	arguments:
+		src:
+			desc:	"%arg_src"
+			type:	[str, unicode]
+		target:
+			desc:	The name of a DOCX target file.
+			type:	[str, unicode]
 	"""
 
 	global figureTemplate
@@ -204,10 +265,15 @@ def DOCX(src, target):
 def setStyle(style):
 
 	"""
-	Automatically sets a style.
+	desc:
+		Automatically sets a style.
 
-	Arguments:
-	style		--	The style name.
+	arguments:
+		style:
+			desc:	The style name. This should be the name of a folder that
+					contains style files. See the `academicmarkdown\styles`
+					subfolder for examples.
+			type:	[str, unicode]
 	"""
 
 	global css, csl, html5Ref, odtRef, docxRef

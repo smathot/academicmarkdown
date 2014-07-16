@@ -38,8 +38,8 @@ class TOCParser(YAMLParser):
 	All attributes are optional.
 	"""
 
-	def __init__(self, anchorHeaders=False, appendHeaderRefs=False, verbose= \
-		False):
+	def __init__(self, anchorHeaders=False, appendHeaderRefs=False,
+		verbose=False):
 
 		"""
 		Constructor.
@@ -75,7 +75,14 @@ class TOCParser(YAMLParser):
 			d[u'mindepth'] = 1
 		headers = []
 		appends = []
-		for i in re.finditer(r'^#(.*)', md, re.M):
+		# Because script can have hashtags as code comments, we should ignore
+		# script when searching for headers.
+		# - Remove standard ~~~ style script blocks
+		mdNoScript = re.sub(ur'~~~(.*?)~~~', u'DUMMY', md, re.M, re.S)
+		# - Remove jekyll style script blocks
+		mdNoScript = re.sub(ur'{% highlight (\w*) %}(.*?){% endhighlight %}',
+			u'DUMMY', mdNoScript, re.M, re.S)
+		for i in re.finditer(ur'^#(.*)', mdNoScript, re.M):
 			h = i.group()
 			for level in range(100, -1, -1):
 				if h.startswith(u'#' * level):
@@ -100,10 +107,7 @@ class TOCParser(YAMLParser):
 				md = md.replace(h, u'%s [%s](#%s) {#%s}' % (u'#'*level, label, \
 					_id, _id))
 		_md += u'\n'
-		#print appends
-		#quit()
-		#_md += u'\n'.join(appends)
-		return md.replace(_yaml, _md) + u'\n'.join(appends)
+		return md.replace(_yaml, _md) + u'\n' + u'\n'.join(appends)
 
 	def labelId(self, label):
 
@@ -114,6 +118,7 @@ class TOCParser(YAMLParser):
 		algorithm appears to be that spaces are converted to dashes, dashes are
 		left in and all non-alphanumeric characters are ignored. Avoid dashes
 		at the beginning and end of the ID and also avoid double dashes.
+
 		BUG: Pandoc doesn't properly parse (at least) Chinese characters,
 		so links in Chinese TOCs will be broken.
 

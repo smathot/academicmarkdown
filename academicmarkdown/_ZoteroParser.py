@@ -144,7 +144,7 @@ class ZoteroParser(BaseParser):
 		oldQueries = []
 		regexp =  ur'@([^ ?!,.\t\n\r\f\v\]\[;]+)'
 		for r in re.finditer(regexp, md):
-			queryString = r.groups()[0]			
+			queryString = r.groups()[0]
 			self.msg(u'Found citation (#%d) "%s"' % (self.refCount,
 				queryString))
 			if queryString in oldQueries:
@@ -285,6 +285,12 @@ class ZoteroParser(BaseParser):
 					given = u'. '.join(given) + u'.'
  					_author.append({u'family' : family, u'given': given})
 				item[u'author'] = _author
+			# Remove empty fields
+			for field in item:
+				if isinstance(item[field], basestring) and \
+					item[field].strip() == u'':
+					self.msg(u'Removing empty field: %s' % field)
+					del item[field]
 			if match:
 				matches.append(item)
 		return matches

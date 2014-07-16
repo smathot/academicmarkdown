@@ -38,7 +38,7 @@ __Figure %(nFig)d.__ %(caption)s\n{: .fig-caption #%(id)s}\n
 	u'odt': u"""
 ![__Figure %(nFig)d.__ %(caption)s](%(source)s)
 
-__Figure %(nFig)d.__ %(caption)s<!--odt-style="Illustration"-->
+__Figure %(nFig)d.__ *%(caption)s*<!--odt-style="Illustration"-->
 """,
 	u'markdown': u"""
 ![__Figure %(nFig)d.__ %(caption)s](%(source)s)
@@ -128,8 +128,15 @@ class FigureParser(YAMLParser):
 
 		if u'caption' not in d:
 			d[u'caption'] = u''
-		d[u'caption'] = d[u'caption'].replace(u'"', u'&quot;').replace(u'\'', \
-			u'&#39;').strip()
+		replaceList = [
+			(u'"', u'&quot;'),
+			(u'\'', u'&#39;'),
+			(u'<', u'&lt;'),
+			(u'>', u'&gt;')
+			]
+		for _from, _to in replaceList:
+			d[u'caption'] = d[u'caption'].replace(_from, _to)
+		d[u'caption'] = d[u'caption'].strip()
 		if u'width' not in d:
 			d[u'width'] = 100
 		img = figureTemplate[self.template] % d

@@ -14,6 +14,25 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with zoteromarkdown.  If not, see <http://www.gnu.org/licenses/>.
+
+---
+desc: |
+	Contains the settings, which are imported into `academicmarkdown.build`. You
+	can change these settings in the `build` module, as shown below.
+
+	__Module source:__
+
+	%--
+	code:
+		id: LstConstants
+		syntax: python
+		source: academicmarkdown/constants.py
+	--%
+
+example:
+	from academicmarkdown import build
+	build.pdfHeader = u'A header for my PDF'
+---
 """
 
 import os, sys
@@ -36,10 +55,10 @@ tableTemplate = u'html5'
 tableStyle = u'inline'
 
 # Indicates whether headers should be turned into clickable anchors by TOCParser
-TOCAnchorHeaders = False
+TOCAnchorHeaders = True
 # Indicates whether references to header ids should be automatically appended
 # to the main text.
-TOCAppendHeaderRefs = False
+TOCAppendHeaderRefs = True
 
 # Paths to files that determine the document's appearance. For more information,
 # see the Pandoc documentation.
@@ -62,7 +81,7 @@ postMarkdownFilters = [u'autoItalics', u'pageBreak', u'magicVars']
 
 # A list of extensions that are enabled.
 extensions = [u'include', u'exec', u'python', u'toc', u'code', u'video', \
-	u'table', u'figure', u'wc']
+	u'table', u'figure', u'constant', u'wc']
 
 # The page margins
 pdfMargins = 30, 20, 30, 20
