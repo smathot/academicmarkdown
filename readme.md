@@ -1,6 +1,6 @@
 <span class="ModuleDoc YAMLDoc" id="academicmarkdown" markdown="1">
 
-# [*module* academicmarkdown](#module-academicmarkdown) {#module-academicmarkdown}
+# *module* academicmarkdown
 
 *Who knew writing could be so nerdy?*
 
@@ -47,7 +47,7 @@ Copyright 2013-2014 Sebastiaan Mathôt
 
 
 
-## [About](#about) {#about}
+## About
 
 Academic Markdown is a Python module for generating `.md`, `.html`, `.pdf`,
 `.docx`, and `.odt` files from Markdown source. [Pandoc] is used for most of
@@ -61,14 +61,14 @@ At present, the main target for Academic Markdown is the OpenSesame
 documentation site, <http://osdoc.cogsci.nl/>, although it may in time grow
 into a more comprehensive and user-friendly tool.
 
-## [Examples](#examples) {#examples}
+## Examples
 
 The following manuscripts have been written in Academic Markdown:
 
-- @Mathôt2014PeerjExogenous ([source](https://github.com/smathot/materials_for_P0009.1/tree/master/manuscript))
-- @Mathôt2014PeerjPreparation ([source](https://github.com/smathot/materials_for_P0001/tree/master/manuscript))
+- Mathôt S, Dalmaijer ES, Grainger J, Van der Stigchel S. (2014) The pupillary light response reflects exogenous attention and inhibition of return. *PeerJ PrePrints* 2:e422v1 <http://dx.doi.org/10.7287/peerj.preprints.422v1> ([source](https://github.com/smathot/materials_for_P0009.1/tree/master/manuscript))
+- Mathôt S, van der Linden L, Grainger J, Vitu F. (2014) The pupillary light response reflects eye-movement preparation. *PeerJ PrePrints* 2:e238v2 <http://dx.doi.org/10.7287/peerj.preprints.238v2> ([source](https://github.com/smathot/materials_for_P0001/tree/master/manuscript))
 
-## [Download](#download) {#download}
+## Download
 
 You can download the latest release of Academic Markdown here:
 
@@ -80,7 +80,7 @@ Ubuntu users can install Academic Markdown from the Cogsci.nl PPA:
         sudo apt-get update
         sudo apt-get install python-academicmarkdown
 
-## [Basic usage](#basic-usage) {#basic-usage}
+## Basic usage
 
 Academic Markdown assumes that input files are encoded with `utf-8` encoding.
 
@@ -101,7 +101,7 @@ build.spacing = 30, 0
 
 The full list of options is available in `academicmarkdown/constants.py`, or see [academicmarkdown.constants].
 
-## [Dependencies](#dependencies) {#dependencies}
+## Dependencies
 
 Academic Markdown has been tested exclusively on Ubuntu Linux. The following dependencies are required:
 
@@ -109,15 +109,15 @@ Academic Markdown has been tested exclusively on Ubuntu Linux. The following dep
 - [pyzotero] is necessary for extracting Zotero references.
 - [wkhtmltopdf] is necessary for converting to `.pdf`. For best results, use the latest statically linked release, instead of the version from the Ubuntu repositories.
 
-## [Zotero references](#zotero-references) {#zotero-references}
+## Zotero references
 
-### [Pandoc citation style](#pandoc-citation-style) {#pandoc-citation-style}
+### Pandoc citation style
 
 Since the basic Markdown conversion is performed by Pandoc, citations should be formatted as described on the Pandoc site:
 
 - <http://johnmacfarlane.net/pandoc/README.html#citations>
 
-### [Zotero API key and library ID](#zotero-api-key-and-library-id) {#zotero-api-key-and-library-id}
+### Zotero API key and library ID
 
 You can automatically extract references from your Zotero library by setting the `zoteroApiKey` and `zoteroLibraryId` properties. Your references are not extracted from your local Zotero database, but through the web API of <http://www.zotero.org>. This means that you need to have a Zotero account and synchronize your local database with your account, in order to use this feature. You can find your your API key and library ID online on your Zotero profile page.
 
@@ -128,7 +128,7 @@ build.zoteroLibraryId = u'mylibraryid'
 build.PDF(u'input.md', u'output.pdf')
 ~~~
 
-### [Citation identifiers](#citation-identifiers) {#citation-identifiers}
+### Citation identifiers
 
 Citations are split into separate terms using camelcase or undescore logic. An example of an underscore-style citation is `@bárány_halldén_1948`. And example of a camelcase-style citation is `@Land1999WhyAnimals`. Each citation is interpreted as a series of author names, followed by the year of publication, optionally followed by terms that match either the publication title, or the article title. So the following reference ...
 
@@ -154,17 +154,17 @@ Van Zoest, W., & Donk, M. (2005). The effects of salience on saccadic target sel
 
 Note that you must consistently use the same citation to refer to a single reference in one document. If a citation matched multiple references from your Zotero database, one citation will be chosen at random.
 
-### [Sorting citations](#sorting-citations) {#sorting-citations}
+### Sorting citations
 
 Pandoc does not allow you to sort your references, which can be annoying. To get around this, Academic Markdown allows you to explicitly sort your citations by linking chains of citations with a `+` character:
 
         [@Zzz2014]+[@Aaa2014]
 
-### [Clearing cache](#clearing-cache) {#clearing-cache}
+### Clearing cache
 
 Previous references will be cached automatically. To refresh, remove the file `.zoteromarkdown.cache` or run your Python script with the command-line argument: `--clear-cache`.
 
-## [Academic Markdown extensions](#academic-markdown-extensions) {#academic-markdown-extensions}
+## Academic Markdown extensions
 
 Academic Markdown provides certain extensions to regular Markdown, in the form of YAML blocks embedded in `%-- --%` tags. You can which, and the order in which, extensions are called by settings the `extensions` list:
 
@@ -174,7 +174,7 @@ from academicmarkdown import build
 build.extensions = [u'include', u'figure']
 ~~~
 
-### [`code`: Code listings](#code-code-listings) {#code-code-listings}
+### `code`: Code listings
 
 The `code` blocks embeds a code listing in the text, quite to similar to the
 `figure` block.
@@ -190,7 +190,7 @@ The `code` blocks embeds a code listing in the text, quite to similar to the
 The `caption` and `syntax` attributes are optional.
 
 
-### [`exec`: external commands](#exec-external-commands) {#exec-external-commands}
+### `exec`: external commands
 
 The `exec` block inserts the return value of an external command in the
 text. For example, the following block embeds something like
@@ -199,7 +199,7 @@ text. For example, the following block embeds something like
         %-- exec: "date +'Generated on %x'" --%
 
 
-### [`figure`: figures](#figure-figures) {#figure-figures}
+### `figure`: figures
 
 The `figure` block embeds a Figure in the text. Figures are numbered
 automatically. The ID can be used to refer to the Figure in the text, using
@@ -216,14 +216,14 @@ a `%` character. So the following figure would be referred to as `%FigFA`.
 The `caption` and `width` attributes are optional.
 
 
-### [`include`: include other Markdown files](#include-include-other-markdown-files) {#include-include-other-markdown-files}
+### `include`: include other Markdown files
 
 The `include` block includes an other Markdown file. For example:
 
         %-- include: example/intro.md --%
 
 
-### [`python`: python code](#python-python-code) {#python-python-code}
+### `python`: python code
 
 The `python` block embeds the output (i.e. whatever is printed to stdout)
 of a Python script into your document. For example, the following block
@@ -241,7 +241,7 @@ Note that the `|` symbol is YAML syntax, and allows you to have a multiline
 string.
 
 
-### [`table`: table](#table-table) {#table-table}
+### `table`: table
 
 The `table` block reads a table from a `.csv` file and embed it into the
 document. The source file needs to be a utf-8 encoded file that is
@@ -256,7 +256,7 @@ table:
 --%
 
 
-### [`toc`: table of contents](#toc-table-of-contents) {#toc-table-of-contents}
+### `toc`: table of contents
 
 The `toc` block automatically generates a table of contents from the
 headings, assuming that headings are indicated using the `#` style and not
@@ -273,7 +273,7 @@ table of contents as well.
 All attributes are optional.
 
 
-### [`wc`: word count](#wc-word-count) {#wc-word-count}
+### `wc`: word count
 
 The `wc` block insert the word count for a particular document. This is
 convenient if you have split the text across multiple documents, and want to
@@ -282,15 +282,15 @@ have a separate word count for each document.
         %-- wc: method-section.md --%
 
 
-### [Magic variables](#magic-variables) {#magic-variables}
+### Magic variables
 
 Magic variables are automatically replaced by certain values, and are indicated like this: `%varname%`. The following magic variables are available:
 
 - `%wc%`: Word count
 - `%cc%`: Character count
-- `13`: Reference count
+- `%rc%`: Reference count
 
-## [License](#license) {#license}
+## License
 
 Academic Markdown is available under the GNU General Public License 3. For more information, see the included file `COPYING`.
 
@@ -303,14 +303,14 @@ Academic Markdown is available under the GNU General Public License 3. For more 
 
 <span class="ModuleDoc YAMLDoc" id="academicmarkdown-build" markdown="1">
 
-## [*module* academicmarkdown](#module-academicmarkdown) {#module-academicmarkdown}.build
+## *module* academicmarkdown.build
 
 Contains functions to build documents from Markdown source.
 
 
 <span class="FunctionDoc YAMLDoc" id="academicmarkdown-build-DOC" markdown="1">
 
-### [*function* academicmarkdown.build.DOC(src, target)](#function-academicmarkdownbuilddocsrc-target) {#function-academicmarkdownbuilddocsrc-target}
+### *function* academicmarkdown.build.DOC(src, target)
 
 Builds a DOC file from a Markdown source.
 
@@ -332,7 +332,7 @@ __Arguments:__
 [DOC]: #academicmarkdown-build-DOC
 <span class="FunctionDoc YAMLDoc" id="academicmarkdown-build-DOCX" markdown="1">
 
-### [*function* academicmarkdown.build.DOCX(src, target)](#function-academicmarkdownbuilddocxsrc-target) {#function-academicmarkdownbuilddocxsrc-target}
+### *function* academicmarkdown.build.DOCX(src, target)
 
 Builds a DOCX file from a Markdown source.
 
@@ -354,7 +354,7 @@ __Arguments:__
 [DOCX]: #academicmarkdown-build-DOCX
 <span class="FunctionDoc YAMLDoc" id="academicmarkdown-build-HTML" markdown="1">
 
-### [*function* academicmarkdown.build.HTML(src, target=None, standalone=True)](#function-academicmarkdownbuildhtmlsrc-targetnone-standalonetrue) {#function-academicmarkdownbuildhtmlsrc-targetnone-standalonetrue}
+### *function* academicmarkdown.build.HTML(src, target=None, standalone=True)
 
 Builds an HTML file from a Markdown source.
 
@@ -392,7 +392,7 @@ The HTML file as a unicode string.
 [HTML]: #academicmarkdown-build-HTML
 <span class="FunctionDoc YAMLDoc" id="academicmarkdown-build-MD" markdown="1">
 
-### [*function* academicmarkdown.build.MD(src, target=None)](#function-academicmarkdownbuildmdsrc-targetnone) {#function-academicmarkdownbuildmdsrc-targetnone}
+### *function* academicmarkdown.build.MD(src, target=None)
 
 Builds a Markdown file from a Markdown source.
 
@@ -424,7 +424,7 @@ The compiled Markdown file as a unicode string.
 [MD]: #academicmarkdown-build-MD
 <span class="FunctionDoc YAMLDoc" id="academicmarkdown-build-ODT" markdown="1">
 
-### [*function* academicmarkdown.build.ODT(src, target)](#function-academicmarkdownbuildodtsrc-target) {#function-academicmarkdownbuildodtsrc-target}
+### *function* academicmarkdown.build.ODT(src, target)
 
 Builds an ODT file from a Markdown source.
 
@@ -446,7 +446,7 @@ __Arguments:__
 [ODT]: #academicmarkdown-build-ODT
 <span class="FunctionDoc YAMLDoc" id="academicmarkdown-build-PDF" markdown="1">
 
-### [*function* academicmarkdown.build.PDF(src, target, lineNumbers=False)](#function-academicmarkdownbuildpdfsrc-target-linenumbersfalse) {#function-academicmarkdownbuildpdfsrc-target-linenumbersfalse}
+### *function* academicmarkdown.build.PDF(src, target, lineNumbers=False)
 
 Builds a PDF file from a Markdown source.
 
@@ -474,7 +474,7 @@ __Keywords:__
 [PDF]: #academicmarkdown-build-PDF
 <span class="FunctionDoc YAMLDoc" id="academicmarkdown-build-setStyle" markdown="1">
 
-### [*function* academicmarkdown.build.setStyle(style)](#function-academicmarkdownbuildsetstylestyle) {#function-academicmarkdownbuildsetstylestyle}
+### *function* academicmarkdown.build.setStyle(style)
 
 Automatically sets a style.
 
@@ -501,7 +501,7 @@ __Arguments:__
 [build]: #academicmarkdown-build
 <span class="ModuleDoc YAMLDoc" id="academicmarkdown-constants" markdown="1">
 
-## [*module* academicmarkdown](#module-academicmarkdown) {#module-academicmarkdown}.constants
+## *module* academicmarkdown.constants
 
 Contains the settings, which are imported into `academicmarkdown.build`. You
 can change these settings in the `build` module, as shown below.
@@ -541,7 +541,7 @@ desc: |
 		source: academicmarkdown/constants.py
 	--%
 
-example:
+example: |
 	from academicmarkdown import build
 	build.pdfHeader = u'A header for my PDF'
 ---
@@ -567,7 +567,7 @@ tableTemplate = u'html5'
 tableStyle = u'inline'
 
 # Indicates whether headers should be turned into clickable anchors by TOCParser
-TOCAnchorHeaders = True
+TOCAnchorHeaders = False
 # Indicates whether references to header ids should be automatically appended
 # to the main text.
 TOCAppendHeaderRefs = True
@@ -610,8 +610,9 @@ pdfFooter = u'%page% of %topage%'
 
 __Example:__
 
-~~~ .python
-from academicmarkdown import build build.pdfHeader = u'A header for my PDF'
+~~~ {.python}
+from academicmarkdown import build
+build.pdfHeader = u'A header for my PDF'
 ~~~
 
 
@@ -662,6 +663,3 @@ from academicmarkdown import build build.pdfHeader = u'A header for my PDF'
 [*function* academicmarkdown.build.PDF(src, target, lineNumbers=False)]: #function-academicmarkdownbuildpdfsrc-target-linenumbersfalse
 [*function* academicmarkdown.build.setStyle(style)]: #function-academicmarkdownbuildsetstylestyle
 [*module* academicmarkdown.constants]: #module-academicmarkdownconstants
-
-# References
-

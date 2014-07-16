@@ -51,8 +51,8 @@ desc: |
 
 	The following manuscripts have been written in Academic Markdown:
 
-	- @Mathôt2014PeerjExogenous ([source](https://github.com/smathot/materials_for_P0009.1/tree/master/manuscript))
-	- @Mathôt2014PeerjPreparation ([source](https://github.com/smathot/materials_for_P0001/tree/master/manuscript))
+	- Mathôt S, Dalmaijer ES, Grainger J, Van der Stigchel S. (2014) The pupillary light response reflects exogenous attention and inhibition of return. *PeerJ PrePrints* 2:e422v1 <http://dx.doi.org/10.7287/peerj.preprints.422v1> ([source](https://github.com/smathot/materials_for_P0009.1/tree/master/manuscript))
+	- Mathôt S, van der Linden L, Grainger J, Vitu F. (2014) The pupillary light response reflects eye-movement preparation. *PeerJ PrePrints* 2:e238v2 <http://dx.doi.org/10.7287/peerj.preprints.238v2> ([source](https://github.com/smathot/materials_for_P0001/tree/master/manuscript))
 
 	## Download
 

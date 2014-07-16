@@ -29,7 +29,7 @@ desc: |
 		source: academicmarkdown/constants.py
 	--%
 
-example:
+example: |
 	from academicmarkdown import build
 	build.pdfHeader = u'A header for my PDF'
 ---
@@ -55,7 +55,7 @@ tableTemplate = u'html5'
 tableStyle = u'inline'
 
 # Indicates whether headers should be turned into clickable anchors by TOCParser
-TOCAnchorHeaders = True
+TOCAnchorHeaders = False
 # Indicates whether references to header ids should be automatically appended
 # to the main text.
 TOCAppendHeaderRefs = True
