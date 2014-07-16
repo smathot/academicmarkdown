@@ -49,6 +49,8 @@ desc: |
 
 	## Examples
 
+	A basic example can be found in the `example` sub folder, included with the source.
+
 	The following manuscripts have been written in Academic Markdown:
 
 	- Mathôt S, Dalmaijer ES, Grainger J, Van der Stigchel S. (2014) The pupillary light response reflects exogenous attention and inhibition of return. *PeerJ PrePrints* 2:e422v1 <http://dx.doi.org/10.7287/peerj.preprints.422v1> ([source](https://github.com/smathot/materials_for_P0009.1/tree/master/manuscript))
