@@ -25,7 +25,8 @@ Copyright 2013-2014 Sebastiaan Mathôt
 		- [Sorting citations](#sorting-citations)
 		- [Clearing cache](#clearing-cache)
 	- [Academic Markdown extensions](#academic-markdown-extensions)
-		- [`code`: Code listings](#code-code-listings)
+		- [`code`: code listings](#code-code-listings)
+		- [`constant`: define constants](#constant-define-constants)
 		- [`exec`: external commands](#exec-external-commands)
 		- [`figure`: figures](#figure-figures)
 		- [`include`: include other Markdown files](#include-include-other-markdown-files)
@@ -174,7 +175,7 @@ from academicmarkdown import build
 build.extensions = [u'include', u'figure']
 ~~~
 
-### `code`: Code listings
+### `code`: code listings
 
 The `code` blocks embeds a code listing in the text, quite to similar to the
 `figure` block.
@@ -188,6 +189,19 @@ The `code` blocks embeds a code listing in the text, quite to similar to the
         --%
 
 The `caption` and `syntax` attributes are optional.
+
+
+### `constant`: define constants
+
+The `constant` block allows you to define constants. For example, if you
+define MyConstant1 (as below), all occurrences of "%MyConstant1" in the text
+will be replcated by "You can refer to this as %MyConstant1".
+
+        %--
+        constant:
+                MyConstant1:    "You can refer to this as %MyConstant1"
+                MyConstant2:    "You can refer to this as %MyConstant2"
+        --%
 
 
 ### `exec`: external commands
@@ -644,7 +658,8 @@ build.pdfHeader = u'A header for my PDF'
 [Sorting citations]: #sorting-citations
 [Clearing cache]: #clearing-cache
 [Academic Markdown extensions]: #academic-markdown-extensions
-[`code`: Code listings]: #code-code-listings
+[`code`: code listings]: #code-code-listings
+[`constant`: define constants]: #constant-define-constants
 [`exec`: external commands]: #exec-external-commands
 [`figure`: figures]: #figure-figures
 [`include`: include other Markdown files]: #include-include-other-markdown-files

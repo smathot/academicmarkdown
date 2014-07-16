@@ -22,8 +22,8 @@ import yamldoc
 import academicmarkdown
 
 df = yamldoc.DocFactory(academicmarkdown)
-academicmarkdown.build.extensions = [u'toc', u'exec', u'code', u'python',
-	u'constant']
+academicmarkdown.build.extensions = [u'toc', u'exec', u'code', u'constant',
+	u'python']
 academicmarkdown.build.postMarkdownFilters = []
 academicmarkdown.build.MD(unicode(df), u'readme.md')
 academicmarkdown.build.PDF(unicode(df), u'readme.pdf')

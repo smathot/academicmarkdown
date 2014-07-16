@@ -25,10 +25,8 @@ class ConstantParser(YAMLParser):
 
 	"""
 	The `constant` block allows you to define constants. For example, if you
-	define MyConstant1 (as below), all occurrences of %MyConstant1 will be
-	replcated by the specified text.
-
-	For example:
+	define MyConstant1 (as below), all occurrences of "%MyConstant1" in the text
+	will be replcated by "You can refer to this as %MyConstant1".
 
 		%--
 		constant:

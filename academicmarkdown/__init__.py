@@ -160,13 +160,22 @@ desc: |
 	build.extensions = [u'include', u'figure']
 	~~~
 
-	### `code`: Code listings
+	### `code`: code listings
 
 	%--
 	python: |
 		import inspect
 		from academicmarkdown import CodeParser
 		print inspect.getdoc(CodeParser)
+	--%
+
+	### `constant`: define constants
+
+	%--
+	python: |
+		import inspect
+		from academicmarkdown import ConstantParser
+		print inspect.getdoc(ConstantParser)
 	--%
 
 	### `exec`: external commands
