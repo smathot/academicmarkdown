@@ -46,9 +46,9 @@ function subst() {
 
 class WkHtmlToPdf(BaseParser):
 
-	def __init__(self, css=None, fix00=True, margins=(20, 20, 30, 20), \
-		spacing=(10, 10), header=None, footer=u'%page% / %topage%', \
-		verbose=False):
+	def __init__(self, css=None, fix00=True, margins=(20, 20, 30, 20),
+		spacing=(10, 10), header=None, footer=u'%page% / %topage%',
+		verbose=False, args=''):
 
 		"""
 		Constructor.
@@ -64,9 +64,11 @@ class WkHtmlToPdf(BaseParser):
 		footer		--	A footer text, or None. (default=u'%page% / %topage%')
 		verbose		--	Indicates whether verbose output should be generated.
 						(default=False)
+		args		--
 		"""
 
 		self.css = css
+		self.args = args
 		self.fix00 = fix00
 		self.margins = margins
 		self.spacing = spacing
@@ -118,6 +120,7 @@ class WkHtmlToPdf(BaseParser):
 				u'footer').encode(u'utf-8'))
 			cmd += u' --footer-html .footer.html --footer-spacing %s' % \
 				self.spacing[1]
+		cmd += u' ' + self.args
 		cmd += u' %s "%s"' % (html, target)
 		self.msg(cmd)
 		subprocess.call(shlex.split(cmd.encode(u'utf-8')))

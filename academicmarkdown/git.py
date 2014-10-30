@@ -38,7 +38,7 @@ def commitHash():
 	cmd = [u'git', u'log', u'--pretty=format:#%h', u'-1']
 	return check_output(cmd)
 
-def snapshot(src, msg=u'snapshot'):
+def snapshot(src, msg=u'snapshot', pdfArgs={}):
 	
 	"""
 	Commits the current state of the repository and exports a snapshot of the
@@ -65,7 +65,7 @@ def snapshot(src, msg=u'snapshot'):
 			% folder)
 	os.mkdir(folder)
 	if u'pdf' in exportFormats:
-		build.PDF(src, os.path.join(folder, u'export.pdf'))
+		build.PDF(src, os.path.join(folder, u'export.pdf'), **pdfArgs)
 	if u'doc' in exportFormats:
 		build.DOC(src, os.path.join(folder, u'export.doc'))
 	if u'docx' in exportFormats:

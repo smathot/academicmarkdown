@@ -157,7 +157,7 @@ def MD(src, target=None):
 		open(target, u'w').write(md.encode(u'utf-8'))
 	return md
 
-def PDF(src, target, lineNumbers=False):
+def PDF(src, target, lineNumbers=False, args=''):
 
 	"""
 	desc:
@@ -176,12 +176,15 @@ def PDF(src, target, lineNumbers=False):
 			desc:	Determines whether line numbers should be added. This is
 					currently quite a complicated process, which may break.
 			type:	bool
+		args:
+			desc:	Indicates extra arguments to be passed onto wkhtmltopdf.
+			type:	[str, unicode]
 	"""
 
 	print u'Building %s from %s ...' % (target, src)
 	HTML(src, u'.tmp.html')
 	wk = WkHtmlToPdf(css=css, margins=pdfMargins, spacing=pdfSpacing, \
-		header=pdfHeader, footer=pdfFooter, verbose=True)
+		header=pdfHeader, footer=pdfFooter, verbose=True, args=args)
 	if lineNumbers:
 		_target = u'.tmp.pdf'
 	else:
