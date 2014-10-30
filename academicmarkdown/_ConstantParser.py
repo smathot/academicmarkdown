@@ -50,7 +50,7 @@ class ConstantParser(YAMLParser):
 		md = md.replace(_yaml, u'')
 		for key, val in d.items():
 			self.msg(key)
-			md = md.replace(u'%%%s' % key, val)
+			md = md.replace(u'%%%s' % key, val.strip())
 		return md
 
 
