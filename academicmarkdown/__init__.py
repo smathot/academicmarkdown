@@ -262,7 +262,7 @@ desc: |
 ---
 """
 
-version = u'0.8.0~pre1'
+version = u'0.8.0'
 
 from _BaseParser import BaseParser
 from _YAMLParser import YAMLParser
