@@ -162,9 +162,9 @@ class ZoteroParser(BaseParser):
 			if match in items and queryString not in oldQueries:
 				for _queryString in sorted(oldQueries):
 					print u'Ref: %s' % _queryString
-				raise Exception( \
-					u'"%s" refers to an existent reference with a different name. Please use consistent references (see list above)!' \
-					% queryString)
+				raise Exception(
+					('"%s" refers to an existent reference with a different name. Please use consistent references (see list above)!' \
+					% queryString).encode(u'utf-8'))
 			match[u'id'] = queryString
 			if self.odtStyle != None:
 				match[u'title'] += u'<!--odt-style="%s"-->' % self.odtStyle
@@ -220,7 +220,7 @@ class ZoteroParser(BaseParser):
 				# Determine whether we are matching a year or an author name
 				term = query[i].lower()
 				try:
-					int(term)
+					term = int(term)
 					matchPhase += 1
 				except:
 					pass
@@ -235,10 +235,28 @@ class ZoteroParser(BaseParser):
 						break
 				# Check year
 				elif matchPhase == 1:
-					if u'issued' not in item or term not in item[u'issued'] \
-						[u'raw']:
+					if u'issued' not in item:
 						match = False
 						break
+					else:
+						if u'year' in item[u'issued']:
+							year = item[u'issued'][u'year']
+						elif u'raw' in item[u'issued']:
+							year = item[u'issued'][u'raw']
+						else:
+							raise Exception(u'Invalid issued field: %s' % item)
+						try:
+							year = int(year)
+						except:
+							pass
+						if type(year) == int:
+							if term != year:
+								match = False
+								break
+						else:
+							if term != 0:
+								match = False
+								break
 					matchPhase += 1
 				# Check title or publication
 				elif matchPhase == 2:
