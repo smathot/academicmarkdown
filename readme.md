@@ -37,13 +37,13 @@ Copyright 2013-2014 Sebastiaan Mathôt
 		- [Magic variables](#magic-variables)
 	- [License](#license)
 	- [*module* academicmarkdown.build](#module-academicmarkdownbuild)
-		- [*function* academicmarkdown.build.DOC(src, target)](#function-academicmarkdownbuilddocsrc-target)
-		- [*function* academicmarkdown.build.DOCX(src, target)](#function-academicmarkdownbuilddocxsrc-target)
-		- [*function* academicmarkdown.build.HTML(src, target=None, standalone=True)](#function-academicmarkdownbuildhtmlsrc-targetnone-standalonetrue)
-		- [*function* academicmarkdown.build.MD(src, target=None)](#function-academicmarkdownbuildmdsrc-targetnone)
-		- [*function* academicmarkdown.build.ODT(src, target)](#function-academicmarkdownbuildodtsrc-target)
-		- [*function* academicmarkdown.build.PDF(src, target, lineNumbers=False)](#function-academicmarkdownbuildpdfsrc-target-linenumbersfalse)
-		- [*function* academicmarkdown.build.setStyle(style)](#function-academicmarkdownbuildsetstylestyle)
+		- [function __academicmarkdown\.build\.DOC__\(src, target\)](#function-__academicmarkdownbuilddoc__src-target)
+		- [function __academicmarkdown\.build\.DOCX__\(src, target\)](#function-__academicmarkdownbuilddocx__src-target)
+		- [function __academicmarkdown\.build\.HTML__\(src, target=None, standalone=True\)](#function-__academicmarkdownbuildhtml__src-targetnone-standalonetrue)
+		- [function __academicmarkdown\.build\.MD__\(src, target=None\)](#function-__academicmarkdownbuildmd__src-targetnone)
+		- [function __academicmarkdown\.build\.ODT__\(src, target\)](#function-__academicmarkdownbuildodt__src-target)
+		- [function __academicmarkdown\.build\.PDF__\(src, target, args=u'', lineNumbers=False\)](#function-__academicmarkdownbuildpdf__src-target-argsu-linenumbersfalse)
+		- [function __academicmarkdown\.build\.setStyle__\(style\)](#function-__academicmarkdownbuildsetstyle__style)
 	- [*module* academicmarkdown.constants](#module-academicmarkdownconstants)
 
 
@@ -315,18 +315,15 @@ Academic Markdown is available under the GNU General Public License 3. For more 
 [zotero]: http://www.zotero.org/
 [wkhtmltopdf]: https://code.google.com/p/wkhtmltopdf/
 
-
-
 <span class="ModuleDoc YAMLDoc" id="academicmarkdown-build" markdown="1">
 
 ## *module* academicmarkdown.build
 
 Contains functions to build documents from Markdown source.
 
-
 <span class="FunctionDoc YAMLDoc" id="academicmarkdown-build-DOC" markdown="1">
 
-### *function* academicmarkdown.build.DOC(src, target)
+### function __academicmarkdown\.build\.DOC__\(src, target\)
 
 Builds a DOC file from a Markdown source.
 
@@ -337,18 +334,15 @@ __Arguments:__
 - `target` -- The name of a DOC target file.
 	- Type: str, unicode
 
-
-
-
 </span>
-
 
 [academicmarkdown.build.DOC]: #academicmarkdown-build-DOC
 [build.DOC]: #academicmarkdown-build-DOC
 [DOC]: #academicmarkdown-build-DOC
+
 <span class="FunctionDoc YAMLDoc" id="academicmarkdown-build-DOCX" markdown="1">
 
-### *function* academicmarkdown.build.DOCX(src, target)
+### function __academicmarkdown\.build\.DOCX__\(src, target\)
 
 Builds a DOCX file from a Markdown source.
 
@@ -359,21 +353,17 @@ __Arguments:__
 - `target` -- The name of a DOCX target file.
 	- Type: str, unicode
 
-
-
-
 </span>
-
 
 [academicmarkdown.build.DOCX]: #academicmarkdown-build-DOCX
 [build.DOCX]: #academicmarkdown-build-DOCX
 [DOCX]: #academicmarkdown-build-DOCX
+
 <span class="FunctionDoc YAMLDoc" id="academicmarkdown-build-HTML" markdown="1">
 
-### *function* academicmarkdown.build.HTML(src, target=None, standalone=True)
+### function __academicmarkdown\.build\.HTML__\(src, target=None, standalone=True\)
 
 Builds an HTML file from a Markdown source.
-
 
 
 
@@ -397,18 +387,15 @@ The HTML file as a unicode string.
 
 - Type: unicode
 
-
-
-
 </span>
-
 
 [academicmarkdown.build.HTML]: #academicmarkdown-build-HTML
 [build.HTML]: #academicmarkdown-build-HTML
 [HTML]: #academicmarkdown-build-HTML
+
 <span class="FunctionDoc YAMLDoc" id="academicmarkdown-build-MD" markdown="1">
 
-### *function* academicmarkdown.build.MD(src, target=None)
+### function __academicmarkdown\.build\.MD__\(src, target=None\)
 
 Builds a Markdown file from a Markdown source.
 
@@ -429,18 +416,15 @@ The compiled Markdown file as a unicode string.
 
 - Type: unicode
 
-
-
-
 </span>
-
 
 [academicmarkdown.build.MD]: #academicmarkdown-build-MD
 [build.MD]: #academicmarkdown-build-MD
 [MD]: #academicmarkdown-build-MD
+
 <span class="FunctionDoc YAMLDoc" id="academicmarkdown-build-ODT" markdown="1">
 
-### *function* academicmarkdown.build.ODT(src, target)
+### function __academicmarkdown\.build\.ODT__\(src, target\)
 
 Builds an ODT file from a Markdown source.
 
@@ -451,18 +435,15 @@ __Arguments:__
 - `target` -- The name of an ODT target file.
 	- Type: str, unicode
 
-
-
-
 </span>
-
 
 [academicmarkdown.build.ODT]: #academicmarkdown-build-ODT
 [build.ODT]: #academicmarkdown-build-ODT
 [ODT]: #academicmarkdown-build-ODT
+
 <span class="FunctionDoc YAMLDoc" id="academicmarkdown-build-PDF" markdown="1">
 
-### *function* academicmarkdown.build.PDF(src, target, lineNumbers=False)
+### function __academicmarkdown\.build\.PDF__\(src, target, args=u'', lineNumbers=False\)
 
 Builds a PDF file from a Markdown source.
 
@@ -475,22 +456,22 @@ __Arguments:__
 
 __Keywords:__
 
+- `args` -- Indicates extra arguments to be passed onto wkhtmltopdf.
+	- Default: ''
+	- Type: str, unicode
 - `lineNumbers` -- Determines whether line numbers should be added. This is currently quite a complicated process, which may break.
 	- Default: False
 	- Type: bool
 
-
-
-
 </span>
-
 
 [academicmarkdown.build.PDF]: #academicmarkdown-build-PDF
 [build.PDF]: #academicmarkdown-build-PDF
 [PDF]: #academicmarkdown-build-PDF
+
 <span class="FunctionDoc YAMLDoc" id="academicmarkdown-build-setStyle" markdown="1">
 
-### *function* academicmarkdown.build.setStyle(style)
+### function __academicmarkdown\.build\.setStyle__\(style\)
 
 Automatically sets a style.
 
@@ -499,22 +480,17 @@ __Arguments:__
 - `style` -- The style name. This should be the name of a folder that contains style files. See the `academicmarkdown\styles` subfolder for examples.
 	- Type: str, unicode
 
-
-
-
 </span>
-
 
 [academicmarkdown.build.setStyle]: #academicmarkdown-build-setStyle
 [build.setStyle]: #academicmarkdown-build-setStyle
 [setStyle]: #academicmarkdown-build-setStyle
 
-
 </span>
-
 
 [academicmarkdown.build]: #academicmarkdown-build
 [build]: #academicmarkdown-build
+
 <span class="ModuleDoc YAMLDoc" id="academicmarkdown-constants" markdown="1">
 
 ## *module* academicmarkdown.constants
@@ -605,7 +581,7 @@ htmlFilters = [u'DOI', u'citationGlue']
 preMarkdownFilters = []
 # A list of filters from academicmarkdown.MDFilter that should be performed
 # on the Markdown source, after all other processing has been performed
-postMarkdownFilters = [u'autoItalics', u'pageBreak', u'magicVars']
+postMarkdownFilters = [u'autoItalics', u'pageBreak', u'magicVars', u'highlight']
 
 # A list of extensions that are enabled.
 extensions = [u'include', u'exec', u'python', u'toc', u'code', u'video', \
@@ -623,28 +599,22 @@ pdfFooter = u'%page% of %topage%'
 ~~~
 
 
-
 __Example:__
 
-~~~ {.python}
+~~~ .python
 from academicmarkdown import build
 build.pdfHeader = u'A header for my PDF'
 ~~~
 
-
-
-
 </span>
-
 
 [academicmarkdown.constants]: #academicmarkdown-constants
 [constants]: #academicmarkdown-constants
 
-
 </span>
 
-
 [academicmarkdown]: #academicmarkdown
+
 
 [*module* academicmarkdown]: #module-academicmarkdown
 [Contents]: #contents
@@ -672,11 +642,11 @@ build.pdfHeader = u'A header for my PDF'
 [Magic variables]: #magic-variables
 [License]: #license
 [*module* academicmarkdown.build]: #module-academicmarkdownbuild
-[*function* academicmarkdown.build.DOC(src, target)]: #function-academicmarkdownbuilddocsrc-target
-[*function* academicmarkdown.build.DOCX(src, target)]: #function-academicmarkdownbuilddocxsrc-target
-[*function* academicmarkdown.build.HTML(src, target=None, standalone=True)]: #function-academicmarkdownbuildhtmlsrc-targetnone-standalonetrue
-[*function* academicmarkdown.build.MD(src, target=None)]: #function-academicmarkdownbuildmdsrc-targetnone
-[*function* academicmarkdown.build.ODT(src, target)]: #function-academicmarkdownbuildodtsrc-target
-[*function* academicmarkdown.build.PDF(src, target, lineNumbers=False)]: #function-academicmarkdownbuildpdfsrc-target-linenumbersfalse
-[*function* academicmarkdown.build.setStyle(style)]: #function-academicmarkdownbuildsetstylestyle
+[function __academicmarkdown\.build\.DOC__\(src, target\)]: #function-__academicmarkdownbuilddoc__src-target
+[function __academicmarkdown\.build\.DOCX__\(src, target\)]: #function-__academicmarkdownbuilddocx__src-target
+[function __academicmarkdown\.build\.HTML__\(src, target=None, standalone=True\)]: #function-__academicmarkdownbuildhtml__src-targetnone-standalonetrue
+[function __academicmarkdown\.build\.MD__\(src, target=None\)]: #function-__academicmarkdownbuildmd__src-targetnone
+[function __academicmarkdown\.build\.ODT__\(src, target\)]: #function-__academicmarkdownbuildodt__src-target
+[function __academicmarkdown\.build\.PDF__\(src, target, args=u'', lineNumbers=False\)]: #function-__academicmarkdownbuildpdf__src-target-argsu-linenumbersfalse
+[function __academicmarkdown\.build\.setStyle__\(style\)]: #function-__academicmarkdownbuildsetstyle__style
 [*module* academicmarkdown.constants]: #module-academicmarkdownconstants
