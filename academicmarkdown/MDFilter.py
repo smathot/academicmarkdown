@@ -19,6 +19,29 @@ along with zoteromarkdown.  If not, see <http://www.gnu.org/licenses/>.
 
 import re
 
+def highlight(md):
+
+	"""
+	desc:
+		Processes the custom Markdown ++highlight++ syntax.
+
+	arguments:
+		md:
+			desc:	A Markdown string.
+			type:	unicode
+
+	returns:
+		desc:		A processed Markdown string.
+		type:		unicode
+	"""
+
+	regexp = ur'\+\+(.*?)\+\+'
+	for i in re.finditer(regexp, md, re.M):
+		old = i.group(0)
+		new = u'<span class="highlight">%s</span>' % i.groups()[0]
+		md = md.replace(old, new)
+	return md
+
 def autoItalics(md):
 
 	"""

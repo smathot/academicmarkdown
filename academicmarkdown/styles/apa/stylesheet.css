@@ -166,3 +166,7 @@ a,
 	font-style: italic;
 	font-size: 0.9em;
 }
+
+.highlight {
+	background-color: yellow;
+}
