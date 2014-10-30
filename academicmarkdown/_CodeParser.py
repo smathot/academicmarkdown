@@ -75,7 +75,7 @@ class CodeParser(YAMLParser):
 		self.style = style
 		self.template = template
 		super(CodeParser, self).__init__(_object=u'code', required=['id', \
-			'source'], verbose=verbose)
+			'source', 'syntax'], verbose=verbose)
 
 	def parse(self, md):
 
@@ -94,8 +94,6 @@ class CodeParser(YAMLParser):
 		d[u'source'] = self.getPath(d[u'source'])
 		if u'caption' not in d:
 			d[u'caption'] = u''
-		if u'syntax' not in d:
-			d[u'syntax'] = u''
 		elif self.template == u'kramdown':
 			d[u'syntax'] = u'.' + d[u'syntax']
 		d[u'code'] = open(self.getPath(d[u'source'])).read().strip()
