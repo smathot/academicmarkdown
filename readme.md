@@ -4,7 +4,7 @@
 
 *Who knew writing could be so nerdy?*
 
-version 0.8.0~pre1
+version 0.8.1
 
 
 Copyright 2013-2014 Sebastiaan Mathôt
@@ -263,13 +263,13 @@ The `table` block reads a table from a `.csv` file and embed it into the
 document. The source file needs to be a utf-8 encoded file that is
 comma separated and double quoted.
 
-%--
-table:
- id: MyTable
- source: my_table.csv
- caption: "My table caption."
- ndigits: 4
---%
+        %--
+        table:
+         id: MyTable
+         source: my_table.csv
+         caption: "My table caption."
+         ndigits: 4
+        --%
 
 
 ### `toc`: table of contents

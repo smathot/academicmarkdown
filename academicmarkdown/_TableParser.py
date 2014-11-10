@@ -52,13 +52,13 @@ class TableParser(YAMLParser):
 	document. The source file needs to be a utf-8 encoded file that is
 	comma separated and double quoted.
 
-	%--
-	table:
-	 id: MyTable
-	 source: my_table.csv
-	 caption: "My table caption."
-	 ndigits: 4
-	--%
+		%--
+		table:
+		 id: MyTable
+		 source: my_table.csv
+		 caption: "My table caption."
+		 ndigits: 4
+		--%
 	"""
 
 	def __init__(self, style=u'inline', template=u'html5', verbose= \
