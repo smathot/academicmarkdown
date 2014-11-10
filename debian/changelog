@@ -1,3 +1,9 @@
+python-academicmarkdown (0.8.1-ubuntu1) trusty; urgency=medium
+
+  * Fix a bug in TOC generation for non-ascii headers
+
+ -- Sebastiaan Mathot <s.mathot@cogsci.nl>  Mon, 10 Nov 2014 14:59:44 +0100
+
 python-academicmarkdown (0.8.0-ubuntu1) trusty; urgency=medium
 
   * Various improvements and fixes

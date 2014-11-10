@@ -19,6 +19,7 @@ along with zoteromarkdown.  If not, see <http://www.gnu.org/licenses/>.
 
 from academicmarkdown import YAMLParser
 import re
+import string
 
 class TOCParser(YAMLParser):
 
@@ -131,7 +132,7 @@ class TOCParser(YAMLParser):
 
 		_id = u''
 		for ch in label:
-			if ch.isalnum() or ch in (u'-', u'_'):
+			if ch in string.ascii_letters + string.digits + u'-_':
 				_id += ch.lower()
 			elif ch.isspace() and len(_id) > 0 and _id[-1] != u'-':
 				_id += u'-'
