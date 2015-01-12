@@ -23,6 +23,7 @@ except:
 	zotero = None
 
 from academicmarkdown import BaseParser
+from academicmarkdown.py3compat import *
 import os
 import re
 import yaml
@@ -34,9 +35,9 @@ class ZoteroParser(BaseParser):
 
 	cachePath = u'.zoteromarkdown.cache'
 
-	def __init__(self, libraryId, apiKey, libraryType=u'user', \
-		clearCache=False, headerText=u'References', headerLevel=1, \
-		odtStyle=None, fixDOI=True, fixAuthorNames=True, verbose=False, \
+	def __init__(self, libraryId, apiKey, libraryType=u'user',
+		clearCache=False, headerText=u'References', headerLevel=1,
+		odtStyle=None, fixDOI=True, fixAuthorNames=True, verbose=False,
 		removeURL=True):
 
 		"""
@@ -88,7 +89,7 @@ class ZoteroParser(BaseParser):
 		if not os.path.exists(self.cachePath) or clearCache:
 			self.cache = {}
 		else:
-			fd = open(self.cachePath)
+			fd = open(self.cachePath, 'rb')
 			try:
 				self.cache = pickle.load(fd)
 			except:
@@ -142,7 +143,7 @@ class ZoteroParser(BaseParser):
 
 		items = []
 		oldQueries = []
-		regexp =  ur'@([^ ?!,.\t\n\r\f\v\]\[;]+)'
+		regexp =  r'@([^ ?!,.\t\n\r\f\v\]\[;]+)'
 		for r in re.finditer(regexp, md):
 			queryString = r.groups()[0]
 			self.msg(u'Found citation (#%d) "%s"' % (self.refCount,
@@ -161,10 +162,10 @@ class ZoteroParser(BaseParser):
 			match = matches[0]
 			if match in items and queryString not in oldQueries:
 				for _queryString in sorted(oldQueries):
-					print u'Ref: %s' % _queryString
+					print(u'Ref: %s' % _queryString)
 				raise Exception(
 					('"%s" refers to an existent reference with a different name. Please use consistent references (see list above)!' \
-					% queryString).encode(u'utf-8'))
+					% queryString))
 			match[u'id'] = queryString
 			if self.odtStyle != None:
 				match[u'title'] += u'<!--odt-style="%s"-->' % self.odtStyle
@@ -177,7 +178,7 @@ class ZoteroParser(BaseParser):
 		fd.close()
 		if self.headerText == None or self.headerLevel == None:
 			return md
-		md = md.replace(u'%rc%', unicode(self.refCount))
+		md = md.replace(u'%rc%', str(self.refCount))
 		return md + u'\n\n%s %s\n\n' % (u'#' * self.headerLevel, \
 			self.headerText)
 
@@ -203,13 +204,16 @@ class ZoteroParser(BaseParser):
 			if self.zotero == None:
 				self.connect()
 			try:
-				items = self.zotero.top(q=query[0].encode(u'utf-8'), limit= \
-					100, content=u'csljson')
+				items = self.zotero.top(q=safe_encode(query[0]),
+					limit=100, content=u'csljson')
 			except:
 				self.msg(u'Failed to query Zotero server!')
 				return []
+			if len(items) == 0:
+				return []
+			n = items[0][u'author'][0]['family']
 			self.cache[query[0]] = items
-			fd = open(self.cachePath, u'w')
+			fd = open(self.cachePath, u'wb')
 			pickle.dump(self.cache, fd)
 			fd.close()
 		matches = []
@@ -301,11 +305,11 @@ class ZoteroParser(BaseParser):
 					given = u''.join([i[0].upper() for i in given.split()])
 					# Add dots after each initial
 					given = u'. '.join(given) + u'.'
- 					_author.append({u'family' : family, u'given': given})
+					_author.append({u'family' : family, u'given': given})
 				item[u'author'] = _author
 			# Remove empty fields
 			for field in item:
-				if isinstance(item[field], basestring) and \
+				if isinstance(item[field], str) and \
 					item[field].strip() == u'':
 					self.msg(u'Removing empty field: %s' % field)
 					del item[field]
@@ -329,7 +333,7 @@ class ZoteroParser(BaseParser):
 		# First, split underscore-style citations, like '@land_1999_why_animals'
 		if u'_' in s:
 			return s.split(u'_')
-		regexp = ur'([A-Z][^ 0-9A-Z?!,.\t\n\r\f\v\]\[;]*)'
+		regexp = r'([A-Z][^ 0-9A-Z?!,.\t\n\r\f\v\]\[;]*)'
 		# Otherwise, split camelcase-style citations, like @Land1999WhyAnimals.
 		l = []
 		for t in re.split(regexp, s):

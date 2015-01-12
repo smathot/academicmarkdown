@@ -20,6 +20,7 @@ along with zoteromarkdown.  If not, see <http://www.gnu.org/licenses/>.
 import subprocess
 import os
 from academicmarkdown import BaseParser
+from academicmarkdown.py3compat import *
 
 class Pandoc(BaseParser):
 	
@@ -77,7 +78,7 @@ class Pandoc(BaseParser):
 				cmd += u' --csl %s' % self.csl
 		ps = subprocess.Popen(cmd.split(), stdin=subprocess.PIPE, \
 			stdout=subprocess.PIPE)
-		print ps.communicate(md.encode(u'utf-8'))[0].decode(u'utf-8')
+		print(safe_decode(ps.communicate(safe_encode(md)[0])))
 		
 	def html(self, md, output):
 		
@@ -89,7 +90,7 @@ class Pandoc(BaseParser):
 		output	--	The name of the output file.
 		"""		
 		
-		open(output, 'w').write(self.parse(md).encode(u'utf-8'))
+		open(output, 'w').write(safe_encode(self.parse(md)))
 		
 	def odt(self, md, output, odtRef=None):
 		
@@ -120,7 +121,7 @@ class Pandoc(BaseParser):
 		cmd += u' -o'
 		ps = subprocess.Popen(cmd.split() + [output], stdin=subprocess.PIPE, \
 			stdout=subprocess.PIPE)
-		print ps.communicate(md.encode(u'utf-8'))[0].decode(u'utf-8')
+		print(safe_decode(ps.communicate(safe_encode(md))[0]))
 		
 	def parse(self, md):
 		
@@ -140,4 +141,4 @@ class Pandoc(BaseParser):
 				cmd += u' --csl %s' % self.csl
 		ps = subprocess.Popen(cmd.split(), stdin=subprocess.PIPE, \
 			stdout=subprocess.PIPE)
-		return ps.communicate(md.encode(u'utf-8'))[0].decode(u'utf-8')		
+		return safe_decode(ps.communicate(safe_encode(md))[0])

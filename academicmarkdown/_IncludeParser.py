@@ -18,6 +18,7 @@ along with zoteromarkdown.  If not, see <http://www.gnu.org/licenses/>.
 """
 
 from academicmarkdown import YAMLParser, MDFilter
+from academicmarkdown.py3compat import *
 from academicmarkdown.constants import *
 import os
 
@@ -39,11 +40,11 @@ class IncludeParser(YAMLParser):
 
 		"""See YAMLParser.parseObject()."""
 
-		if not isinstance(d, basestring):
+		if not isinstance(d, str):
 			return u'Expecting a string, not "%s"' % d
 		d = self.getPath(d)
 		self.msg('Include: %s' % d)
-		_md = open(d).read().decode(u'utf-8')
+		_md = safe_decode(open(d).read())
 		# Apply pre-processing Markdown Filters
 		for flt in preMarkdownFilters:
 			fltFunc = getattr(MDFilter, flt)

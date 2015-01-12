@@ -20,9 +20,9 @@ along with zoteromarkdown.  If not, see <http://www.gnu.org/licenses/>.
 desc: |
 	*Who knew writing could be so nerdy?*
 
-	version %-- python: "from academicmarkdown import version; print version" --%
+	version %-- python: "from academicmarkdown import version; print(version)" --%
 
-	Copyright 2013-2014 Sebastiaan Mathôt
+	Copyright 2013-2015 Sebastiaan Mathôt
 
 	## Contents
 
@@ -262,23 +262,23 @@ desc: |
 ---
 """
 
-version = u'0.8.1'
+version = u'0.9.0'
 
-from _BaseParser import BaseParser
-from _YAMLParser import YAMLParser
-from _ZoteroParser import ZoteroParser
-from _FigureParser import FigureParser
-from _CodeParser import CodeParser
-from _ConstantParser import ConstantParser
-from _ExecParser import ExecParser
-from _PythonParser import PythonParser
-from _IncludeParser import IncludeParser
-from _TOCParser import TOCParser
-from _VideoParser import VideoParser
-from _TableParser import TableParser
-from _Pandoc import Pandoc
-from _ODTFixer import ODTFixer
-from _WkHtmlToPdf import WkHtmlToPdf
-from _WcParser import WcParser
-import build
-import constants
+from academicmarkdown._BaseParser import BaseParser
+from academicmarkdown._YAMLParser import YAMLParser
+from academicmarkdown._ZoteroParser import ZoteroParser
+from academicmarkdown._FigureParser import FigureParser
+from academicmarkdown._CodeParser import CodeParser
+from academicmarkdown._ConstantParser import ConstantParser
+from academicmarkdown._ExecParser import ExecParser
+from academicmarkdown._PythonParser import PythonParser
+from academicmarkdown._IncludeParser import IncludeParser
+from academicmarkdown._TOCParser import TOCParser
+from academicmarkdown._VideoParser import VideoParser
+from academicmarkdown._TableParser import TableParser
+from academicmarkdown._Pandoc import Pandoc
+from academicmarkdown._ODTFixer import ODTFixer
+from academicmarkdown._WkHtmlToPdf import WkHtmlToPdf
+from academicmarkdown._WcParser import WcParser
+from academicmarkdown import build, constants
+

@@ -54,7 +54,7 @@ class YAMLParser(BaseParser):
 				continue
 			if not isinstance(d, dict):
 				continue
-			obj = d.keys()[0]
+			obj = list(d.keys())[0]
 			if obj.lower() != self._object:
 				continue
 			keys = d[obj]

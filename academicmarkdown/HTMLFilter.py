@@ -33,7 +33,7 @@ def citationGlue(s):
 	"""
 
 	regexp = \
-		ur'[\]\)]</span>\+<span class="citation" data-cites="[\w +]+">[\[\(]'
+		r'[\]\)]</span>\+<span class="citation" data-cites="[\w +]+">[\[\(]'
 	for i in re.finditer(regexp, s, re.M):
 		cite = i.group()
 		s = s.replace(i.group(), u'')
@@ -51,7 +51,7 @@ def DOI(s):
 	A unicode string with all DOIs changed into hyperlinks.
 	"""
 
-	regexp = ur'(doi:10[.][0-9]{4,}[^\s"/<>]*/[^\s"<>]+)'
+	regexp = r'(doi:10[.][0-9]{4,}[^\s"/<>]*/[^\s"<>]+)'
 	for i in re.finditer(regexp, s, re.M):
 		doi = i.group()
 		s = s.replace(doi, u'<a href="http://dx.doi.org/%s">%s</a>' % \

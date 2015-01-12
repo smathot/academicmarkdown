@@ -35,10 +35,11 @@ example: |
 ---
 """
 
+from academicmarkdown.py3compat import *
 import os, sys
 
 # A list of folders that are searched for figures, scripts, etc.
-path = [os.getcwd().decode(sys.getfilesystemencoding())]
+path = [safe_decode(os.getcwd(), enc=sys.getfilesystemencoding())]
 
 # Parameters for Zotero integration
 zoteroApiKey = None

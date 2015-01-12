@@ -31,6 +31,7 @@ from academicmarkdown import FigureParser, Pandoc, ZoteroParser, ODTFixer, \
 	CodeParser, WcParser, VideoParser, TableParser, PythonParser, \
 	tools, ConstantParser
 from academicmarkdown.constants import *
+from academicmarkdown.py3compat import *
 
 def HTML(src, target=None, standalone=True):
 
@@ -68,9 +69,9 @@ def HTML(src, target=None, standalone=True):
 
 	md = MD(src)
 	# Count words
-	print u'Document statistics:'
-	print u'Word count: %d' % len(md.split())
-	print u'Character count: %d' % len(md)
+	print(u'Document statistics:')
+	print(u'Word count: %d' % len(md.split()))
+	print(u'Character count: %d' % len(md))
 	# And finally convert the Markdown to HTML
 	pd = Pandoc(css=css, csl=csl, template=html5Ref, standalone=standalone, \
 		verbose=True)
@@ -79,8 +80,8 @@ def HTML(src, target=None, standalone=True):
 		fltFunc = getattr(HTMLFilter, flt)
 		html = fltFunc(html)
 	if target != None:
-		open(target, u'w').write(html.encode(u'utf-8'))
-	print u'Done!'
+		open(target, u'wb').write(safe_encode(html))
+	print(u'Done!')
 	return html
 
 def MD(src, target=None):
@@ -105,18 +106,18 @@ def MD(src, target=None):
 	"""
 
 	if os.path.exists(src):
-		md = open(src).read().decode(u'utf-8')
-		print u'Building %s from %s ...' % (target, src)
+		md = safe_decode(open(src).read())
+		print(u'Building %s from %s ...' % (target, src))
 	else:
 		md = src
-		print u'Building from string ...'
+		print(u'Building from string ...')
 	# Apply pre-processing Markdown Filters
 	for flt in preMarkdownFilters:
 		fltFunc = getattr(MDFilter, flt)
 		md = fltFunc(md)
 	# Apply all extensions
 	for ext in extensions:
-		print u'Parsing with %s extension ...' % ext
+		print(u'Parsing with %s extension ...' % ext)
 		if u'include' == ext:
 			md = IncludeParser(verbose=True).parse(md)
 		elif u'toc' == ext:
@@ -154,7 +155,7 @@ def MD(src, target=None):
 		fltFunc = getattr(MDFilter, flt)
 		md = fltFunc(md)
 	if target != None:
-		open(target, u'w').write(md.encode(u'utf-8'))
+		open(target, u'wb').write(safe_encode(md))
 	return md
 
 def PDF(src, target, lineNumbers=False, args=''):
@@ -181,7 +182,7 @@ def PDF(src, target, lineNumbers=False, args=''):
 			type:	[str, unicode]
 	"""
 
-	print u'Building %s from %s ...' % (target, src)
+	print(u'Building %s from %s ...' % (target, src))
 	HTML(src, u'.tmp.html')
 	wk = WkHtmlToPdf(css=css, margins=pdfMargins, spacing=pdfSpacing, \
 		header=pdfHeader, footer=pdfFooter, verbose=True, args=args)
@@ -236,10 +237,10 @@ def DOC(src, target):
 	# Since pandoc doesn't support DOC output, we convert first to ODT and from
 	# there use unoconv to convert to DOC.
 	ODT(src, u'.tmp.odt')
-	print u'Converting from .odt to .doc ...'
+	print(u'Converting from .odt to .doc ...')
 	cmd = [u'unoconv', u'-f', u'doc', u'.tmp.odt']
 	subprocess.call(cmd)
-	print u'Done!'
+	print(u'Done!')
 	os.rename(u'.tmp.doc', target)
 
 def DOCX(src, target):
@@ -280,14 +281,15 @@ def setStyle(style):
 	"""
 
 	global css, csl, html5Ref, odtRef, docxRef
-	moduleFolder = os.path.dirname(__file__).decode(sys.getfilesystemencoding())
+	moduleFolder = safe_decode(os.path.dirname(__file__),
+		enc=sys.getfilesystemencoding())
 	if os.path.exists(style):
 		stylePath = style
 	elif os.path.exists(os.path.join(moduleFolder, u'styles', style)):
 		stylePath = os.path.join(moduleFolder, u'styles', style)
 	else:
 		raise Exception(u'There is no style folder named "%s"' % style)
-	print u'Using style folder: %s' % stylePath
+	print(u'Using style folder: %s' % stylePath)
 	css = os.path.join(stylePath, u'stylesheet.css')
 	if not os.path.exists(css):
 		css = None

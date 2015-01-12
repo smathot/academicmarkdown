@@ -50,7 +50,7 @@ class PythonParser(YAMLParser):
 
 		"""See YAMLParser.parseObject()."""
 
-		if not isinstance(d, basestring):
+		if not isinstance(d, str):
 			return u'Expecting a string, not "%s"' % d
 
 		import sys
@@ -58,7 +58,7 @@ class PythonParser(YAMLParser):
 		self.msg(u'Python: %s' % d)
 		buffer = StringIO()
 		sys.stdout = buffer
-		exec('#-*- coding:utf-8 -*-\n%s' % d.encode(u'utf-8'))
+		exec('#-*- coding:utf-8 -*-\n%s' % safe_encode(d))
 		sys.stdout = sys.__stdout__
 		output = buffer.getvalue()
 		self.msg(u'Returns: %s' % output)

@@ -19,6 +19,7 @@ along with zoteromarkdown.  If not, see <http://www.gnu.org/licenses/>.
 
 import zipfile
 from academicmarkdown import BaseParser
+from academicmarkdown.py3compat import *
 import re
 
 class ODTFixer(BaseParser):
@@ -32,7 +33,7 @@ class ODTFixer(BaseParser):
 		self.msg(u'Fixing %s' % path)		
 		self.msg(u'Reading ...')
 		archive = zipfile.ZipFile(path, 'a')
-		content = archive.read(u'content.xml').decode(u'utf-8')		
+		content = safe_decode(archive.read(u'content.xml'))
 		# Style information is embedded as HTML comments, like so:
 		# <!--odt-style="Style"-->. The style needs to be extracted and placed
 		# into the <text:p text:style-name="Style"> tags that open a paragraph.
@@ -41,9 +42,9 @@ class ODTFixer(BaseParser):
 		lines = []
 		for line in content.split('\n'):
 			for toStyle in re.findall( \
-				ur'&lt;!--odt-style=&quot;(\w+)&quot;--&gt;', line):
+				r'&lt;!--odt-style=&quot;(\w+)&quot;--&gt;', line):
 				for fromStyle in re.findall( \
-					ur'<text:p text:style-name="(\w+)">', line):
+					r'<text:p text:style-name="(\w+)">', line):
 					line = line.replace(fromStyle, toStyle)
 				line = line.replace(u'&lt;!--odt-style=&quot;%s&quot;--&gt;' \
 					% toStyle, u'')
@@ -53,6 +54,6 @@ class ODTFixer(BaseParser):
 		
 		#print content
 		self.msg(u'Writing ...')
-		archive.writestr('content.xml', content.encode(u'utf-8'))
+		archive.writestr('content.xml', safe_encode(content))
 		archive.close()
 		self.msg(u'Done')

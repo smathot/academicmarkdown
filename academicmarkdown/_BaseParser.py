@@ -19,6 +19,7 @@ along with zoteromarkdown.  If not, see <http://www.gnu.org/licenses/>.
 
 import re
 import yaml
+from academicmarkdown.py3compat import *
 
 class BaseParser(object):
 
@@ -58,8 +59,8 @@ class BaseParser(object):
 		"""
 
 		if self.verbose:
-			print((u'[%s] %s' % (self.__class__.__name__, msg)).encode( \
-				u'ascii', u'ignore'))
+			print(safe_encode(u'[%s] %s' % (self.__class__.__name__, msg),
+				enc=u'ascii', errors=u'ignore'))
 
 	def getPath(self, path):
 

@@ -79,11 +79,11 @@ class TOCParser(YAMLParser):
 		# Because script can have hashtags as code comments, we should ignore
 		# script when searching for headers.
 		# - Remove standard ~~~ style script blocks
-		mdNoScript = re.sub(ur'~~~(.*?)~~~', u'DUMMY', md, re.M, re.S)
+		mdNoScript = re.sub(r'~~~(.*?)~~~', u'DUMMY', md, re.M, re.S)
 		# - Remove jekyll style script blocks
-		mdNoScript = re.sub(ur'{% highlight (\w*) %}(.*?){% endhighlight %}',
+		mdNoScript = re.sub(r'{% highlight (\w*) %}(.*?){% endhighlight %}',
 			u'DUMMY', mdNoScript, re.M, re.S)
-		for i in re.finditer(ur'^#(.*)', mdNoScript, re.M):
+		for i in re.finditer(r'^#(.*)', mdNoScript, re.M):
 			h = i.group()
 			for level in range(100, -1, -1):
 				if h.startswith(u'#' * level):
@@ -101,7 +101,7 @@ class TOCParser(YAMLParser):
 		_md = u'\n'
 		lRep = []
 		for level, h, label, _id in headers:
-			print h
+			print(h)
 			_md += u'\t' * (level-d[u'mindepth']) # Indent
 			_md += u'- [%s](#%s)\n' % (label, _id)
 			if self.anchorHeaders:

@@ -19,6 +19,7 @@ along with zoteromarkdown.  If not, see <http://www.gnu.org/licenses/>.
 
 import re
 import os
+from academicmarkdown.py3compat import *
 
 def wordCount(s, excludeYAML=True, clean=True):
 
@@ -47,7 +48,7 @@ def wordCount(s, excludeYAML=True, clean=True):
 			wc += wordCount(_s, excludeYAML=excludeYAML, clean=clean)
 		return wc
 	if os.path.exists(s):
-		s = open(s).read().decode(u'utf-8')
+		s = safe_decode(open(s).read())
 	if excludeYAML:
 		s = re.sub(u'%--(.*?)--%', lambda x: u'', s, flags=re.M|re.S)
 	if clean:
@@ -55,7 +56,7 @@ def wordCount(s, excludeYAML=True, clean=True):
 	l = []
 	for w in s.split():
 		if clean:
-			w = re.sub(ur'[^a-zA-Z0-9]', u'', w)
+			w = re.sub(r'[^a-zA-Z0-9]', u'', w)
 		if len(w) > 0:
 			l.append(w)
 	return len(l)

@@ -52,13 +52,13 @@ def snapshot(src, msg=u'snapshot', pdfArgs={}):
 	"""
 	
 	cmd = [u'git', u'commit', u'-am', msg]
-	print u'Committing (msg: %s)' % msg
+	print(u'Committing (msg: %s)' % msg)
 	call(cmd)
 	cmd = [u'git', u'log', u'--pretty=format:[%cd #%h] %s', u'--date=iso', \
 		u'-1']
 	tag = check_output(cmd)
 	folder = os.path.join(exportFolder, tag)
-	print u'Exporting to %s' % folder
+	print(u'Exporting to %s' % folder)
 	if os.path.exists(folder):
 		raise Exception( \
 			u'Folder %s already exists! There is probably nothing new to export.' \

@@ -17,6 +17,7 @@ You should have received a copy of the GNU General Public License
 along with zoteromarkdown.  If not, see <http://www.gnu.org/licenses/>.
 """
 
+from academicmarkdown.py3compat import *
 from academicmarkdown import YAMLParser
 import subprocess
 import shlex
@@ -41,9 +42,9 @@ class WcParser(YAMLParser):
 
 		"""See YAMLParser.parseObject()."""
 
-		if not isinstance(d, basestring):
+		if not isinstance(d, str):
 			return u'Expecting a string, not "%s"' % d
-		s = open(self.getPath(d)).read().decode(u'utf-8')
-		wc = unicode(len(s.split()))
+		s = safe_decode(open(self.getPath(d)).read())
+		wc = str(len(s.split()))
 		self.msg(u'Word count: %s words in %s' % (wc, d))
 		return md.replace(_yaml, wc)

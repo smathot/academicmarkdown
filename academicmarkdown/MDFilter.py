@@ -35,7 +35,7 @@ def highlight(md):
 		type:		unicode
 	"""
 
-	regexp = ur'\+\+(.*?)\+\+'
+	regexp = r'\+\+(.*?)\+\+'
 	for i in re.finditer(regexp, md, re.M):
 		old = i.group(0)
 		new = u'<span class="highlight">%s</span>' % i.groups()[0]
@@ -56,7 +56,7 @@ def autoItalics(md):
 	"""
 
 	# M, SE, SD, p, r, t
-	regexp = ur'\b(?P<key>(M|p|r|SE|SD|t)) *(?P<opr>[=><]) *(?P<val>-?\d*\.?\d*)\b'
+	regexp = r'\b(?P<key>(M|p|r|SE|SD|t|β)) *(?P<opr>[=><]) *(?P<val>-?\d*\.?\d*)\b'
 	for i in re.finditer(regexp, md, re.M):
 		old = i.group(0)
 		new = u'*%s* %s %s' % (i.group('key'), i.group('opr'), \
@@ -64,7 +64,7 @@ def autoItalics(md):
 		md = md.replace(old, new)
 
 	# T tests with degrees of freedom
-	regexp = ur'\bt\((?P<df>\d*\.?\d*)\) *(?P<opr>[=><]) *(?P<val>-?\d*\.?\d*)\b'
+	regexp = r'\bt\((?P<df>\d*\.?\d*)\) *(?P<opr>[=><]) *(?P<val>-?\d*\.?\d*)\b'
 	for i in re.finditer(regexp, md, re.M):
 		old = i.group(0)
 		new = u'*t*(%s) %s %s' % (i.group('df'), i.group('opr'), \
@@ -72,7 +72,7 @@ def autoItalics(md):
 		md = md.replace(old, new)
 
 	# Chisquare tests with degrees of freedom
-	regexp = ur'\bX2\((?P<df>\d*\.?\d*)\) *(?P<opr>[=><]) *(?P<val>-?\d*\.?\d*)\b'
+	regexp = r'\bX2\((?P<df>\d*\.?\d*)\) *(?P<opr>[=><]) *(?P<val>-?\d*\.?\d*)\b'
 	for i in re.finditer(regexp, md, re.M):
 		old = i.group(0)
 		new = u'*Χ^2^*(%s) %s %s' % (i.group('df'), i.group('opr'), \
@@ -80,7 +80,7 @@ def autoItalics(md):
 		md = md.replace(old, new)
 
 	# F tests
-	regexp = ur'\bF\((?P<df1>\d*\.?\d*),(?P<df2>\d*\.?\d*)\) *(?P<opr>[=><]) *(?P<val>-?\d*\.?\d*)\b'
+	regexp = r'\bF\((?P<df1>\d*\.?\d*),(?P<df2>\d*\.?\d*)\) *(?P<opr>[=><]) *(?P<val>-?\d*\.?\d*)\b'
 	for i in re.finditer(regexp, md, re.M):
 		old = i.group(0)
 		new = u'*F*(%s,%s) %s %s' % (i.group('df1'), i.group('df2'), \

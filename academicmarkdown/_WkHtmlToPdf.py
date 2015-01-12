@@ -21,6 +21,7 @@ import re
 import shlex
 import subprocess
 from academicmarkdown import BaseParser
+from academicmarkdown.py3compat import *
 
 # From <http://madalgo.au.dk/~jakobt/wkhtmltoxdoc/wkhtmltopdf-0.9.9-doc.html>
 feaderTmpl = """<!DOCTYPE HTML>
@@ -90,7 +91,7 @@ class WkHtmlToPdf(BaseParser):
 		An HTML string containing the header/ footer.
 		"""
 
-		regEx = ur'%(?P<var>[a-z]+)%'
+		regEx = r'%(?P<var>[a-z]+)%'
 		for r in re.finditer(regEx, s):
 			s = s.replace(u'%%%s%%' % r.group('var'), \
 				u'<span class="%s"></span>' % r.group('var'))
@@ -111,19 +112,21 @@ class WkHtmlToPdf(BaseParser):
 		self.msg(u'Invoking wkhtmltopdf')
 		cmd = u'wkhtmltopdf -T %s -R %s -B %s -L %s' % self.margins
 		if self.header != None:
-			open('.header.html', 'w').write(self.createFeader(self.header, \
-				u'header').encode(u'utf-8'))
+			open('.header.html', 'wb').write(safe_encode(self.createFeader(
+				self.header, u'header')))
 			cmd += u' --header-html .header.html --header-spacing %s' % \
 				self.spacing[0]
 		if self.footer != None:
-			open('.footer.html', 'w').write(self.createFeader(self.footer, \
-				u'footer').encode(u'utf-8'))
+			open('.footer.html', 'wb').write(safe_encode(
+				self.createFeader(self.footer, u'footer')))
 			cmd += u' --footer-html .footer.html --footer-spacing %s' % \
 				self.spacing[1]
 		cmd += u' ' + self.args
 		cmd += u' %s "%s"' % (html, target)
 		self.msg(cmd)
-		subprocess.call(shlex.split(cmd.encode(u'utf-8')))
+		if not py3:
+			cmd = safe_encode(cmd)
+		subprocess.call(shlex.split(cmd))
 		if self.fix00:
 			# Due to a bug in wkhtmltopdf, the PDF may contain #00 strings,
 			# which cause Acrobat Reader to choke (but not other PDF readers).
@@ -132,8 +135,8 @@ class WkHtmlToPdf(BaseParser):
 			# values. Here we simply replace all #00 strings, which seems to
 			# work.
 			self.msg(u'Checking for #00')
-			pdf = open(target).read()
-			if '#00' in pdf:
+			pdf = open(target, 'rb').read()
+			if safe_encode('#00') in pdf:
 				self.msg(u'Fixing #00!')
 				pdf = pdf.replace('#00', '#01')
-				open(target, u'w').write(pdf)
+				open(target, u'wb').write(pdf)

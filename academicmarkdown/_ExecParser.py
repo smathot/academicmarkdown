@@ -18,6 +18,7 @@ along with zoteromarkdown.  If not, see <http://www.gnu.org/licenses/>.
 """
 
 from academicmarkdown import YAMLParser
+from academicmarkdown.py3compat import *
 import subprocess
 import shlex
 
@@ -44,7 +45,8 @@ class ExecParser(YAMLParser):
 		if not isinstance(d, basestring):
 			return u'Expecting a string, not "%s"' % d
 		self.msg(u'Command: %s' % d)
-		output = subprocess.check_output(shlex.split(d.encode(u'utf-8'))) \
-			.decode(u'utf-8')
+		if not py3:
+			d = safe_encode(d)
+		output = safe_decode(subprocess.check_output(shlex.split(d)))
 		self.msg(u'Returns: %s' % output)
 		return md.replace(_yaml, output)

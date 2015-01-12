@@ -20,6 +20,7 @@ along with zoteromarkdown.  If not, see <http://www.gnu.org/licenses/>.
 import os
 import yaml
 from academicmarkdown import YAMLParser
+from academicmarkdown.py3compat import *
 import subprocess
 import sys
 
@@ -138,8 +139,8 @@ class TableParser(YAMLParser):
 							col = (u'%%.%df' % d[u'ndigits']) % col
 						_row.append(col)
 					except:
-						_row.append(col)
-				s += (u'|' + u'|'.join(_row) + u'|\n').decode(u'utf-8')
+						_row.append(safe_decode(col))
+				s += (u'|' + u'|'.join(_row) + u'|\n')
 				i += 1
 		d[u'table'] = s
 		tbl = tableTemplate[self.template] % d
