@@ -23,12 +23,12 @@ import subprocess
 
 codeTemplate = {
 u'pandoc' : u"""
-~~~ {.%(syntax)s}
+~~~ {%(syntax)s}
 %(code)s
 ~~~
 """,
 u'kramdown' : u"""
-~~~ .%(syntax)s
+~~~ %(syntax)s
 %(code)s
 ~~~
 """,
@@ -48,7 +48,9 @@ class CodeParser(YAMLParser):
 
 		%--
 		code:
-		 id: CodeA
+		 id: CodeA caption: |
+  Test!
+
 		 source: my_script.py
 		 syntax: python
 		 caption: "A simple Python script"
@@ -94,9 +96,10 @@ class CodeParser(YAMLParser):
 		d[u'source'] = self.getPath(d[u'source'])
 		if u'caption' not in d:
 			d[u'caption'] = u''
-		elif self.template == u'kramdown':
+		if self.template == u'kramdown':
 			d[u'syntax'] = u'.' + d[u'syntax']
-		d[u'code'] = open(self.getPath(d[u'source'])).read().strip()
+		with open(self.getPath(d[u'source'])) as fd:
+			d[u'code'] = fd.read().strip()
 		code = codeTemplate[self.template] % d
 		if self.style == u'inline':
 			md = md.replace(_yaml, code)
@@ -106,4 +109,3 @@ class CodeParser(YAMLParser):
 		md = md.replace(u'%%%s' % d[u'id'], u'[Listing %d](#%s)' % (self.nCode, \
 			d[u'id']))
 		return md
-

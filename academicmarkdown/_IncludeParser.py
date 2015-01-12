@@ -40,7 +40,7 @@ class IncludeParser(YAMLParser):
 
 		"""See YAMLParser.parseObject()."""
 
-		if not isinstance(d, str):
+		if not isinstance(d, basestring):
 			return u'Expecting a string, not "%s"' % d
 		d = self.getPath(d)
 		self.msg('Include: %s' % d)
@@ -52,4 +52,3 @@ class IncludeParser(YAMLParser):
 		ip = IncludeParser(verbose=self.verbose)
 		_md = ip.parse(_md)
 		return md.replace(_yaml, _md)
-

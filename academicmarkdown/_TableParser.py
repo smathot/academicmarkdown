@@ -62,7 +62,7 @@ class TableParser(YAMLParser):
 		--%
 	"""
 
-	def __init__(self, style=u'inline', template=u'html5', verbose= \
+	def __init__(self, style=u'inline', template=u'kramdown', verbose= \
 		False):
 
 		"""
@@ -106,7 +106,7 @@ class TableParser(YAMLParser):
 		s = u''
 		import csv
 		i = 0
-		with open(d[u'source'], u'rb') as csvFile:
+		with open(d[u'source'], u'r') as csvFile:
 			csvReader = csv.reader(csvFile, delimiter=',', quotechar='"')
 			for row in csvReader:
 				# Pandoc requires a row of alignment indicators below the
@@ -154,4 +154,3 @@ class TableParser(YAMLParser):
 		md = md.replace(u'%%%s' % d[u'id'], u'[Table %d](#%s)' % (self.nTbl, \
 			d[u'id']))
 		return md
-
