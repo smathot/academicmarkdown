@@ -24,6 +24,8 @@ desc: |
 
 	Copyright 2013-2015 Sebastiaan Mathôt
 
+	[![Build Status](https://travis-ci.org/smathot/academicmarkdown.svg?branch=master)](https://travis-ci.org/smathot/academicmarkdown)
+
 	## Contents
 
 	%--
@@ -281,4 +283,3 @@ from academicmarkdown._ODTFixer import ODTFixer
 from academicmarkdown._WkHtmlToPdf import WkHtmlToPdf
 from academicmarkdown._WcParser import WcParser
 from academicmarkdown import build, constants
-
