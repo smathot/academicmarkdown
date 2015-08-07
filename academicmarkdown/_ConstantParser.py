@@ -17,40 +17,34 @@ You should have received a copy of the GNU General Public License
 along with zoteromarkdown.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-from academicmarkdown import YAMLParser, MDFilter
-from academicmarkdown.constants import *
-import os
+from academicmarkdown import YAMLParser
+
 
 class ConstantParser(YAMLParser):
+    """
+    The `constant` block allows you to define constants. For example, if you
+    define MyConstant1 (as below), all occurrences of "%MyConstant1" in the text
+    will be replcated by "You can refer to this as %MyConstant1".
 
-	"""
-	The `constant` block allows you to define constants. For example, if you
-	define MyConstant1 (as below), all occurrences of "%MyConstant1" in the text
-	will be replcated by "You can refer to this as %MyConstant1".
+        %--
+        constant:
+            MyConstant1:    "You can refer to this as %MyConstant1"
+            MyConstant2:    "You can refer to this as %MyConstant2"
+        --%
+    """
 
-		%--
-		constant:
-			MyConstant1:	"You can refer to this as %MyConstant1"
-			MyConstant2:	"You can refer to this as %MyConstant2"
-		--%
-	"""
+    def __init__(self, verbose=False):
+        """See YAMLParser.__init__()."""
 
-	def __init__(self, verbose=False):
+        super(ConstantParser, self).__init__(_object=u'constant',
+                                             verbose=verbose)
 
-		"""See YAMLParser.__init__()."""
+    def parseObject(self, md, _yaml, d):
+        """See YAMLParser.parseObject()."""
 
-		super(ConstantParser, self).__init__(_object=u'constant',
-			verbose=verbose)
-
-	def parseObject(self, md, _yaml, d):
-
-		"""See YAMLParser.parseObject()."""
-
-		# Remove the YAML block
-		md = md.replace(_yaml, u'')
-		for key, val in d.items():
-			self.msg(key)
-			md = md.replace(u'%%%s' % key, val.strip())
-		return md
-
-
+        # Remove the YAML block
+        md = md.replace(_yaml, u'')
+        for key, val in d.items():
+            self.msg(key)
+            md = md.replace(u'%%%s' % key, val.strip())
+        return md

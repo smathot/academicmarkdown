@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-#-*- coding:utf-8 -*-
+# -*- coding:utf-8 -*-
 
 """
 This file is part of pseudorandom.
@@ -20,54 +20,55 @@ along with pseudorandom.  If not, see <http://www.gnu.org/licenses/>.
 
 import os
 import unittest
+
 import academicmarkdown
 from academicmarkdown.py3compat import *
-import importlib
+
 
 class AcadamicMarkdownTest(unittest.TestCase):
+    """
+    desc:
+        Basic unit testing for academicmarkdown.
+    """
 
-	"""
-	desc:
-		Basic unit testing for academicmarkdown.
-	"""
+    def setUp(self):
 
-	def setUp(self):
+        academicmarkdown.build.path += [os.path.join(self.dataFolder(),
+                                                     u'includes')]
 
-		academicmarkdown.build.path += [os.path.join(self.dataFolder(),
-			u'includes')]
+    def dataFolder(self):
 
-	def dataFolder(self):
+        return os.path.join(os.path.dirname(__file__), u'testdata')
 
-		return os.path.join(os.path.dirname(__file__), u'testdata')
+    def getTestData(self, fname):
 
-	def getTestData(self, fname):
+        with open(os.path.join(self.dataFolder(), fname)) as fd:
+            s = fd.read()
+        return safe_decode(s)
 
-		with open(os.path.join(self.dataFolder(), fname)) as fd:
-			s = fd.read()
-		return safe_decode(s)
+    def singleTest(self, path):
 
-	def singleTest(self, path):
+        clsName = path[:-8]
+        print(u'testing %s' % clsName)
+        cls = getattr(academicmarkdown, clsName)
+        md = self.getTestData(path)
+        print(md, type(md))
+        l = md.split(u'===')
+        print(l)
+        inp = l[0]
+        predOut = l[1].strip()
+        realOut = cls().parse(inp).strip()
+        print(predOut)
+        print(realOut)
+        self.assertTrue(predOut == realOut)
 
-		clsName = path[:-8]
-		print(u'testing %s' % clsName)
-		cls = getattr(academicmarkdown, clsName)
-		md = self.getTestData(path)
-		print(md, type(md))
-		l = md.split(u'===')
-		print(l)
-		inp = l[0]
-		predOut = l[1].strip()
-		realOut = cls().parse(inp).strip()
-		print(predOut)
-		print(realOut)
-		self.assertTrue(predOut == realOut)
+    def test_all(self):
 
-	def test_all(self):
+        for path in os.listdir(self.dataFolder()):
+            if not path.endswith(u'.test.md'):
+                continue
+            self.singleTest(path)
 
-		for path in os.listdir(self.dataFolder()):
-			if not path.endswith(u'.test.md'):
-				continue
-			self.singleTest(path)
 
 if __name__ == '__main__':
-	unittest.main()
+    unittest.main()

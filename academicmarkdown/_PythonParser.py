@@ -18,48 +18,44 @@ along with zoteromarkdown.  If not, see <http://www.gnu.org/licenses/>.
 """
 
 from academicmarkdown import YAMLParser
-import subprocess
-import shlex
+
 
 class PythonParser(YAMLParser):
+    """
+    The `python` block embeds the output (i.e. whatever is printed to stdout)
+    of a Python script into your document. For example, the following block
+    embeds the docstring of the `PythonParser` class (i.e. what you're reading
+    now):
 
-	"""
-	The `python` block embeds the output (i.e. whatever is printed to stdout)
-	of a Python script into your document. For example, the following block
-	embeds the docstring of the `PythonParser` class (i.e. what you're reading
-	now):
+        %--
+        python: |
+         import inspect
+         from academicmarkdown import PythonParser
+         print inspect.getdoc(PythonParser)
+        --%
 
-		%--
-		python: |
-		 import inspect
-		 from academicmarkdown import PythonParser
-		 print inspect.getdoc(PythonParser)
-		--%
+    Note that the `|` symbol is YAML syntax, and allows you to have a multiline
+    string.
+    """
 
-	Note that the `|` symbol is YAML syntax, and allows you to have a multiline
-	string.
-	"""
+    def __init__(self, verbose=False):
+        """See YAMLParser.__init__()."""
 
-	def __init__(self, verbose=False):
+        super(PythonParser, self).__init__(_object=u'python', verbose=verbose)
 
-		"""See YAMLParser.__init__()."""
+    def parseObject(self, md, _yaml, d):
+        """See YAMLParser.parseObject()."""
 
-		super(PythonParser, self).__init__(_object=u'python', verbose=verbose)
+        if not isinstance(d, str):
+            return u'Expecting a string, not "%s"' % d
 
-	def parseObject(self, md, _yaml, d):
-
-		"""See YAMLParser.parseObject()."""
-
-		if not isinstance(d, str):
-			return u'Expecting a string, not "%s"' % d
-
-		import sys
-		from StringIO import StringIO
-		self.msg(u'Python: %s' % d)
-		buffer = StringIO()
-		sys.stdout = buffer
-		exec('#-*- coding:utf-8 -*-\n%s' % safe_encode(d))
-		sys.stdout = sys.__stdout__
-		output = buffer.getvalue()
-		self.msg(u'Returns: %s' % output)
-		return md.replace(_yaml, output)
+        import sys
+        from StringIO import StringIO
+        self.msg(u'Python: %s' % d)
+        buffer = StringIO()
+        sys.stdout = buffer
+        exec ('#-*- coding:utf-8 -*-\n%s' % safe_encode(d))
+        sys.stdout = sys.__stdout__
+        output = buffer.getvalue()
+        self.msg(u'Returns: %s' % output)
+        return md.replace(_yaml, output)

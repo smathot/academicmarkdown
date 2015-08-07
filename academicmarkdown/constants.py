@@ -17,26 +17,27 @@ along with zoteromarkdown.  If not, see <http://www.gnu.org/licenses/>.
 
 ---
 desc: |
-	Contains the settings, which are imported into `academicmarkdown.build`. You
-	can change these settings in the `build` module, as shown below.
+    Contains the settings, which are imported into `academicmarkdown.build`. You
+    can change these settings in the `build` module, as shown below.
 
-	__Module source:__
+    __Module source:__
 
-	%--
-	code:
-		id: LstConstants
-		syntax: python
-		source: academicmarkdown/constants.py
-	--%
+    %--
+    code:
+        id: LstConstants
+        syntax: python
+        source: academicmarkdown/constants.py
+    --%
 
 example: |
-	from academicmarkdown import build
-	build.pdfHeader = u'A header for my PDF'
+    from academicmarkdown import build
+    build.pdfHeader = u'A header for my PDF'
 ---
 """
 
+import os
+
 from academicmarkdown.py3compat import *
-import os, sys
 
 # A list of folders that are searched for figures, scripts, etc.
 path = [safe_decode(os.getcwd(), enc=sys.getfilesystemencoding())]
@@ -63,11 +64,11 @@ TOCAppendHeaderRefs = True
 
 # Paths to files that determine the document's appearance. For more information,
 # see the Pandoc documentation.
-css = None # CSS stylesheet
-csl = None # CSL citation style
-html5Ref = None # HTML5 template
-odtRef = None # ODT reference document
-docxRef = None # DOCX reference document
+css = None  # CSS stylesheet
+csl = None  # CSL citation style
+html5Ref = None  # HTML5 template
+odtRef = None  # ODT reference document
+docxRef = None  # DOCX reference document
 
 # A list of filters from academicmarkdown.HTMLFilter that should be performed
 # after an HTML document has been genertated.
@@ -82,7 +83,7 @@ postMarkdownFilters = [u'autoItalics', u'pageBreak', u'magicVars', u'highlight']
 
 # A list of extensions that are enabled.
 extensions = [u'include', u'exec', u'python', u'toc', u'code', u'video', \
-	u'table', u'figure', u'constant', u'wc']
+              u'table', u'figure', u'constant', u'wc']
 
 # The page margins
 pdfMargins = 30, 20, 30, 20
