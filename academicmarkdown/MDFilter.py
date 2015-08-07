@@ -19,103 +19,103 @@ along with zoteromarkdown.  If not, see <http://www.gnu.org/licenses/>.
 
 import re
 
+
 def highlight(md):
+    """
+    desc:
+        Processes the custom Markdown ++highlight++ syntax.
 
-	"""
-	desc:
-		Processes the custom Markdown ++highlight++ syntax.
+    arguments:
+        md:
+            desc:   A Markdown string.
+            type:   unicode
 
-	arguments:
-		md:
-			desc:	A Markdown string.
-			type:	unicode
+    returns:
+        desc:       A processed Markdown string.
+        type:       unicode
+    """
 
-	returns:
-		desc:		A processed Markdown string.
-		type:		unicode
-	"""
+    regexp = r'\+\+(.*?)\+\+'
+    for i in re.finditer(regexp, md, re.M):
+        old = i.group(0)
+        new = u'<span class="highlight">%s</span>' % i.groups()[0]
+        md = md.replace(old, new)
+    return md
 
-	regexp = r'\+\+(.*?)\+\+'
-	for i in re.finditer(regexp, md, re.M):
-		old = i.group(0)
-		new = u'<span class="highlight">%s</span>' % i.groups()[0]
-		md = md.replace(old, new)
-	return md
 
 def autoItalics(md):
+    """
+    Automatically italicizes certain expressions. For example, 'p = .05',
+    becomes '*p* = .05'.
 
-	"""
-	Automatically italicizes certain expressions. For example, 'p = .05',
-	becomes '*p* = .05'.
+    Arguments:
+    md      --  A Markdown string.
 
-	Arguments:
-	md		--	A Markdown string.
+    Returns:
+    A processed Markdown string.
+    """
 
-	Returns:
-	A processed Markdown string.
-	"""
+    # M, SE, SD, p, r, t
+    regexp = r'\b(?P<key>(M|p|r|SE|SD|t|β)) *(?P<opr>[=><]) *(?P<val>-?\d*\.?\d*)\b'
+    for i in re.finditer(regexp, md, re.M):
+        old = i.group(0)
+        new = u'*%s* %s %s' % (i.group('key'), i.group('opr'), \
+                               i.group('val'))
+        md = md.replace(old, new)
 
-	# M, SE, SD, p, r, t
-	regexp = r'\b(?P<key>(M|p|r|SE|SD|t|β)) *(?P<opr>[=><]) *(?P<val>-?\d*\.?\d*)\b'
-	for i in re.finditer(regexp, md, re.M):
-		old = i.group(0)
-		new = u'*%s* %s %s' % (i.group('key'), i.group('opr'), \
-			i.group('val'))
-		md = md.replace(old, new)
+    # T tests with degrees of freedom
+    regexp = r'\bt\((?P<df>\d*\.?\d*)\) *(?P<opr>[=><]) *(?P<val>-?\d*\.?\d*)\b'
+    for i in re.finditer(regexp, md, re.M):
+        old = i.group(0)
+        new = u'*t*(%s) %s %s' % (i.group('df'), i.group('opr'), \
+                                  i.group('val'))
+        md = md.replace(old, new)
 
-	# T tests with degrees of freedom
-	regexp = r'\bt\((?P<df>\d*\.?\d*)\) *(?P<opr>[=><]) *(?P<val>-?\d*\.?\d*)\b'
-	for i in re.finditer(regexp, md, re.M):
-		old = i.group(0)
-		new = u'*t*(%s) %s %s' % (i.group('df'), i.group('opr'), \
-			i.group('val'))
-		md = md.replace(old, new)
+    # Chisquare tests with degrees of freedom
+    regexp = r'\bX2\((?P<df>\d*\.?\d*)\) *(?P<opr>[=><]) *(?P<val>-?\d*\.?\d*)\b'
+    for i in re.finditer(regexp, md, re.M):
+        old = i.group(0)
+        new = u'*Χ^2^*(%s) %s %s' % (i.group('df'), i.group('opr'), \
+                                     i.group('val'))
+        md = md.replace(old, new)
 
-	# Chisquare tests with degrees of freedom
-	regexp = r'\bX2\((?P<df>\d*\.?\d*)\) *(?P<opr>[=><]) *(?P<val>-?\d*\.?\d*)\b'
-	for i in re.finditer(regexp, md, re.M):
-		old = i.group(0)
-		new = u'*Χ^2^*(%s) %s %s' % (i.group('df'), i.group('opr'), \
-			i.group('val'))
-		md = md.replace(old, new)
+    # F tests
+    regexp = r'\bF\((?P<df1>\d*\.?\d*),(?P<df2>\d*\.?\d*)\) *(?P<opr>[=><]) *(?P<val>-?\d*\.?\d*)\b'
+    for i in re.finditer(regexp, md, re.M):
+        old = i.group(0)
+        new = u'*F*(%s,%s) %s %s' % (i.group('df1'), i.group('df2'), \
+                                     i.group('opr'), i.group('val'))
+        md = md.replace(old, new)
 
-	# F tests
-	regexp = r'\bF\((?P<df1>\d*\.?\d*),(?P<df2>\d*\.?\d*)\) *(?P<opr>[=><]) *(?P<val>-?\d*\.?\d*)\b'
-	for i in re.finditer(regexp, md, re.M):
-		old = i.group(0)
-		new = u'*F*(%s,%s) %s %s' % (i.group('df1'), i.group('df2'), \
-			i.group('opr'), i.group('val'))
-		md = md.replace(old, new)
+    return md
 
-	return md
 
 def magicVars(md):
+    """
+    Replace magic variables, such as %wc%.
 
-	"""
-	Replace magic variables, such as %wc%.
+    Arguments:
+    md      --  A Markdown string.
 
-	Arguments:
-	md		--	A Markdown string.
+    Returns:
+    A processed Markdown string.
+    """
 
-	Returns:
-	A processed Markdown string.
-	"""
+    md = md.replace(u'%wc%', u'%s' % len(md.split()))
+    md = md.replace(u'%cc%', u'%s' % len(md))
+    return md
 
-	md = md.replace(u'%wc%', u'%s' % len(md.split()))
-	md = md.replace(u'%cc%', u'%s' % len(md))
-	return md
 
 def pageBreak(md):
+    """
+    Converts '~' paragraphs to HTML5 page breaks.
 
-	"""
-	Converts '~' paragraphs to HTML5 page breaks.
+    Arguments:
+    md      --  A Markdown string.
 
-	Arguments:
-	md		--	A Markdown string.
+    Returns:
+    A processed Markdown string.
+    """
 
-	Returns:
-	A processed Markdown string.
-	"""
-
-	return md.replace(u'\n~\n', \
-		u'\n<div style=\'page-break-before:always;\'></div>\n')
+    return md.replace(u'\n~\n', \
+                      u'\n<div style=\'page-break-before:always;\'></div>\n')

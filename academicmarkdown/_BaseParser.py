@@ -17,72 +17,70 @@ You should have received a copy of the GNU General Public License
 along with zoteromarkdown.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-import re
-import yaml
 from academicmarkdown.py3compat import *
 
+
 class BaseParser(object):
+    def __init__(self, verbose=False):
 
-	def __init__(self, verbose=False):
+        """
+        Constructor.
 
-		"""
-		Constructor.
+        Keyword arguments:
+        verbose     --  Indicates whether verbose output should be generated.
+                        (default=False)
+        """
 
-		Keyword arguments:
-		verbose		--	Indicates whether verbose output should be generated.
-						(default=False)
-		"""
+        self.verbose = verbose
 
-		self.verbose = verbose
+    def parse(self, md):
 
-	def parse(self, md):
+        """
+        Parses a MarkDown text.
 
-		"""
-		Parses a MarkDown text.
+        Arguments:
+        md      --  The Markdown text.
 
-		Arguments:
-		md		--	The Markdown text.
+        Returns:
+        The parsed Markdown text.
+        """
 
-		Returns:
-		The parsed Markdown text.
-		"""
+        raise Exception(u'BaseParser.parse() should be overridden.')
 
-		raise Exception(u'BaseParser.parse() should be overridden.')
+    def msg(self, msg):
 
-	def msg(self, msg):
+        """
+        Print output in verbose mode.
 
-		"""
-		Print output in verbose mode.
+        Arguments:
+        msg     --  The message to print.
+        """
 
-		Arguments:
-		msg		--	The message to print.
-		"""
+        if self.verbose:
+            print(safe_encode(u'[%s] %s' % (self.__class__.__name__, msg),
+                              enc=u'ascii', errors=u'ignore'))
 
-		if self.verbose:
-			print(safe_encode(u'[%s] %s' % (self.__class__.__name__, msg),
-				enc=u'ascii', errors=u'ignore'))
+    def getPath(self, path):
 
-	def getPath(self, path):
+        """
+        Checks whether a path is present in the `srcFolder` and if so fixes it.
+        URLs are accepted as valid paths.
 
-		"""
-		Checks whether a path is present in the `srcFolder` and if so fixes it.
-		URLs are accepted as valid paths.
+        Arguments:
+        path        --  A path.
 
-		Arguments:
-		path		--	A path.
+        Returns:
+        A path.
+        """
 
-		Returns:
-		A path.
-		"""
-
-		import os
-		from academicmarkdown import build
-		if path.startswith(u'http://'):
-			return path
-		for buildPath in build.path:
-			_path = os.path.join(buildPath, path)
-			if os.path.exists(_path):
-				return _path
-		if not os.path.exists(path):
-			raise Exception(u'Cannot find file %s' % path)
-		return path
+        import os
+        from academicmarkdown import build
+        if path.startswith(u'http://'):
+            return path
+        for buildPath in build.path:
+            _path = os.path.join(buildPath, path)
+            if os.path.exists(_path):
+                return _path
+        if not os.path.exists(path):
+            raise Exception(u'Cannot find file %s' % path)
+        return path

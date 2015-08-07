@@ -1,33 +1,38 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="generator" content="pandoc" />
-$for(author-meta)$
-  <meta name="author" content="$author-meta$" />
-$endfor$
-$if(date-meta)$
-  <meta name="date" content="$date-meta$" />
-$endif$
-  <title>$if(title-prefix)$$title-prefix$ - $endif$$pagetitle$</title>
-  <style type="text/css">code{white-space: pre;}</style>
-$if(quotes)$
-  <style type="text/css">q { quotes: "“" "”" "‘" "’"; }</style>
-$endif$
-$if(highlighting-css)$
-  <style type="text/css">
-$highlighting-css$
-  </style>
-$endif$
-$for(css)$
-  <link rel="stylesheet" href="$css$" $if(html5)$$else$type="text/css" $endif$/>
-$endfor$
-$if(math)$
-  $math$
-$endif$
-$for(header-includes)$
-  $header-includes$
-$endfor$
+    <meta charset="UTF-8">
+    <meta name="generator" content="pandoc"/>
+    $for(author-meta)$
+    <meta name="author" content="$author-meta$"/>
+    $endfor$
+    $if(date-meta)$
+    <meta name="date" content="$date-meta$"/>
+    $endif$
+    <title>$if(title-prefix)$$title-prefix$ - $endif$$pagetitle$</title>
+    <style type="text/css">code {
+        white-space: pre;
+    }</style>
+    $if(quotes)$
+    <style type="text/css">q {
+        quotes: "“" "”" "‘" "’";
+    }</style>
+    $endif$
+    $if(highlighting-css)$
+    <style type="text/css">
+        $
+        highlighting-css$
+    </style>
+    $endif$
+    $for(css)$
+    <link rel="stylesheet" href="$css$" $if(html5)$$else$type="text/css" $endif$/>
+    $endfor$
+    $if(math)$
+    $math$
+    $endif$
+    $for(header-includes)$
+    $header-includes$
+    $endfor$
 </head>
 
 <body>
@@ -35,39 +40,40 @@ $endfor$
 $if(title)$
 <section id="titlepage">
 
-	$if(runninghead)$
-	<p class="runninghead">Running head: $runninghead$</p>
-	$endif$
+    $if(runninghead)$
+    <p class="runninghead">Running head: $runninghead$</p>
+    $endif$
 
-	<h1 class="title">$title$</h1>
+    <h1 class="title">$title$</h1>
 
-	$for(author)$
-	<p class="author">$author$</p>
-	$endfor$
+    $for(author)$
+    <p class="author">$author$</p>
+    $endfor$
 
-	$if(affiliation)$
-	<div class="affiliation">
-	$for(affiliation)$
-	<p>$affiliation$</p>
-	$endfor$
-	</div>
-	$endif$
+    $if(affiliation)$
+    <div class="affiliation">
+        $for(affiliation)$
+        <p>$affiliation$</p>
+        $endfor$
+    </div>
+    $endif$
 
-	$if(correspondence)$
-	<div class="correspondence">
-	<p>Address for correspondence:</p>
-	$for(correspondence)$
-	<p>$correspondence$</p>
-	$endfor$
-	</div>
-	$endif$
+    $if(correspondence)$
+    <div class="correspondence">
+        <p>Address for correspondence:</p>
+        $for(correspondence)$
+        <p>$correspondence$</p>
+        $endfor$
+    </div>
+    $endif$
 
-	$if(authornote)$
-	<div class="authornote">
-	<p>Author note:</p>
-	<p>$authornote$</p>
-	</div>
-	$endif$
+    $if(authornote)$
+    <div class="authornote">
+        <p>Author note:</p>
+
+        <p>$authornote$</p>
+    </div>
+    $endif$
 
 </section>
 $endif$

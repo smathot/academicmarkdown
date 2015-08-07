@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-#-*- coding:utf-8 -*-
+# -*- coding:utf-8 -*-
 
 """
 This file is part of zoteromarkdown.
@@ -18,14 +18,20 @@ You should have received a copy of the GNU General Public License
 along with zoteromarkdown.  If not, see <http://www.gnu.org/licenses/>.
 """
 
+from os import path
+
 import academicmarkdown
 from academicmarkdown import build
+
 import myZoteroCredentials
-build.path.append(u'example/src')
+
+base_path = path.join(u'example', u'src')
+build.path.append(base_path)
 build.zoteroLibraryId = myZoteroCredentials.zoteroLibraryId
 build.zoteroApiKey = myZoteroCredentials.zoteroApiKey
 build.setStyle('modern')
-build.pdfHeader = u'Generated with academicmarkdown %s' \
-	% academicmarkdown.version
-build.PDF('example/src/example.md', 'example/example.pdf')
-build.HTML('example/src/example.md', 'example/example.html')
+build.pdfHeader = u'Generated with academicmarkdown {version}'.format(
+    version=academicmarkdown.__version__
+)
+build.PDF(path.join(base_path, 'example.md'), path.join(base_path, 'example.html'))
+build.HTML(path.join(base_path, 'example.md'), path.join(base_path, 'example.html'))

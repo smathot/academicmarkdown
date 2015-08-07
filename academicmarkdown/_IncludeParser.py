@@ -18,37 +18,35 @@ along with zoteromarkdown.  If not, see <http://www.gnu.org/licenses/>.
 """
 
 from academicmarkdown import YAMLParser, MDFilter
-from academicmarkdown.py3compat import *
 from academicmarkdown.constants import *
-import os
+
 
 class IncludeParser(YAMLParser):
+    """
+    The `include` block includes an other Markdown file. For example:
 
-	"""
-	The `include` block includes an other Markdown file. For example:
+        %-- include: example/intro.md --%
+    """
 
-		%-- include: example/intro.md --%
-	"""
+    def __init__(self, verbose=False):
 
-	def __init__(self, verbose=False):
+        """See YAMLParser.__init__()."""
 
-		"""See YAMLParser.__init__()."""
+        super(IncludeParser, self).__init__(_object=u'include', verbose=verbose)
 
-		super(IncludeParser, self).__init__(_object=u'include', verbose=verbose)
+    def parseObject(self, md, _yaml, d):
 
-	def parseObject(self, md, _yaml, d):
+        """See YAMLParser.parseObject()."""
 
-		"""See YAMLParser.parseObject()."""
-
-		if not isinstance(d, basestring):
-			return u'Expecting a string, not "%s"' % d
-		d = self.getPath(d)
-		self.msg('Include: %s' % d)
-		_md = safe_decode(open(d).read())
-		# Apply pre-processing Markdown Filters
-		for flt in preMarkdownFilters:
-			fltFunc = getattr(MDFilter, flt)
-			_md = fltFunc(_md)
-		ip = IncludeParser(verbose=self.verbose)
-		_md = ip.parse(_md)
-		return md.replace(_yaml, _md)
+        if not isinstance(d, basestring):
+            return u'Expecting a string, not "%s"' % d
+        d = self.getPath(d)
+        self.msg('Include: %s' % d)
+        _md = safe_decode(open(d).read())
+        # Apply pre-processing Markdown Filters
+        for flt in preMarkdownFilters:
+            fltFunc = getattr(MDFilter, flt)
+            _md = fltFunc(_md)
+        ip = IncludeParser(verbose=self.verbose)
+        _md = ip.parse(_md)
+        return md.replace(_yaml, _md)
