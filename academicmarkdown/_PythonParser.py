@@ -18,6 +18,7 @@ along with zoteromarkdown.  If not, see <http://www.gnu.org/licenses/>.
 """
 
 from academicmarkdown import YAMLParser
+from academicmarkdown.py3compat import *
 import subprocess
 import shlex
 
@@ -50,7 +51,7 @@ class PythonParser(YAMLParser):
 
 		"""See YAMLParser.parseObject()."""
 
-		if not isinstance(d, str):
+		if not isinstance(d, basestring):
 			return u'Expecting a string, not "%s"' % d
 
 		import sys

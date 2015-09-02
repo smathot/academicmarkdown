@@ -1,9 +1,11 @@
 * {
 	font-family: "Arial";
 	font-size: 10.5pt;
-	line-height: 200%;
+	line-height: 175%;
 	text-align: justify;
 }
+
+.highlight {background-color: #ffffaf;}
 
 p {
 }
@@ -38,16 +40,23 @@ h1 {
 }
 
 h2 {
+	font-size: 1.1em;
 	font-weight: bold;
 	font-style: normal;
 }
 
 h3 {
+	font-size: 1.1em;
 	font-weight: normal;
 	font-style: italic;
 }
 
-h1, h2, h2 {
+h4 {
+	font-weight: normal;
+	font-style: italic;
+}
+
+h1, h2, h3, h4 {
 	page-break-after: avoid;
 }
 
@@ -83,14 +92,17 @@ figure figcaption {
 	width: 100%;
 }
 
+figure figcaption .citation {
+	font-size: 1em;
+}
+
 .citation {
 	color: #204a87;
 }
 
+*[id^='ref-'],
 .references p {
-	text-align: left;
-	text-indent: -25px;
-	margin-left: 25px;
+	text-align: left;text-indent: -25px;margin-left: 25px;
 }
 
 .footer, .header {
@@ -111,9 +123,7 @@ figure figcaption {
 	border-top: solid 1px;
 	border-bottom: solid 1px;
 	font-style: normal;
-	font-weight: bold;
-	font-size: 1em;
-}
+	font-weight: bold;title
 
 .table table {
 	width: 100%;

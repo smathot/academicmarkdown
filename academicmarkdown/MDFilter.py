@@ -41,6 +41,28 @@ def highlight(md):
 		new = u'<span class="highlight">%s</span>' % i.groups()[0]
 		md = md.replace(old, new)
 	return md
+	
+def arrows(md):
+	
+	"""
+	desc:
+		Converts -> and <- into arrows.
+
+	arguments:
+		md:
+			desc:	A Markdown string.
+			type:	unicode
+
+	returns:
+		desc:		A processed Markdown string.
+		type:		unicode
+	"""
+	
+	md = md.replace(u' <- ', u' &larr; ')
+	md = md.replace(u' -> ', u' &rarr; ')
+	md = md.replace(u' \<- ', u' <- ')
+	md = md.replace(u' \-> ', u' -> ')
+	return md
 
 def autoItalics(md):
 
@@ -56,7 +78,7 @@ def autoItalics(md):
 	"""
 
 	# M, SE, SD, p, r, t
-	regexp = r'\b(?P<key>(M|p|r|SE|SD|t|β)) *(?P<opr>[=><]) *(?P<val>-?\d*\.?\d*)\b'
+	regexp = r'\b(?P<key>(M|p|r|SE|SD|t|β|z)) *(?P<opr>[=><]) *(?P<val>-?\d*\.?\d*)\b'
 	for i in re.finditer(regexp, md, re.M):
 		old = i.group(0)
 		new = u'*%s* %s %s' % (i.group('key'), i.group('opr'), \

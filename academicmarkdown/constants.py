@@ -78,7 +78,8 @@ htmlFilters = [u'DOI', u'citationGlue']
 preMarkdownFilters = []
 # A list of filters from academicmarkdown.MDFilter that should be performed
 # on the Markdown source, after all other processing has been performed
-postMarkdownFilters = [u'autoItalics', u'pageBreak', u'magicVars', u'highlight']
+postMarkdownFilters = [u'autoItalics', u'pageBreak', u'magicVars', u'highlight',
+	u'arrows']
 
 # A list of extensions that are enabled.
 extensions = [u'include', u'exec', u'python', u'toc', u'code', u'video', \

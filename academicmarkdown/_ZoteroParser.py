@@ -156,6 +156,8 @@ class ZoteroParser(BaseParser):
 				self.msg(u'No matches for "%s"!' % queryString)
 				continue
 			if len(matches) > 1:
+				for match in matches:
+					print(match)
 				raise Exception( \
 					u'Multiple Zotero matches (%d) for "@%s". Be more specific!' % \
 					(len(matches), queryString))
@@ -211,7 +213,6 @@ class ZoteroParser(BaseParser):
 				return []
 			if len(items) == 0:
 				return []
-			n = items[0][u'author'][0]['family']
 			self.cache[query[0]] = items
 			fd = open(self.cachePath, u'wb')
 			pickle.dump(self.cache, fd)
@@ -230,11 +231,12 @@ class ZoteroParser(BaseParser):
 					pass
 				# Check authors
 				if matchPhase == 0:
+					if 'author' not in item:
+						break
 					if i >= len(item[u'author']):
 						match = False
 						break
-					if not item[u'author'][i][u'family'].lower().startswith( \
-						term):
+					if term not in item[u'author'][i][u'family'].lower():
 						match = False
 						break
 				# Check year
@@ -278,14 +280,21 @@ class ZoteroParser(BaseParser):
 						u'raw'])
 				else:
 					item[u'issued'][u'year'] = u'date unknown'
-			# Fix capitalized DOIs and warn about missing DOIs.
+			# Make sure that both a lowercase (doi) and uppercase (DOI) key is
+			# present, remove prefixed 'doi:' strings, and lowercase the url.
 			if self.fixDOI:
 				if u'DOI' in item:
-					item[u'doi'] = item[u'DOI']
-					if item[u'doi'].startswith(u'doi:'):
-						item[u'doi'] = item[u'doi'][4:]
-				if u'doi' not in item:
+					doi = item[u'DOI'][:]
+				elif u'doi' in item:
+					doi = item[u'doi'][:]
+				else:
+					doi = None
 					self.msg('Missing DOI: %s' % item[u'title'])
+				if doi is not None:
+					if doi.startswith(u'doi:'):
+						doi = doi[4:]
+					doi = doi.lower()
+					item[u'doi'] = item[u'DOI'] = doi
 			# Remove URL field
 			if self.removeURL:
 				if u'URL' in item.keys() and (u'container-title' in \

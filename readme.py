@@ -20,10 +20,11 @@ along with academicmarkdown.  If not, see <http://www.gnu.org/licenses/>.
 
 import yamldoc
 import academicmarkdown
+from academicmarkdown.py3compat import *
 
 df = yamldoc.DocFactory(academicmarkdown)
 academicmarkdown.build.extensions = [u'toc', u'exec', u'code', u'constant',
 	u'python']
 academicmarkdown.build.postMarkdownFilters = []
-academicmarkdown.build.MD(unicode(df), u'readme.md')
-academicmarkdown.build.PDF(unicode(df), u'readme.pdf')
+academicmarkdown.build.MD(str(df), u'readme.md')
+academicmarkdown.build.PDF(str(df), u'readme.pdf')

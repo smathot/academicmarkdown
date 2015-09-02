@@ -120,7 +120,7 @@ class FigureParser(YAMLParser):
 			self.msg(u'Width: %.2f (%.2f%%)' % (figWidthPx, d[u'width']))
 			if not os.path.exists(dest) or '--clear-svg' in sys.argv:
 				cmd = [u'inkscape', u'-f', d[u'source'], u'-e', dest, u'-d', \
-					'200', u'-b', u'white', u'-y', u'1.0']
+					'150', u'-b', u'white', u'-y', u'1.0']
 				subprocess.call(cmd)
 			else:
 				self.msg('"%s" exists, not regenerating' % dest)
@@ -152,4 +152,3 @@ class FigureParser(YAMLParser):
 		md = md.replace(u'%%%s' % d[u'id'], u'[Figure %d](#%s)' % (self.nFig, \
 			d[u'id']))
 		return md
-

@@ -115,6 +115,11 @@ a,
 	color: #204a87;
 }
 
+figure figcaption .citation {
+	font-size: 0.9em;
+}
+
+*[id^='ref-'],
 .references p {
 	text-align: left;
 	text-indent: -25px;
@@ -168,5 +173,5 @@ a,
 }
 
 .highlight {
-	background-color: yellow;
+	background-color: #ffffaf;
 }

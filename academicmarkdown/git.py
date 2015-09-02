@@ -27,36 +27,36 @@ exportFolder = u'export'
 exportFormats = u'odt', u'pdf', u'doc'
 
 def commitHash():
-	
+
 	"""
 	Gets the latest commit hash.
-	
+
 	Returns:
 	A unicode string with the latest hash.
 	"""
-	
+
 	cmd = [u'git', u'log', u'--pretty=format:#%h', u'-1']
 	return check_output(cmd)
 
 def snapshot(src, msg=u'snapshot', pdfArgs={}):
-	
+
 	"""
 	Commits the current state of the repository and exports a snapshot of the
 	current documents.
-	
+
 	Arguments:
 	src		--	The source Markdown document.
-	
+
 	Keyword arguments:
 	msg		--	A commit message. (default=u'snapshot')
 	"""
-	
+
 	cmd = [u'git', u'commit', u'-am', msg]
 	print(u'Committing (msg: %s)' % msg)
 	call(cmd)
 	cmd = [u'git', u'log', u'--pretty=format:[%cd #%h] %s', u'--date=iso', \
 		u'-1']
-	tag = check_output(cmd)
+	tag = check_output(cmd).decode()
 	folder = os.path.join(exportFolder, tag)
 	print(u'Exporting to %s' % folder)
 	if os.path.exists(folder):

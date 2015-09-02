@@ -52,14 +52,10 @@ class AcadamicMarkdownTest(unittest.TestCase):
 		print(u'testing %s' % clsName)
 		cls = getattr(academicmarkdown, clsName)
 		md = self.getTestData(path)
-		print(md, type(md))
 		l = md.split(u'===')
-		print(l)
 		inp = l[0]
 		predOut = l[1].strip()
 		realOut = cls().parse(inp).strip()
-		print(predOut)
-		print(realOut)
 		self.assertTrue(predOut == realOut)
 
 	def test_all(self):
