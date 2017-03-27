@@ -83,7 +83,7 @@ postMarkdownFilters = [u'autoItalics', u'pageBreak', u'magicVars', u'highlight',
 
 # A list of extensions that are enabled.
 extensions = [u'include', u'exec', u'python', u'toc', u'code', u'video', \
-	u'table', u'figure', u'constant', u'wc']
+	u'table', u'figure', u'constant', u'wc', u'github']
 
 # The page margins
 pdfMargins = 30, 20, 30, 20

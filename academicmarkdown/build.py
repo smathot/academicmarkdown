@@ -24,12 +24,11 @@ desc:
 
 import os
 import sys
-import shlex
 import subprocess
 from academicmarkdown import FigureParser, Pandoc, ZoteroParser, ODTFixer, \
 	ExecParser, IncludeParser, TOCParser, HTMLFilter, MDFilter, WkHtmlToPdf, \
 	CodeParser, WcParser, VideoParser, TableParser, PythonParser, \
-	tools, ConstantParser
+	tools, ConstantParser, GitHubParser
 from academicmarkdown.constants import *
 from academicmarkdown.py3compat import *
 
@@ -142,6 +141,8 @@ def MD(src, target=None):
 			md = PythonParser(verbose=True).parse(md)
 		elif u'constant' == ext:
 			md = ConstantParser(verbose=True).parse(md)
+		elif u'github' == ext:
+			md = GitHubParser(verbose=True).parse(md)
 		else:
 			raise Exception(u'Unknown Academic Markdown extension: %s' % ext)
 	# Parse Zotero references
