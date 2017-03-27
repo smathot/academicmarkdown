@@ -56,7 +56,7 @@ class AcadamicMarkdownTest(unittest.TestCase):
 		inp = l[0]
 		predOut = l[1].strip()
 		realOut = cls().parse(inp).strip()
-		self.assertTrue(predOut == realOut)
+		self.assertEqual(predOut, realOut)
 
 	def test_all(self):
 
