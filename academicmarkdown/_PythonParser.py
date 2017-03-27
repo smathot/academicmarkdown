@@ -22,6 +22,8 @@ from academicmarkdown.py3compat import *
 import subprocess
 import shlex
 
+_globals = {}
+
 class PythonParser(YAMLParser):
 
 	"""
@@ -59,8 +61,22 @@ class PythonParser(YAMLParser):
 		self.msg(u'Python: %s' % d)
 		buffer = StringIO()
 		sys.stdout = buffer
-		exec('#-*- coding:utf-8 -*-\n%s' % safe_encode(d))
+		exec('#-*- coding:utf-8 -*-\n%s' % safe_encode(d), _globals)
 		sys.stdout = sys.__stdout__
 		output = buffer.getvalue()
-		self.msg(u'Returns: %s' % output)
-		return md.replace(_yaml, output)
+		self.msg(u'Returns: %s' % output)		
+		s = u"""
+~~~ .python
+%s
+~~~
+""" % safe_encode(d)
+
+		if output:
+			s += """
+__Output:__
+
+~~~ .text
+%s
+~~~
+""" % output
+		return md.replace(_yaml, s)
