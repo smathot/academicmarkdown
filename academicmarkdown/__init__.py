@@ -282,4 +282,5 @@ from academicmarkdown._Pandoc import Pandoc
 from academicmarkdown._ODTFixer import ODTFixer
 from academicmarkdown._WkHtmlToPdf import WkHtmlToPdf
 from academicmarkdown._WcParser import WcParser
+from academicmarkdown._GitHubParser import GitHubParser
 from academicmarkdown import build, constants
