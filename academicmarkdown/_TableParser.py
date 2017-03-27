@@ -34,11 +34,11 @@ __Table %(nTbl)d.__ %(caption)s\n{: .tbl-caption #%(id)s}
 """,
 u'pandoc':  u"""
 
-<div class='table'>
+<div class='table' markdown=1>
 
 <span class='table-id'>Table %(nTbl)d</span>
 
-<span class='caption'>%(caption)s</span>
+<span class='tbl-caption'>%(caption)s</span>
 
 %(table)s
 
@@ -112,7 +112,7 @@ class TableParser(YAMLParser):
 				# Pandoc requires a row of alignment indicators below the
 				# header. See also:
 				# - <http://johnmacfarlane.net/pandoc/README.html#tables>
-				if self.template == u'pandoc':
+				if self.template in (u'pandoc', u'kramdown'):
 					if i == 1:
 						alignList = []
 						for col in row:
@@ -121,7 +121,7 @@ class TableParser(YAMLParser):
 								alignList.append(u'--:')
 							except:
 								alignList.append(u':--')
-						s += (u'|' + u'|'.join(alignList) + u'|\n')
+						s += (u'| ' + u' | '.join(alignList) + u' |\n')
 				_row = []
 				for col in row:
 					try:
@@ -139,8 +139,10 @@ class TableParser(YAMLParser):
 							col = (u'%%.%df' % d[u'ndigits']) % col
 						_row.append(col)
 					except:
+						if not col.strip():
+							col = u'&nbsp;'
 						_row.append(safe_decode(col))
-				s += (u'|' + u'|'.join(_row) + u'|\n')
+				s += (u'| ' + u' | '.join(_row) + u' |\n')
 				i += 1
 		d[u'table'] = s
 		tbl = tableTemplate[self.template] % d
