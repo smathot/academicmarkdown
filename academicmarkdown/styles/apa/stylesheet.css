@@ -28,6 +28,15 @@ code {
 	white-space: pre-wrap;
 }
 
+blockquote {
+	margin: 16px 48px 16px 48px;
+	font-style: italic;
+}
+
+blockquote p {
+	text-indent: 0px!important;
+}
+
 sup {
 	font-size: 0.7em;
 }
@@ -39,6 +48,7 @@ h1 {
 }
 
 h1, h2, h3 {
+  color: #204a87;
 	page-break-after: avoid;
 	margin: 15px 0px 5px 0px;
 }
