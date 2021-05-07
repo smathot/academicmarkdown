@@ -1,6 +1,6 @@
 * {
-	font-family: "Arial";
-	font-size: 10.5pt;
+	font-family: "Roboto";
+	font-size: 12pt;
 	line-height: 175%;
 	text-align: justify;
 }
@@ -100,9 +100,11 @@ figure figcaption .citation {
 	color: #204a87;
 }
 
-*[id^='ref-'],
 .references p {
-	text-align: left;text-indent: -25px;margin-left: 25px;
+    text-align: left;
+    text-indent: -25px;
+    margin-left: 25px;
+    font-size: 0.9em;
 }
 
 .footer, .header {

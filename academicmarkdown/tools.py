@@ -84,7 +84,10 @@ def addLineNumbersToPDF(inFile, outFile, color='#d3d7cf'):
 	import os
 	import shutil
 	import subprocess
-	from scipy import ndimage
+	try:
+		from scipy.ndimage import imread
+	except ImportError:
+		from imageio import imread
 	import numpy as np
 	from PIL import Image, ImageDraw, ImageFont
 
@@ -110,7 +113,10 @@ def addLineNumbersToPDF(inFile, outFile, color='#d3d7cf'):
 	print(u'Done!')
 	# Create watermarks for all pages
 	for path in os.listdir(pageFolder):
-		im = ndimage.imread(os.path.join(pageFolder, path), flatten=True)
+		try:
+			im = imread(os.path.join(pageFolder, path), flatten=True)
+		except TypeError:
+			im = imread(os.path.join(pageFolder, path), as_gray=True)
 		# Create a list of indices that have text on them
 		nonEmptyRows = np.where(im.mean(axis=1) != 255)[0]
 		# Store the rows (i.e.) y coordinates of all to-be-numbered-rows

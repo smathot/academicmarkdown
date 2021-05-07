@@ -82,3 +82,9 @@ def headerIndent(s, depth=1, minLevel=1, maxLevel=6):
 			.replace(u'</h%d>' % i, u'</h%d>' % (i+depth)) \
 			.replace(u'</H%d>' % i, u'</H%d>' % (i+depth))
 	return s
+
+def quote(s):
+	
+	s = s.replace('<p>—', '<p><span class="quote-dash">&#x2015;</span>')
+	s = s.replace('<br />\n—', '<br />\n<span class="quote-dash">&#x2015;</span>')
+	return s

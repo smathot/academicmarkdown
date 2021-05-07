@@ -23,6 +23,7 @@ import subprocess
 import shlex
 
 _globals = {}
+img_nr = 0
 
 class PythonParser(YAMLParser):
 
@@ -52,24 +53,50 @@ class PythonParser(YAMLParser):
 	def parseObject(self, md, _yaml, d):
 
 		"""See YAMLParser.parseObject()."""
+		
+		global img_nr
 
 		if not isinstance(d, basestring):
 			return u'Expecting a string, not "%s"' % d
 
 		import sys
-		from StringIO import StringIO
+		try:
+			from io import StringIO # Py 3
+		except ImportError:
+			from StringIO import StringIO # Py 2
+		img = False
+		code = d
+		if d.endswith('\nplt.show()\n'):
+			d = d[:-len('\nplt.show()\n')]
+			img_nr += 1
+			d = 'from matplotlib import pyplot as plt\nplt.clf()\n{}\nplt.savefig("img/{}.png")\n'.format(
+				d,
+				img_nr
+			)
+			img = True
 		self.msg(u'Python: %s' % d)
 		buffer = StringIO()
 		sys.stdout = buffer
-		exec('#-*- coding:utf-8 -*-\n%s' % safe_encode(d), _globals)
+		if safe_str(d).startswith('# should-raise\n'):
+			code = code.replace('# should-raise\n', '')
+			try:
+				exec('#-*- coding:utf-8 -*-\n%s' % safe_str(d), _globals)
+			except Exception as e:
+				print('{0}: {1}'.format(e.__class__.__name__, e))
+				# import traceback
+				# traceback.print_exc(file=buffer, limit=1)
+			else:
+				raise ValueError('Code should raise exception but didn\t')
+		else:
+			exec('#-*- coding:utf-8 -*-\n%s' % safe_str(d), _globals)
 		sys.stdout = sys.__stdout__
 		output = buffer.getvalue()
-		self.msg(u'Returns: %s' % output)		
+		self.msg(u'Returns: %s' % output)
 		s = u"""
 ~~~ .python
 %s
 ~~~
-""" % safe_encode(d)
+""" % safe_str(code)
 
 		if output:
 			s += """
@@ -79,4 +106,6 @@ __Output:__
 %s
 ~~~
 """ % output
+		if img:
+			s += '\n![](/img/{}.png)\n'.format(img_nr)
 		return md.replace(_yaml, s)

@@ -18,9 +18,25 @@ along with zoteromarkdown.  If not, see <http://www.gnu.org/licenses/>.
 """
 
 import yaml
+from datamatrix import functional as fnc
 from academicmarkdown import YAMLParser
 from academicmarkdown.py3compat import *
 from academicmarkdown.constants import *
+try:
+	from urllib.request import urlopen
+except ImportError:
+	from urllib2 import urlopen
+
+
+@fnc.memoize(persistent=True)
+def urlget(url):
+	
+	print(url)
+	fd = urlopen(url)
+	content = fd.read()
+	fd.close()
+	return content
+
 
 class GitHubParser(YAMLParser):
 
@@ -49,7 +65,6 @@ class GitHubParser(YAMLParser):
 			return md.replace(_yaml, \
 				u'[@%s](https://github.com/%s)' % (username, username))
 		if u'issue' in d:			
-			from cachedurlget import urlget
 			url = u'https://api.github.com/repos/%(repo)s/issues/%(issue)d' % d
 			s = urlget(url)
 			d = yaml.load(s)

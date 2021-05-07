@@ -1,3 +1,4 @@
+
 # -*- coding: utf-8 -*-
 
 """
@@ -140,7 +141,6 @@ class FigureParser(YAMLParser):
 		if u'width' not in d:
 			d[u'width'] = 100
 		img = figureTemplate[self.template] % d
-
 		if self.style == u'inline':
 			md = md.replace(_yaml, img)
 		else:

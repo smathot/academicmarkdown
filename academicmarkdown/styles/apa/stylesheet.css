@@ -8,6 +8,7 @@
 
 p {
 	text-indent: 32px;
+	text-align: justify;
 }
 
 a {
@@ -45,11 +46,11 @@ h1 {
 	text-align: center;
 	font-size: 1.0em;
 	font-weight: normal;
+	page-break-after: avoid;
 }
 
 h1, h2, h3 {
   color: #204a87;
-	page-break-after: avoid;
 	margin: 15px 0px 5px 0px;
 }
 
@@ -138,7 +139,7 @@ figure figcaption .citation {
 
 .footer, .header {
 	text-align: right;
-	font-size: 0.8em;
+	font-size: 12pt;
 }
 
 .footer span, .header span {

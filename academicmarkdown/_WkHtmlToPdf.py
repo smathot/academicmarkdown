@@ -47,7 +47,7 @@ function subst() {
 
 class WkHtmlToPdf(BaseParser):
 
-	def __init__(self, css=None, fix00=True, margins=(20, 20, 30, 20),
+	def __init__(self, css=None, fix00=False, margins=(20, 20, 30, 20),
 		spacing=(10, 10), header=None, footer=u'%page% / %topage%',
 		verbose=False, args=''):
 
@@ -110,7 +110,7 @@ class WkHtmlToPdf(BaseParser):
 		"""See BaseParser.parse()."""
 
 		self.msg(u'Invoking wkhtmltopdf')
-		cmd = u'wkhtmltopdf -T %s -R %s -B %s -L %s' % self.margins
+		cmd = u'wkhtmltopdf -T %s -R %s -B %s -L %s --dpi 96 --disable-smart-shrinking' % self.margins
 		if self.header != None:
 			open('.header.html', 'wb').write(safe_encode(self.createFeader(
 				self.header, u'header')))

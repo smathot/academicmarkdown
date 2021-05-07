@@ -41,9 +41,9 @@ def highlight(md):
 		new = u'<span class="highlight">%s</span>' % i.groups()[0]
 		md = md.replace(old, new)
 	return md
-	
+
 def arrows(md):
-	
+
 	"""
 	desc:
 		Converts -> and <- into arrows.
@@ -57,7 +57,7 @@ def arrows(md):
 		desc:		A processed Markdown string.
 		type:		unicode
 	"""
-	
+
 	md = md.replace(u' <- ', u' &larr; ')
 	md = md.replace(u' -> ', u' &rarr; ')
 	md = md.replace(u' \<- ', u' <- ')
@@ -141,3 +141,7 @@ def pageBreak(md):
 
 	return md.replace(u'\n~\n', \
 		u'\n<div style=\'page-break-before:always;\'></div>\n')
+
+def quote(md):
+
+	return md.replace(u'\n— ', u'  \n—&thinsp;')

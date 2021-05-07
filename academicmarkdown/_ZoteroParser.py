@@ -26,10 +26,9 @@ from academicmarkdown import BaseParser
 from academicmarkdown.py3compat import *
 import os
 import re
-import yaml
 import json
 import pickle
-import warnings
+
 
 class ZoteroParser(BaseParser):
 
@@ -245,10 +244,14 @@ class ZoteroParser(BaseParser):
 						match = False
 						break
 					else:
-						if u'year' in item[u'issued']:
+						if u'year' in item[u'issued'] and not item[u'issued']['year'] == u'date unknown':
 							year = item[u'issued'][u'year']
 						elif u'raw' in item[u'issued']:
 							year = item[u'issued'][u'raw']
+						elif u'date-parts' in item[u'issued']:
+							year = item[u'issued'][u'date-parts'][0][0]
+						elif u'literal' in item[u'issued']:
+							year = item[u'issued'][u'literal']
 						else:
 							raise Exception(u'Invalid issued field: %s' % item)
 						try:
@@ -276,8 +279,13 @@ class ZoteroParser(BaseParser):
 			# explictly remove the 'raw' entry as well.
 			if u'issued' in item and u'year' not in item[u'issued']:
 				if u'raw' in item[u'issued']:
-					item[u'issued'][u'year'] = self.getYear(item[u'issued'][ \
-						u'raw'])
+					item[u'issued'][u'year'] = self.getYear(
+						item[u'issued'][u'raw']
+					)
+				elif u'date-parts' in item[u'issued']:
+					item[u'issued'][u'year'] = self.getYear(
+						item[u'issued'][u'date-parts'][0][0]
+					)
 				else:
 					item[u'issued'][u'year'] = u'date unknown'
 			# Make sure that both a lowercase (doi) and uppercase (DOI) key is

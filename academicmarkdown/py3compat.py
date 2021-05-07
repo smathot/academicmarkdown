@@ -37,8 +37,10 @@ def safe_encode(s, enc='utf-8', errors='strict'):
 		return s
 	return s.encode(enc, errors)
 
-__all__ = ['py3', 'safe_decode', 'safe_encode']
+__all__ = ['py3', 'safe_decode', 'safe_encode', 'safe_str']
 if not py3:
+	safe_str = safe_encode
 	__all__ += ['str', 'bytes']
 else:
+	safe_str = safe_decode
 	__all__ += ['basestring']
