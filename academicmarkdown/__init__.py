@@ -264,7 +264,7 @@ desc: |
 ---
 """
 
-version = u'0.9.0'
+version = u'0.9.1'
 
 from academicmarkdown._BaseParser import BaseParser
 from academicmarkdown._YAMLParser import YAMLParser

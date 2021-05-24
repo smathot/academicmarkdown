@@ -115,7 +115,7 @@ class FigureParser(YAMLParser):
 			pxPerMm = A4WidthPx / A4WidthMm
 			realWidthMm = A4WidthMm - self.margins[1] - self.margins[3]
 			realWidthPx = realWidthMm * pxPerMm
-			cmd = [u'inkscape', u'-f', d[u'source'], '-W']
+			cmd = [u'inkscape', d[u'source'], '-W']
 			figWidthPx = float(subprocess.check_output(cmd))
 			d[u'width'] = min(100, 100. * figWidthPx / realWidthPx)
 			self.msg(u'Width: %.2f (%.2f%%)' % (figWidthPx, d[u'width']))
